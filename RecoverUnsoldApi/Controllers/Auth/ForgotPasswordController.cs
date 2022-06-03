@@ -3,6 +3,7 @@ using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Mail;
+using RecoverUnsoldApi.Services.Mail.Mailable;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 
@@ -34,7 +35,8 @@ public class ForgotPasswordController: ControllerBase
         }
 
         var token = await _forgotPasswordService.CreateResetPasswordToken(user);
-        // TODO : Send mail
+        var forgotPasswordMail = new ForgotPasswordMail(user.Username, token, user.Email);
+        await _mailService.SendEmailAsync(forgotPasswordMail);
         return Ok();
     }
 

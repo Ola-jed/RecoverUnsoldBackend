@@ -2,18 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Mail;
+using RecoverUnsoldApi.Services.Mail.Mailable;
 using RecoverUnsoldApi.Services.UserVerification;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserVerificationController: ControllerBase
+public class UserVerificationController : ControllerBase
 {
     private readonly IUserVerificationService _userVerificationService;
     private readonly IApplicationUserService _applicationUserService;
     private readonly IMailService _mailService;
-    
+
     public UserVerificationController(IUserVerificationService userVerificationService,
         IApplicationUserService applicationUserService, IMailService mailService)
     {
@@ -40,9 +41,9 @@ public class UserVerificationController: ControllerBase
             return BadRequest();
         }
 
-
         var token = await _userVerificationService.GenerateUserVerificationToken(user);
-        // TODO : Send email
+        var userVerificationMail = new UserVerificationMail(user.Username, token, user.Email);
+        await _mailService.SendEmailAsync(userVerificationMail);
         return Ok();
     }
 

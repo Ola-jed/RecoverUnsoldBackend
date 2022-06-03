@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Npgsql;
 using RecoverUnsoldApi.Config;
 using RecoverUnsoldApi.Data;
+using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.ForgotPassword;
@@ -104,6 +105,8 @@ public static class ServiceCollectionExtensions
 
     public static void AddServices(this IServiceCollection serviceCollection)
     {
+        serviceCollection.AddHostedService<LongRunningService>();
+        serviceCollection.AddSingleton<BackgroundWorkerQueue>();
         serviceCollection.AddScoped<IAuthService, AuthService>();
         serviceCollection.AddScoped<IApplicationUserService, ApplicationUserService>();
         serviceCollection.AddScoped<IUserVerificationService, UserVerificationService>();
