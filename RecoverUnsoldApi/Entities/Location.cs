@@ -13,15 +13,15 @@ public class Location : Entity
     [Required]
     public LatLong Coordinates { get; set; } = null!;
 
-    public string Indication { get; set; } = null!;
-    public string Image { get; set; } = null!;
+    public string? Indication { get; set; }
+    public string? Image { get; set; }
 
     [ForeignKey(nameof(Distributor))]
     public Guid DistributorId { get; set; }
 
     public Distributor? Distributor { get; set; }
 
-    public ICollection<Order> Orders { get; set; } = new HashSet<Order>();
+    public ICollection<Offer> Offers { get; set; } = new HashSet<Offer>();
 }
 
 public record LatLong

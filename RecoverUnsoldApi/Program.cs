@@ -19,6 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureMail(configuration);
 builder.Services.ConfigureSwagger();
+builder.Services.ConfigureCloudinary(configuration);
 builder.Services.AddServices();
 builder.Services.ConfigureAuthentication(configuration);
 

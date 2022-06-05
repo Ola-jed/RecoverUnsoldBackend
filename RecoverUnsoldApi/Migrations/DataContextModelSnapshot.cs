@@ -114,11 +114,9 @@ namespace RecoverUnsoldApi.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Indication")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -417,7 +415,7 @@ namespace RecoverUnsoldApi.Migrations
                         .IsRequired();
 
                     b.HasOne("RecoverUnsoldApi.Entities.Location", "Location")
-                        .WithMany()
+                        .WithMany("Offers")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -447,7 +445,7 @@ namespace RecoverUnsoldApi.Migrations
                         .IsRequired();
 
                     b.HasOne("RecoverUnsoldApi.Entities.Location", "Location")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -478,7 +476,7 @@ namespace RecoverUnsoldApi.Migrations
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Location", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Offers");
                 });
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Offer", b =>

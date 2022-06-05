@@ -1,4 +1,5 @@
 using System.Text;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +11,7 @@ using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.ForgotPassword;
+using RecoverUnsoldApi.Services.Locations;
 using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.UserVerification;
 
@@ -30,7 +32,7 @@ public static class ServiceCollectionExtensions
         };
         serviceCollection.AddDbContext<DataContext>(opt => opt.UseNpgsql(builder.ConnectionString));
     }
-    
+
     public static void ConfigureAuthentication(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
@@ -52,7 +54,7 @@ public static class ServiceCollectionExtensions
                 };
             });
     }
-    
+
     public static void ConfigureMail(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
@@ -64,7 +66,18 @@ public static class ServiceCollectionExtensions
         cfg["MailPassword"] = configuration["MailPassword"];
         serviceCollection.Configure<MailConfig>(cfg);
     }
-    
+
+    public static void ConfigureCloudinary(this IServiceCollection serviceCollection,
+        IConfiguration configuration)
+    {
+        var account = new Account(
+            configuration["CloudinaryCloud"],
+            configuration["CloudinaryApiKey"],
+            configuration["CloudinaryApiSecret"]
+        );
+        serviceCollection.AddSingleton(new Cloudinary(account));
+    }
+
     public static void ConfigureSwagger(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSwaggerGen(c =>
@@ -79,7 +92,7 @@ public static class ServiceCollectionExtensions
                     Name = "Olabissi Gbangboche",
                     Email = "olabijed@gmail.com",
                     Url = new Uri("https://github.com/Ola-jed")
-                },
+                }
             });
             var securitySchema = new OpenApiSecurityScheme
             {
@@ -112,5 +125,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IUserVerificationService, UserVerificationService>();
         serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
         serviceCollection.AddScoped<IMailService, MailService>();
+        serviceCollection.AddScoped<ILocationsService, LocationsService>();
     }
 }

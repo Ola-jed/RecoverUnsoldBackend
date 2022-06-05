@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CloudinaryDotNet" Version="1.18.0" />
         <PackageReference Include="MailKit" Version="3.2.0" />
         <PackageReference Include="MimeKit" Version="3.2.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
