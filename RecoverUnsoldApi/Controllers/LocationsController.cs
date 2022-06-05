@@ -30,6 +30,7 @@ public class LocationsController : ControllerBase
         return await _locationsService.GetAll(this.GetUserId(), urlPaginationParam);
     }
     
+    [AllowAnonymous]
     [HttpGet("Distributors/{distributorId:guid}")]
     public async Task<UrlPage<LocationReadDto>> GetDistributorLocations(Guid distributorId,[FromQuery] int page = 1, [FromQuery] int perPage = 10)
     {
@@ -39,6 +40,7 @@ public class LocationsController : ControllerBase
         return await _locationsService.GetAll(distributorId, urlPaginationParam);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(LocationReadDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -48,6 +50,7 @@ public class LocationsController : ControllerBase
         return location == null ? NotFound() : location;
     }
 
+    [AllowAnonymous]
     [HttpGet("Search")]
     public async Task<UrlPage<LocationReadDto>> Search([FromQuery] string query,
         [FromQuery] int page = 1, [FromQuery] int perPage = 10)
