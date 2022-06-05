@@ -1,12 +1,11 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Entities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using static BCrypt.Net.BCrypt;
 
 namespace RecoverUnsoldApi.Services.Auth;
@@ -76,11 +75,18 @@ public class AuthService: IAuthService
 
     public async Task<JwtSecurityToken> GenerateJwt(User user)
     {
+        var role = user switch
+        {
+            Customer => Roles.Customer,
+            Distributor => Roles.Distributor,
+            _ => throw new InvalidOperationException()
+        };
         var authClaims = new List<Claim>
         {
             new(ClaimTypes.Name, user.Username),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(CustomClaims.Id, user.Id.ToString())
+            new(CustomClaims.Id, user.Id.ToString()),
+            new(ClaimTypes.Role,role)
         };
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
         var jwtToken = new JwtSecurityToken(
