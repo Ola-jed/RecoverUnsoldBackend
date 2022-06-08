@@ -9,12 +9,12 @@ namespace RecoverUnsoldApi.Controllers.Auth;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ForgotPasswordController: ControllerBase
+public class ForgotPasswordController : ControllerBase
 {
     private readonly IForgotPasswordService _forgotPasswordService;
     private readonly IApplicationUserService _applicationUserService;
     private readonly IMailService _mailService;
-    
+
     public ForgotPasswordController(IForgotPasswordService forgotPasswordService,
         IApplicationUserService applicationUserService, IMailService mailService)
     {
@@ -46,7 +46,7 @@ public class ForgotPasswordController: ControllerBase
     public async Task<ActionResult> Reset(PasswordResetDto passwordResetDto)
     {
         var passwordResetSuccessful = await _forgotPasswordService
-                .ResetUserPassword(passwordResetDto.Token, passwordResetDto.Password);
+            .ResetUserPassword(passwordResetDto.Token, passwordResetDto.Password);
         return passwordResetSuccessful ? Ok() : BadRequest();
     }
 }

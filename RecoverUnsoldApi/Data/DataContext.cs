@@ -18,30 +18,6 @@ public class DataContext: DbContext
                 v => v.ToString(),
                 v => LatLong.FromString(v)
             );
-        modelBuilder.Entity<User>()
-            .HasIndex(u => u.Username)
-            .IsUnique();
-        modelBuilder.Entity<User>()
-            .HasIndex(u => u.Email)
-            .IsUnique();
-        modelBuilder.Entity<Distributor>()
-            .HasIndex(d => d.Email)
-            .IsUnique();
-        modelBuilder.Entity<Distributor>()
-            .HasIndex(d => d.Phone)
-            .IsUnique();
-        modelBuilder.Entity<Distributor>()
-            .HasIndex(d => d.Ifu)
-            .IsUnique();
-        modelBuilder.Entity<Distributor>()
-            .HasIndex(d => d.Rccm)
-            .IsUnique();
-        modelBuilder.Entity<EmailVerification>()
-            .HasIndex(e => e.Token)
-            .IsUnique();
-        modelBuilder.Entity<PasswordReset>()
-            .HasIndex(p => p.Token)
-            .IsUnique();
         base.OnModelCreating(modelBuilder);
     }
 

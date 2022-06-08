@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Services.ApplicationUser;
@@ -24,12 +25,6 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterCustomer(CustomerRegisterDto customerRegisterDto)
     {
-        var emailUsed = await _applicationUserService.EmailExists(customerRegisterDto.Email);
-        if (emailUsed)
-        {
-            return BadRequest();
-        }
-
         await _authService.RegisterCustomer(customerRegisterDto);
         return Ok();
     }
@@ -39,12 +34,6 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> RegisterDistributor(DistributorRegisterDto distributorRegisterDto)
     {
-        var emailUsed = await _applicationUserService.EmailExists(distributorRegisterDto.Email);
-        if (emailUsed)
-        {
-            return BadRequest();
-        }
-
         await _authService.RegisterDistributor(distributorRegisterDto);
         return Ok();
     }
@@ -68,7 +57,7 @@ public class AuthController : ControllerBase
         }
 
         var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-        return new TokenDto(tokenString, token.ValidTo);
+        var role = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+        return new TokenDto(tokenString, role, token.ValidTo);
     }
 }

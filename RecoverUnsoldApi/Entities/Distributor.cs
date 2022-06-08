@@ -1,7 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecoverUnsoldApi.Entities;
 
+[Index(nameof(Ifu), IsUnique = true)]
+[Index(nameof(Rccm), IsUnique = true)]
+[Index(nameof(Phone), IsUnique = true)]
 public class Distributor : User
 {
     [Required]
@@ -17,7 +21,7 @@ public class Distributor : User
     public string Rccm { get; set; } = null!;
 
     [StringLength(100)]
-    public string? WebsiteUrl { get; set; } = null!;
+    public string? WebsiteUrl { get; set; }
 
     public ICollection<Location> Locations { get; set; } = new HashSet<Location>();
 }

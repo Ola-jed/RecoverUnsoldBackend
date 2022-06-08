@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecoverUnsoldApi.Entities;
 
+[Index(nameof(Token),IsUnique = true)]
 public class EmailVerification : Entity
 {
     [Required]

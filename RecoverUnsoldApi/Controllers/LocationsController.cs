@@ -29,10 +29,11 @@ public class LocationsController : ControllerBase
         );
         return await _locationsService.GetAll(this.GetUserId(), urlPaginationParam);
     }
-    
+
     [AllowAnonymous]
     [HttpGet("Distributors/{distributorId:guid}")]
-    public async Task<UrlPage<LocationReadDto>> GetDistributorLocations(Guid distributorId,[FromQuery] int page = 1, [FromQuery] int perPage = 10)
+    public async Task<UrlPage<LocationReadDto>> GetDistributorLocations(Guid distributorId, [FromQuery] int page = 1,
+        [FromQuery] int perPage = 10)
     {
         var urlPaginationParam = new UrlPaginationParameter(
             perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)

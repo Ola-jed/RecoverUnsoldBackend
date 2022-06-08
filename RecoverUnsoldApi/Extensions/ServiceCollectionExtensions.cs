@@ -82,6 +82,11 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddSwaggerGen(c =>
         {
+            c.UseAllOfForInheritance();
+            c.UseOneOfForPolymorphism();
+            c.SelectSubTypesUsing(baseType =>
+                typeof(Program).Assembly.GetTypes().Where(type => type.IsSubclassOf(baseType))
+            );
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "RecoverUnsold",

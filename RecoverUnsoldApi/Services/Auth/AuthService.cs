@@ -39,7 +39,7 @@ public class AuthService: IAuthService
         var password = HashPassword(distributorRegisterDto.Password);
         var distributor = new Distributor
         {
-            Username = distributorRegisterDto.UserName,
+            Username = distributorRegisterDto.Username,
             Email = distributorRegisterDto.Email,
             Password = password,
             Rccm = distributorRegisterDto.Rccm,
@@ -71,6 +71,15 @@ public class AuthService: IAuthService
         }
 
         return Verify(loginDto.Password, user.Password) ? user : null;
+    }
+
+    public async Task<bool> AreCredentialsValid(string email, string password)
+    {
+        var userPassword = await _context.Users
+            .Where(u => u.Email == email)
+            .Select(u => u.Password)
+            .FirstOrDefaultAsync();
+        return Verify(password, userPassword ?? "");
     }
 
     public async Task<JwtSecurityToken> GenerateJwt(User user)

@@ -12,7 +12,7 @@ using RecoverUnsoldApi.Data;
 namespace RecoverUnsoldApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220605125949_Initial")]
+    [Migration("20220606173007_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,13 +84,18 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Path")
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PublicId")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -332,12 +337,10 @@ namespace RecoverUnsoldApi.Migrations
                     b.HasBaseType("RecoverUnsoldApi.Entities.User");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 

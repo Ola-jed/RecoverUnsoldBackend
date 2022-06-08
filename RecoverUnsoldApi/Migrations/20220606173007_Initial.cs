@@ -216,7 +216,8 @@ namespace RecoverUnsoldApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Path = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Url = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    PublicId = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },

@@ -1,3 +1,4 @@
+using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Entities;
 
 namespace RecoverUnsoldApi.Services.ApplicationUser;
@@ -11,4 +12,8 @@ public interface IApplicationUserService
     Task<bool> IsEmailVerified(string email);
     Task<bool> EmailExists(string email);
     Task<bool> UsernameExists(string username);
+    Task UpdateCustomer(Guid userId, CustomerUpdateDto customerUpdateDto);
+    Task UpdateDistributor(Guid userId, DistributorUpdateDto distributorUpdateDto);
+    Task UpdatePassword(Guid userId, string password);
+    Task Delete(Guid userId);
 }
