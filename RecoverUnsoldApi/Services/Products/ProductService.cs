@@ -22,6 +22,15 @@ public class ProductService : IProductService
         _cloudinary = cloudinary;
     }
 
+    public async Task<bool> IsOwner(Guid id, Guid distributorId)
+    {
+        return await _context.Products
+            .AsNoTracking()
+            .Include(p => p.Images)
+            .Include(p => p.Offer)
+            .AnyAsync(p => p.Offer != null && p.Offer.DistributorId == distributorId);
+    }
+
     public async Task<UrlPage<ProductReadDto>> GetOfferProducts(Guid offerId,
         UrlPaginationParameter urlPaginationParameter)
     {
@@ -33,6 +42,27 @@ public class ProductService : IProductService
             .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
     }
 
+    public async Task<UrlPage<ProductReadDto>> GetProducts(UrlPaginationParameter urlPaginationParameter)
+    {
+        return await Task.Run(() => _context.Products
+            .AsNoTracking()
+            .Include(p => p.Images)
+            .ToProductReadDto()
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
+    }
+
+    public async Task<UrlPage<ProductReadDto>> GetDistributorProducts(Guid distributorId,
+        UrlPaginationParameter urlPaginationParameter)
+    {
+        return await Task.Run(() => _context.Products
+            .AsNoTracking()
+            .Include(p => p.Images)
+            .Include(p => p.Offer)
+            .Where(p => p.Offer != null && p.Offer.DistributorId == distributorId)
+            .ToProductReadDto()
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
+    }
+
     public async Task<ProductReadDto?> GetProduct(Guid distributorId, Guid id)
     {
         var product = await _context.Products
@@ -40,7 +70,7 @@ public class ProductService : IProductService
             .Include(p => p.Images)
             .Include(p => p.Offer)
             .FirstOrDefaultAsync(p => p.Id == id);
-        return product?.Offer?.DistributorId == distributorId ? product?.ToProductReadDto() : null;
+        return product?.Offer?.DistributorId == distributorId ? product.ToProductReadDto() : null;
     }
 
     public async Task<ProductReadDto> Create(Guid offerId, ProductCreateDto productCreateDto)

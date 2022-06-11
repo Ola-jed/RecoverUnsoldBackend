@@ -33,10 +33,15 @@ public static class Mapping
     public static ProductReadDto ToProductReadDto(this Product product)
     {
         return new ProductReadDto(product.Id, product.Name, product.Description, product.OfferId,
-            product.Images.ToImageReadDto(),product.CreatedAt);
+            product.Images.ToImageReadDto(), product.CreatedAt);
     }
 
     public static IQueryable<ProductReadDto> ToProductReadDto(this IQueryable<Product> products)
+    {
+        return products.Select(p => p.ToProductReadDto());
+    }
+
+    public static IEnumerable<ProductReadDto> ToProductReadDto(this IEnumerable<Product> products)
     {
         return products.Select(p => p.ToProductReadDto());
     }
@@ -54,5 +59,11 @@ public static class Mapping
     public static IEnumerable<ImageReadDto> ToImageReadDto(this IEnumerable<Image> images)
     {
         return images.Select(i => i.ToImageReadDto());
+    }
+
+    public static OfferReadDto ToOfferReadDto(this Offer offer)
+    {
+        return new OfferReadDto(offer.StartDate, offer.Duration, offer.Beneficiaries, offer.Price,
+            offer.Location?.ToLocationReadDto(), offer.Products.ToProductReadDto());
     }
 }

@@ -13,6 +13,7 @@ using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Locations;
 using RecoverUnsoldApi.Services.Mail;
+using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.UserVerification;
 
 namespace RecoverUnsoldApi.Extensions;
@@ -115,7 +116,7 @@ public static class ServiceCollectionExtensions
             c.AddSecurityDefinition("Bearer", securitySchema);
             var securityRequirement = new OpenApiSecurityRequirement
             {
-                { securitySchema, new[] { "Bearer" } }
+                {securitySchema, new[] {"Bearer"}}
             };
             c.AddSecurityRequirement(securityRequirement);
         });
@@ -131,5 +132,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
         serviceCollection.AddScoped<IMailService, MailService>();
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
+        serviceCollection.AddScoped<IProductService, ProductService>();
     }
 }
