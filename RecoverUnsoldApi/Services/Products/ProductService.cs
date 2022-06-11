@@ -79,6 +79,9 @@ public class ProductService : IProductService
             return;
         }
 
+        product.Name = productUpdateDto.Name;
+        product.Description = productUpdateDto.Description;
+        _context.Products.Update(product);
         await _context.SaveChangesAsync();
     }
 
