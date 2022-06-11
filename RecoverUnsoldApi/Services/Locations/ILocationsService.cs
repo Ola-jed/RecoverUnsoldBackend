@@ -1,7 +1,6 @@
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldApi.Entities;
 
 namespace RecoverUnsoldApi.Services.Locations;
 

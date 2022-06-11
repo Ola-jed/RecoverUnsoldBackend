@@ -1,0 +1,103 @@
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using FluentPaginator.Lib.Extensions;
+using FluentPaginator.Lib.Page;
+using FluentPaginator.Lib.Parameter;
+using Microsoft.EntityFrameworkCore;
+using RecoverUnsoldApi.Data;
+using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Entities;
+using RecoverUnsoldApi.Extensions;
+
+namespace RecoverUnsoldApi.Services.Products;
+
+public class ProductService : IProductService
+{
+    private readonly DataContext _context;
+    private readonly Cloudinary _cloudinary;
+
+    public ProductService(DataContext context, Cloudinary cloudinary)
+    {
+        _context = context;
+        _cloudinary = cloudinary;
+    }
+
+    public async Task<UrlPage<ProductReadDto>> GetOfferProducts(Guid offerId,
+        UrlPaginationParameter urlPaginationParameter)
+    {
+        return await Task.Run(() => _context.Products
+            .AsNoTracking()
+            .Include(p => p.Images)
+            .Where(p => p.OfferId == offerId)
+            .ToProductReadDto()
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
+    }
+
+    public async Task<ProductReadDto?> GetProduct(Guid distributorId, Guid id)
+    {
+        var product = await _context.Products
+            .AsNoTracking()
+            .Include(p => p.Images)
+            .Include(p => p.Offer)
+            .FirstOrDefaultAsync(p => p.Id == id);
+        return product?.Offer?.DistributorId == distributorId ? product?.ToProductReadDto() : null;
+    }
+
+    public async Task<ProductReadDto> Create(Guid offerId, ProductCreateDto productCreateDto)
+    {
+        var images = productCreateDto.Images;
+        var imageModels = await Task.WhenAll(images.Select(async i =>
+        {
+            var uploadResult = (await i.UploadToCloudinary(_cloudinary))!;
+            return new Image
+            {
+                PublicId = uploadResult.PublicId,
+                Url = uploadResult.Url.ToString()
+            };
+        }));
+
+        var productEntityEntry = _context.Products.Add(new Product
+        {
+            Name = productCreateDto.Name,
+            Description = productCreateDto.Description,
+            OfferId = offerId,
+            Images = imageModels
+        });
+
+        await _context.SaveChangesAsync();
+        return productEntityEntry.Entity.ToProductReadDto();
+    }
+
+    public async Task Update(Guid id, Guid distributorId, ProductUpdateDto productUpdateDto)
+    {
+        var product = await _context.Products
+            .Include(p => p.Offer)
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id);
+        if (product == null || product.Offer?.DistributorId != distributorId)
+        {
+            return;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task Delete(Guid id, Guid distributorId)
+    {
+        var product = await _context.Products
+            .Include(p => p.Offer)
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id);
+        if (product == null || product.Offer?.DistributorId != distributorId)
+        {
+            return;
+        }
+
+        foreach (var productImage in product.Images)
+        {
+            await _cloudinary.DestroyAsync(new DeletionParams(productImage.PublicId));
+        }
+
+        _context.Products.Remove(product);
+    }
+}

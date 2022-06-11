@@ -22,7 +22,7 @@ public class LocationsService : ILocationsService
         _cloudinary = cloudinary;
     }
 
-    public async Task<bool> IsOwner(Guid userId,Guid locationId)
+    public async Task<bool> IsOwner(Guid userId, Guid locationId)
     {
         return await _context.Locations.AnyAsync(x => x.Id == locationId && x.DistributorId == userId);
     }
@@ -61,14 +61,9 @@ public class LocationsService : ILocationsService
         string? image = null;
         if (locationCreateDto.Image != null)
         {
-            await using var fileStream = locationCreateDto.Image.OpenReadStream();
-            var fileName = $"{DateTime.Now.Ticks}{Path.GetExtension(locationCreateDto.Image.FileName)}";
-            var imageUploadParameters = new ImageUploadParams
-            {
-                File = new FileDescription(fileName, fileStream)
-            };
-            var uploadResult = await _cloudinary.UploadAsync(imageUploadParameters);
-            image = uploadResult.Url.ToString();
+            image = (await locationCreateDto.Image.UploadToCloudinary(_cloudinary))
+                ?.Url
+                ?.ToString();
         }
 
         var location = _context.Locations.Add(new Location

@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <Folder Include="Services\Images" />
+      <Folder Include="Services\Offers\" />
       <Folder Include="Services\Products" />
     </ItemGroup>
 

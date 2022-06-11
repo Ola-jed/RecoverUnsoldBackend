@@ -33,7 +33,12 @@ public static class Mapping
     public static ProductReadDto ToProductReadDto(this Product product)
     {
         return new ProductReadDto(product.Id, product.Name, product.Description, product.OfferId,
-            product.Images.ToImageReadDto());
+            product.Images.ToImageReadDto(),product.CreatedAt);
+    }
+
+    public static IQueryable<ProductReadDto> ToProductReadDto(this IQueryable<Product> products)
+    {
+        return products.Select(p => p.ToProductReadDto());
     }
 
     public static ImageReadDto ToImageReadDto(this Image image)
