@@ -26,7 +26,7 @@ public static class Mapping
     public static DistributorReadDto ToDistributorReadDto(this Distributor distributor)
     {
         return new DistributorReadDto(distributor.Username, distributor.Email, distributor.Phone,
-            distributor.Ifu, distributor.Rccm, distributor.WebsiteUrl, distributor.EmailVerifiedAt,
+            distributor.TaxId, distributor.Rccm, distributor.WebsiteUrl, distributor.EmailVerifiedAt,
             distributor.CreatedAt);
     }
 

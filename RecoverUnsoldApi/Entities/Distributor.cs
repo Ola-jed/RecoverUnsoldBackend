@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RecoverUnsoldApi.Entities;
 
-[Index(nameof(Ifu), IsUnique = true)]
+[Index(nameof(TaxId), IsUnique = true)]
 [Index(nameof(Rccm), IsUnique = true)]
 [Index(nameof(Phone), IsUnique = true)]
 public class Distributor : User
@@ -14,7 +14,7 @@ public class Distributor : User
 
     [Required]
     [StringLength(100)]
-    public string Ifu { get; set; } = null!;
+    public string TaxId { get; set; } = null!;
 
     [Required]
     [StringLength(100)]

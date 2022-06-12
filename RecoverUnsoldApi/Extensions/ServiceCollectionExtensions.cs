@@ -133,7 +133,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
         serviceCollection.AddScoped<IMailService, MailService>();
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
-        serviceCollection.AddScoped<IProductsService, ProductsesService>();
+        serviceCollection.AddScoped<IProductsService, ProductsService>();
         serviceCollection.AddScoped<IOffersService, OffersService>();
     }
 }

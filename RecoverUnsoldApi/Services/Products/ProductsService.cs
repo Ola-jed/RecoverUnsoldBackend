@@ -11,12 +11,12 @@ using RecoverUnsoldApi.Extensions;
 
 namespace RecoverUnsoldApi.Services.Products;
 
-public class ProductsesService : IProductsService
+public class ProductsService : IProductsService
 {
     private readonly DataContext _context;
     private readonly Cloudinary _cloudinary;
 
-    public ProductsesService(DataContext context, Cloudinary cloudinary)
+    public ProductsService(DataContext context, Cloudinary cloudinary)
     {
         _context = context;
         _cloudinary = cloudinary;

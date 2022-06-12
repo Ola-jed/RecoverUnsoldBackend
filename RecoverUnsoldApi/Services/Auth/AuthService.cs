@@ -43,7 +43,7 @@ public class AuthService : IAuthService
             Email = distributorRegisterDto.Email,
             Password = password,
             Rccm = distributorRegisterDto.Rccm,
-            Ifu = distributorRegisterDto.Ifu,
+            TaxId = distributorRegisterDto.TaxId,
             Phone = distributorRegisterDto.Phone,
             WebsiteUrl = distributorRegisterDto.WebsiteUrl
         };
