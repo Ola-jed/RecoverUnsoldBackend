@@ -50,7 +50,7 @@ public class LocationsService : ILocationsService
     {
         return await Task.Run(() => _context.Locations
             .AsNoTracking()
-            .Where(x => x.DistributorId == userId && EF.Functions.Like(x.Name, $"%{search}%"))
+            .Where(x => x.DistributorId == userId && x.Name.Contains(search))
             .ToLocationReadDto()
             .UrlPaginate(urlPaginationParameter, x => x.CreatedAt)
         );

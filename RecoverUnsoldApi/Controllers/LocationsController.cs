@@ -52,8 +52,8 @@ public class LocationsController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet("Search")]
-    public async Task<UrlPage<LocationReadDto>> Search([FromQuery] string query,
+    [HttpGet("Search/{query}")]
+    public async Task<UrlPage<LocationReadDto>> Search(string query,
         [FromQuery] int page = 1, [FromQuery] int perPage = 10)
     {
         var urlPaginationParam = new UrlPaginationParameter(
