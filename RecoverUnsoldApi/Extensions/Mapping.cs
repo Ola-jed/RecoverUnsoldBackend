@@ -63,7 +63,7 @@ public static class Mapping
 
     public static OfferReadDto ToOfferReadDto(this Offer offer)
     {
-        return new OfferReadDto(offer.StartDate, offer.Duration, offer.Beneficiaries, offer.Price,
+        return new OfferReadDto(offer.Id,offer.StartDate, offer.Duration, offer.Beneficiaries, offer.Price,
             offer.CreatedAt, offer.Location?.ToLocationReadDto(), offer.Products.ToProductReadDto());
     }
 

@@ -11,7 +11,7 @@ public class Offer : Entity
     [Required]
     public ulong Duration { get; set; }
 
-    public int? Beneficiaries { get; set; } = null;
+    public int? Beneficiaries { get; set; }
 
     [Required]
     public decimal Price { get; set; }

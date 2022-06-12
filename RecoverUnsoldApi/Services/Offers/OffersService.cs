@@ -26,20 +26,22 @@ public class OffersService : IOffersService
         return await _context.Offers.AnyAsync(x => x.DistributorId == distributorId && x.Id == id);
     }
 
-    public async Task<UrlPage<OfferReadDto>> GetOffers(UrlPaginationParameter urlPaginationParameter)
+    public async Task<UrlPage<OfferReadDto>> GetOffers(UrlPaginationParameter urlPaginationParameter,
+        OfferFilterDto offerFilterDto)
     {
         return await Task.Run(() => _context.Offers
             .AsNoTracking()
             .Include(o => o.Location)
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
+            .ApplyFilters(offerFilterDto)
             .ToOfferReadDto()
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt)
         );
     }
 
     public async Task<UrlPage<OfferReadDto>> GetDistributorOffers(Guid distributorId,
-        UrlPaginationParameter urlPaginationParameter)
+        UrlPaginationParameter urlPaginationParameter, OfferFilterDto offerFilterDto)
     {
         return await Task.Run(() => _context.Offers
             .AsNoTracking()
@@ -47,6 +49,7 @@ public class OffersService : IOffersService
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .Where(o => o.DistributorId == distributorId)
+            .ApplyFilters(offerFilterDto)
             .ToOfferReadDto()
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt)
         );
@@ -82,7 +85,7 @@ public class OffersService : IOffersService
                 await _productsService.Create(offerEntityEntry.Entity.Id, productCreateDto))
         );
 
-        return offerEntityEntry.Entity.ToOfferReadDto() with {Products = products};
+        return offerEntityEntry.Entity.ToOfferReadDto() with { Products = products };
     }
 
     public async Task Update(Guid id, Guid distributorId, OfferUpdateDto offerUpdateDto)
