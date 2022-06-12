@@ -32,6 +32,6 @@ public class MailService : IMailService
 
     public void Queue(IMailable mailable)
     {
-        _backgroundWorkerQueue.QueueBackgroundWorkItem(async _ => { await SendEmailAsync(mailable); });
+        _backgroundWorkerQueue.QueueBackgroundWorkItem(async _ => await SendEmailAsync(mailable));
     }
 }
