@@ -4,17 +4,24 @@ namespace RecoverUnsoldApi.Validation;
 
 public class AllowedExtensionsAttribute : ValidationAttribute
 {
-    private readonly string[] _extensions;
+    public string[] Extensions { get; set; }
+    public bool Nullable { get; set; }
 
-    public AllowedExtensionsAttribute(string extensions)
+    public AllowedExtensionsAttribute(string extensions, bool nullable = false)
     {
-        _extensions = extensions.Split(",");
+        Nullable = nullable;
+        Extensions = extensions.Split(",");
     }
 
     protected override ValidationResult? IsValid(
         object? value,
         ValidationContext validationContext)
     {
+        if (value == null && Nullable)
+        {
+            return ValidationResult.Success;
+        }
+
         if (value is not IFormFile file)
         {
             return new ValidationResult("No file detected");
@@ -23,19 +30,19 @@ public class AllowedExtensionsAttribute : ValidationAttribute
         if (value is IEnumerable<IFormFile> values)
         {
             return values.Any(
-                formFile => !_extensions.Contains(Path.GetExtension(formFile.FileName).ToLowerInvariant()))
+                formFile => !Extensions.Contains(Path.GetExtension(formFile.FileName).ToLowerInvariant()))
                 ? new ValidationResult(GetErrorMessage())
                 : ValidationResult.Success;
         }
 
         var extension = Path.GetExtension(file.FileName);
-        return _extensions.Contains(extension.ToLower())
+        return Extensions.Contains(extension.ToLower())
             ? ValidationResult.Success
             : new ValidationResult(GetErrorMessage());
     }
 
     private string GetErrorMessage()
     {
-        return $"This extension is not allowed, allowed extensions are : {string.Join(",", _extensions)}";
+        return $"This extension is not allowed, allowed extensions are : {string.Join(",", Extensions)}";
     }
 }

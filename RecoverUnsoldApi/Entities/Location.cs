@@ -39,17 +39,17 @@ public record LatLong
 
     public override string ToString()
     {
-        return $"{Latitude},{Longitude}";
+        return $"{Latitude} {Longitude}";
     }
 
     public static LatLong FromString(string s)
     {
-        var coordinates = s.Split(",");
+        var coordinates = s.Split(' ');
         Debug.Assert(coordinates.Length == 2, "Only lat and long");
         return new LatLong
         {
-            Latitude = double.Parse(coordinates.First()),
-            Longitude = double.Parse(coordinates.Last())
+            Latitude = double.Parse(coordinates[0]),
+            Longitude = double.Parse(coordinates[1])
         };
     }
 }

@@ -32,7 +32,7 @@ public class ProductsController : ControllerBase
         return await _productsService.GetProducts(urlPaginationParam);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:guid}", Name = nameof(GetProduct))]
     [ProducesResponseType(typeof(ProductReadDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProductReadDto>> GetProduct(Guid id)
@@ -85,7 +85,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<ProductReadDto>> UpdateProduct(Guid id, ProductUpdateDto productUpdateDto)
     {
         var distributorId = this.GetUserId();
-        var isProductOwner = await _productsService.IsOwner(distributorId, id);
+        var isProductOwner = await _productsService.IsOwner(id, distributorId);
         if (!isProductOwner)
         {
             return NotFound();
@@ -102,7 +102,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<ProductReadDto>> DeleteProduct(Guid id)
     {
         var distributorId = this.GetUserId();
-        var isProductOwner = await _productsService.IsOwner(distributorId, id);
+        var isProductOwner = await _productsService.IsOwner(id, distributorId);
         if (!isProductOwner)
         {
             return NotFound();

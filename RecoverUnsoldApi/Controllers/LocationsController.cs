@@ -42,10 +42,10 @@ public class LocationsController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:guid}", Name = nameof(GetLocation))]
     [ProducesResponseType(typeof(LocationReadDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<LocationReadDto>> Get(Guid id)
+    public async Task<ActionResult<LocationReadDto>> GetLocation(Guid id)
     {
         var location = await _locationsService.Get(id);
         return location == null ? NotFound() : location;
@@ -68,7 +68,7 @@ public class LocationsController : ControllerBase
     {
         var userId = this.GetUserId();
         var location = await _locationsService.Create(userId, locationCreateDto);
-        return CreatedAtRoute(nameof(Get), new { id = location.Id }, location);
+        return CreatedAtRoute(nameof(GetLocation), new { id = location.Id }, location);
     }
 
     [HttpPut("{id:guid}")]

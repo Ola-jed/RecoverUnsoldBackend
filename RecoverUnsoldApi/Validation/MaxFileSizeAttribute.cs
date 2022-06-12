@@ -4,35 +4,37 @@ namespace RecoverUnsoldApi.Validation;
 
 public class MaxFileSizeAttribute : ValidationAttribute
 {
-    private readonly int _maxFileSize;
+    public uint MaxFileSize { get; set; }
+    public bool Nullable { get; set; }
 
-    public MaxFileSizeAttribute(int maxFileSize)
+    public MaxFileSizeAttribute(uint maxFileSize, bool nullable = false)
     {
-        _maxFileSize = maxFileSize;
+        MaxFileSize = maxFileSize;
+        Nullable = nullable;
     }
 
     protected override ValidationResult? IsValid(object? value,
         ValidationContext validationContext)
     {
-        if (value is not IFormFile file)
+        if ((value == null && Nullable) || value is not IFormFile file)
         {
             return ValidationResult.Success;
         }
 
         if (value is IEnumerable<IFormFile> values)
         {
-            return values.Any(formFile => file.Length > _maxFileSize)
+            return values.Any(formFile => file.Length > MaxFileSize)
                 ? new ValidationResult(GetErrorMessage())
                 : ValidationResult.Success;
         }
 
-        return file.Length > _maxFileSize
+        return file.Length > MaxFileSize
             ? new ValidationResult(GetErrorMessage())
             : ValidationResult.Success;
     }
 
     private string GetErrorMessage()
     {
-        return $"Maximum allowed file size is {_maxFileSize} bytes.";
+        return $"Maximum allowed file size is {MaxFileSize} bytes.";
     }
 }

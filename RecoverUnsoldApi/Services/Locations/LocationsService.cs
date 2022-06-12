@@ -69,7 +69,11 @@ public class LocationsService : ILocationsService
         var location = _context.Locations.Add(new Location
         {
             Name = locationCreateDto.Name,
-            Coordinates = LatLong.FromString(locationCreateDto.Coordinates),
+            Coordinates = new LatLong
+            {
+                Latitude = locationCreateDto.Latitude,
+                Longitude = locationCreateDto.Longitude
+            },
             Indication = locationCreateDto.Indication,
             Image = image,
             DistributorId = userId
@@ -99,7 +103,11 @@ public class LocationsService : ILocationsService
             }
 
             location.Name = locationUpdateDto.Name;
-            location.Coordinates = LatLong.FromString(locationUpdateDto.Coordinates);
+            location.Coordinates = new LatLong
+            {
+                Latitude = locationUpdateDto.Latitude,
+                Longitude = locationUpdateDto.Longitude
+            };
             location.Indication = locationUpdateDto.Indication;
             location.Image = image;
             await _context.SaveChangesAsync();
