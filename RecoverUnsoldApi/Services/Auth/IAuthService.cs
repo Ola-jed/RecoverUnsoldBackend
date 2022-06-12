@@ -10,6 +10,6 @@ public interface IAuthService
     public Task RegisterDistributor(DistributorRegisterDto distributorRegisterDto);
     public Task<JwtSecurityToken?> Login(LoginDto loginDto);
     public Task<User?> ValidateCredentials(LoginDto loginDto);
-    public Task<bool> AreCredentialsValid(string email,string password);
+    public Task<bool> AreCredentialsValid(string email, string password);
     public Task<JwtSecurityToken> GenerateJwt(User user);
 }

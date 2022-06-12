@@ -117,7 +117,7 @@ public static class ServiceCollectionExtensions
             c.AddSecurityDefinition("Bearer", securitySchema);
             var securityRequirement = new OpenApiSecurityRequirement
             {
-                {securitySchema, new[] {"Bearer"}}
+                { securitySchema, new[] { "Bearer" } }
             };
             c.AddSecurityRequirement(securityRequirement);
         });
@@ -133,7 +133,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
         serviceCollection.AddScoped<IMailService, MailService>();
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
-        serviceCollection.AddScoped<IProductService, ProductService>();
+        serviceCollection.AddScoped<IProductsService, ProductsesService>();
         serviceCollection.AddScoped<IOffersService, OffersService>();
     }
 }

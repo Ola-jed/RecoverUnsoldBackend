@@ -5,7 +5,7 @@ namespace RecoverUnsoldApi.Extensions;
 
 public static class FormFileExtensions
 {
-    public static async Task<ImageUploadResult?> UploadToCloudinary(this IFormFile iFormFile,Cloudinary cloudinary)
+    public static async Task<ImageUploadResult?> UploadToCloudinary(this IFormFile iFormFile, Cloudinary cloudinary)
     {
         await using var fileStream = iFormFile.OpenReadStream();
         var fileName = $"{DateTime.Now.Ticks}{Path.GetExtension(iFormFile.FileName)}";

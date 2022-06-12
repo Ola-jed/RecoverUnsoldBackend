@@ -11,7 +11,7 @@ public static class ControllerBaseExtensions
         return controller.Request.GetDisplayUrl().Split('?')[0];
     }
 
-    public static Guid GetUserId<T>(this T controller) where T: ControllerBase
+    public static Guid GetUserId<T>(this T controller) where T : ControllerBase
     {
         return Guid.Parse(controller.User.FindFirst(CustomClaims.Id)?.Value!);
     }

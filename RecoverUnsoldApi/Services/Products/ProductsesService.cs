@@ -11,12 +11,12 @@ using RecoverUnsoldApi.Extensions;
 
 namespace RecoverUnsoldApi.Services.Products;
 
-public class ProductService : IProductService
+public class ProductsesService : IProductsService
 {
     private readonly DataContext _context;
     private readonly Cloudinary _cloudinary;
 
-    public ProductService(DataContext context, Cloudinary cloudinary)
+    public ProductsesService(DataContext context, Cloudinary cloudinary)
     {
         _context = context;
         _cloudinary = cloudinary;
@@ -63,19 +63,19 @@ public class ProductService : IProductService
             .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
     }
 
-    public async Task<ProductReadDto?> GetProduct(Guid distributorId, Guid id)
+    public async Task<ProductReadDto?> GetProduct(Guid id)
     {
         var product = await _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
             .Include(p => p.Offer)
             .FirstOrDefaultAsync(p => p.Id == id);
-        return product?.Offer?.DistributorId == distributorId ? product.ToProductReadDto() : null;
+        return product?.ToProductReadDto();
     }
 
     public async Task<ProductReadDto> Create(Guid offerId, ProductCreateDto productCreateDto)
     {
-        var images = productCreateDto.Images;
+        var images = productCreateDto.Images ?? Enumerable.Empty<IFormFile>();
         var imageModels = await Task.WhenAll(images.Select(async i =>
         {
             var uploadResult = (await i.UploadToCloudinary(_cloudinary))!;

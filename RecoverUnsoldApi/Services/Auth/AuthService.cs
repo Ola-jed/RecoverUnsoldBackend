@@ -10,11 +10,11 @@ using static BCrypt.Net.BCrypt;
 
 namespace RecoverUnsoldApi.Services.Auth;
 
-public class AuthService: IAuthService
+public class AuthService : IAuthService
 {
     private readonly DataContext _context;
     private readonly IConfiguration _configuration;
-    
+
     public AuthService(DataContext context, IConfiguration configuration)
     {
         _context = context;
@@ -86,16 +86,16 @@ public class AuthService: IAuthService
     {
         var role = user switch
         {
-            Customer => Roles.Customer,
+            Customer    => Roles.Customer,
             Distributor => Roles.Distributor,
-            _ => throw new InvalidOperationException()
+            _           => throw new InvalidOperationException()
         };
         var authClaims = new List<Claim>
         {
             new(ClaimTypes.Name, user.Username),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(CustomClaims.Id, user.Id.ToString()),
-            new(ClaimTypes.Role,role)
+            new(ClaimTypes.Role, role)
         };
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
         var jwtToken = new JwtSecurityToken(

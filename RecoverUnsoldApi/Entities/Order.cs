@@ -10,7 +10,7 @@ public class Order : Entity
 
     [Required]
     public Status Status { get; set; } = Status.Pending;
-    
+
     [ForeignKey(nameof(Customer))]
     public Guid CustomerId { get; set; }
 
@@ -20,9 +20,10 @@ public class Order : Entity
     public Guid OfferId { get; set; }
 
     public Offer? Offer { get; set; }
-    
+
     [ForeignKey(nameof(Location))]
     public Guid LocationId { get; set; }
+
     public Location? Location { get; set; }
 
     public ICollection<Opinion> Opinions { get; set; } = new HashSet<Opinion>();

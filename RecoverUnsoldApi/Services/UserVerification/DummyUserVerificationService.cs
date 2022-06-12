@@ -7,7 +7,7 @@ namespace RecoverUnsoldApi.Services.UserVerification;
 public class DummyUserVerificationService : IUserVerificationService
 {
     private readonly DataContext _context;
-    
+
     public DummyUserVerificationService(DataContext context)
     {
         _context = context;
@@ -38,6 +38,7 @@ public class DummyUserVerificationService : IUserVerificationService
         {
             return false;
         }
+
         var user = await _context.Users.FindAsync(emailVerification.UserId);
         user!.EmailVerifiedAt = DateTime.Now;
         _context.Users.Update(user);

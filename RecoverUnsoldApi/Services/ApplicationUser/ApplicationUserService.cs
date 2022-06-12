@@ -56,6 +56,7 @@ public class ApplicationUserService : IApplicationUserService
         {
             return;
         }
+
         customer.Username = customerUpdateDto.Username;
         customer.FirstName = customerUpdateDto.FirstName;
         customer.LastName = customerUpdateDto.LastName;
@@ -70,6 +71,7 @@ public class ApplicationUserService : IApplicationUserService
         {
             return;
         }
+
         distributor.Username = distributorUpdateDto.Username;
         distributor.Phone = distributorUpdateDto.Phone;
         distributor.Ifu = distributorUpdateDto.Ifu;

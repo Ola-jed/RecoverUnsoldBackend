@@ -64,7 +64,7 @@ public class LocationsController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<LocationReadDto>> Create(LocationCreateDto locationCreateDto)
+    public async Task<ActionResult<LocationReadDto>> Create([FromForm] LocationCreateDto locationCreateDto)
     {
         var userId = this.GetUserId();
         var location = await _locationsService.Create(userId, locationCreateDto);
@@ -74,7 +74,7 @@ public class LocationsController : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> Update(Guid id, LocationUpdateDto locationUpdateDto)
+    public async Task<ActionResult> Update(Guid id, [FromForm] LocationUpdateDto locationUpdateDto)
     {
         var userId = this.GetUserId();
         var isOwned = await _locationsService.IsOwner(userId, id);
@@ -99,6 +99,7 @@ public class LocationsController : ControllerBase
             return NotFound();
         }
 
+        await _locationsService.Delete(userId, id);
         return NoContent();
     }
 }

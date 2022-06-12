@@ -20,6 +20,14 @@ public class AllowedExtensionsAttribute : ValidationAttribute
             return new ValidationResult("No file detected");
         }
 
+        if (value is IEnumerable<IFormFile> values)
+        {
+            return values.Any(
+                formFile => !_extensions.Contains(Path.GetExtension(formFile.FileName).ToLowerInvariant()))
+                ? new ValidationResult(GetErrorMessage())
+                : ValidationResult.Success;
+        }
+
         var extension = Path.GetExtension(file.FileName);
         return _extensions.Contains(extension.ToLower())
             ? ValidationResult.Success

@@ -8,11 +8,11 @@ using RecoverUnsoldApi.Services.Mail.Mailable;
 
 namespace RecoverUnsoldApi.Services.Mail;
 
-public class MailService: IMailService
+public class MailService : IMailService
 {
     private readonly MailConfig _settings;
     private readonly BackgroundWorkerQueue _backgroundWorkerQueue;
-    
+
     public MailService(IOptions<MailConfig> settings, BackgroundWorkerQueue backgroundWorkerQueue)
     {
         _backgroundWorkerQueue = backgroundWorkerQueue;
@@ -32,9 +32,6 @@ public class MailService: IMailService
 
     public void Queue(IMailable mailable)
     {
-        _backgroundWorkerQueue.QueueBackgroundWorkItem(async _ =>
-        {
-            await SendEmailAsync(mailable);
-        });
+        _backgroundWorkerQueue.QueueBackgroundWorkItem(async _ => { await SendEmailAsync(mailable); });
     }
 }

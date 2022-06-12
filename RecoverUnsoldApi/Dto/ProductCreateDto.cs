@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using RecoverUnsoldApi.Validation;
 
 namespace RecoverUnsoldApi.Dto;
 
-public record ProductCreateDto([Required][StringLength(100)] string Name,
-    [Required] string Description, IEnumerable<IFormFile> Images);
+public record ProductCreateDto([Required] [StringLength(100)] string Name,
+    [Required] string Description,
+    [MaxFileSize(5 * 1024 * 1024)] [AllowedExtensions(".jpg,.jpeg,.png,.bmp")] IEnumerable<IFormFile>? Images = null);

@@ -18,11 +18,13 @@ public class Offer : Entity
 
     [ForeignKey(nameof(Distributor))]
     public Guid DistributorId { get; set; }
+
     public Distributor? Distributor { get; set; }
-    
+
     [ForeignKey(nameof(Location))]
     public Guid LocationId { get; set; }
+
     public Location? Location { get; set; }
-    
+
     public ICollection<Product> Products { get; set; } = new HashSet<Product>();
 }

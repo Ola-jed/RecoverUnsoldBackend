@@ -19,6 +19,13 @@ public class MaxFileSizeAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
+        if (value is IEnumerable<IFormFile> values)
+        {
+            return values.Any(formFile => file.Length > _maxFileSize)
+                ? new ValidationResult(GetErrorMessage())
+                : ValidationResult.Success;
+        }
+
         return file.Length > _maxFileSize
             ? new ValidationResult(GetErrorMessage())
             : ValidationResult.Success;

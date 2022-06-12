@@ -43,7 +43,7 @@ public class AccountController : ControllerBase
         await _applicationUserService.UpdateCustomer(userId, customerUpdateDto);
         return NoContent();
     }
-    
+
     [Authorize(Roles = Roles.Distributor)]
     [HttpPut("Distributor")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -53,7 +53,7 @@ public class AccountController : ControllerBase
         await _applicationUserService.UpdateDistributor(userId, distributorUpdateDto);
         return NoContent();
     }
-    
+
     [HttpPut("Password")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

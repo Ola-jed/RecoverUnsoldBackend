@@ -3,12 +3,12 @@ using RecoverUnsoldApi.Services.Mail.Templates;
 
 namespace RecoverUnsoldApi.Services.Mail.Mailable;
 
-public class UserVerificationMail: IMailable
+public class UserVerificationMail : IMailable
 {
     private readonly string _name;
     private readonly string _token;
     private readonly string _destinationEmail;
-    
+
     public UserVerificationMail(string name, string token, string destinationEmail)
     {
         _name = name;
@@ -35,16 +35,16 @@ public class UserVerificationMail: IMailable
     public async Task<string> GetHtmlBody()
     {
         return await Task.Run(() => UserVerificationMailTemplate.Html
-            .Replace("{token}",_token)
-            .Replace("{name}",_name)
+            .Replace("{token}", _token)
+            .Replace("{name}", _name)
         );
     }
 
     public async Task<string> GetPlainTextBody()
     {
         return await Task.Run(() => UserVerificationMailTemplate.Text
-            .Replace("{token}",_token)
-            .Replace("{name}",_name)
+            .Replace("{token}", _token)
+            .Replace("{name}", _name)
         );
     }
 }

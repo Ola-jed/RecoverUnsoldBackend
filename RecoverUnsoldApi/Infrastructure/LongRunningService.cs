@@ -1,6 +1,6 @@
 namespace RecoverUnsoldApi.Infrastructure;
 
-public class LongRunningService: BackgroundService
+public class LongRunningService : BackgroundService
 {
     private readonly BackgroundWorkerQueue _queue;
     private readonly ILogger<LongRunningService> _logger;
