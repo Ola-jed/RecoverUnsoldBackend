@@ -74,7 +74,8 @@ public class OffersService : IOffersService
             Duration = offerCreateDto.Duration,
             Beneficiaries = offerCreateDto.Beneficiaries,
             Price = offerCreateDto.Price,
-            LocationId = offerCreateDto.LocationId
+            LocationId = offerCreateDto.LocationId,
+            DistributorId = distributorId
         };
 
         var offerEntityEntry = _context.Offers.Add(offer);
