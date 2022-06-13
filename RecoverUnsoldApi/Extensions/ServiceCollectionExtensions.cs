@@ -129,8 +129,8 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddSingleton<BackgroundWorkerQueue>();
         serviceCollection.AddScoped<IAuthService, AuthService>();
         serviceCollection.AddScoped<IApplicationUserService, ApplicationUserService>();
-        serviceCollection.AddScoped<IUserVerificationService, UserVerificationService>();
-        serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
+        serviceCollection.AddScoped<IUserVerificationService, DummyUserVerificationService>();
+        serviceCollection.AddScoped<IForgotPasswordService, DummyForgotPasswordService>();
         serviceCollection.AddScoped<IMailService, MailService>();
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
         serviceCollection.AddScoped<IProductsService, ProductsService>();
