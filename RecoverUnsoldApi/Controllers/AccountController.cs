@@ -23,6 +23,8 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<UserReadDto>> GetAccount()
     {
         var user = await _applicationUserService.FindById(this.GetUserId());
