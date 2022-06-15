@@ -26,12 +26,17 @@ public class AccountController : ControllerBase
     public async Task<ActionResult<UserReadDto>> GetAccount()
     {
         var user = await _applicationUserService.FindById(this.GetUserId());
-        return Ok(user switch
+        if (user == null)
         {
-            Customer customer       => customer.ToCustomerReadDto(),
-            Distributor distributor => distributor.ToDistributorReadDto(),
-            _                       => user
-        });
+            return Unauthorized();
+        }
+
+        return user switch
+        {
+            Customer customer       => Ok(customer.ToCustomerReadDto()),
+            Distributor distributor => Ok(distributor.ToDistributorReadDto()),
+            _                       => Unauthorized()
+        };
     }
 
     [Authorize(Roles = Roles.Customer)]
