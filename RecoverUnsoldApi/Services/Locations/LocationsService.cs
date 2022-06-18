@@ -50,7 +50,7 @@ public class LocationsService : ILocationsService
     {
         return await Task.Run(() => _context.Locations
             .AsNoTracking()
-            .Where(x.Name.Contains(search))
+            .Where(x => x.Name.Contains(search))
             .ToLocationReadDto()
             .UrlPaginate(urlPaginationParameter, x => x.CreatedAt)
         );
