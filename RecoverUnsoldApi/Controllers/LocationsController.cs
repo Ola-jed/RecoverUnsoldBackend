@@ -59,7 +59,7 @@ public class LocationsController : ControllerBase
         var urlPaginationParam = new UrlPaginationParameter(
             perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
         );
-        return await _locationsService.FindByName(this.GetUserId(), query, urlPaginationParam);
+        return await _locationsService.FindByName(query, urlPaginationParam);
     }
 
     [HttpPost]

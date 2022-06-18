@@ -11,7 +11,7 @@ public interface ILocationsService
     Task<LocationReadDto?> Get(Guid locationId);
 
     Task<UrlPage<LocationReadDto>>
-        FindByName(Guid userId, string search, UrlPaginationParameter urlPaginationParameter);
+        FindByName(string search, UrlPaginationParameter urlPaginationParameter);
 
     Task<LocationReadDto> Create(Guid userId, LocationCreateDto locationCreateDto);
     Task Update(Guid userId, Guid locationId, LocationUpdateDto locationUpdateDto);

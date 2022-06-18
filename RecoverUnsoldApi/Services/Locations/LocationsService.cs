@@ -45,12 +45,12 @@ public class LocationsService : ILocationsService
         return location?.ToLocationReadDto();
     }
 
-    public async Task<UrlPage<LocationReadDto>> FindByName(Guid userId, string search,
+    public async Task<UrlPage<LocationReadDto>> FindByName(string search,
         UrlPaginationParameter urlPaginationParameter)
     {
         return await Task.Run(() => _context.Locations
             .AsNoTracking()
-            .Where(x => x.DistributorId == userId && x.Name.Contains(search))
+            .Where(x.Name.Contains(search))
             .ToLocationReadDto()
             .UrlPaginate(urlPaginationParameter, x => x.CreatedAt)
         );
