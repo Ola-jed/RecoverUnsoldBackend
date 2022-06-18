@@ -17,7 +17,12 @@ public class ForgotPasswordService : IForgotPasswordService
 
     public async Task<string> CreateResetPasswordToken(User user)
     {
-        var token = RandomNumberGenerator.GetInt32(10000, 100000).ToString();
+        string token;
+        do
+        {
+            token = RandomNumberGenerator.GetInt32(10000, 100000).ToString();
+        } while (_context.PasswordResets.Any(p => p.Token == token));
+
         _context.PasswordResets.Add(new PasswordReset
         {
             UserId = user.Id,

@@ -22,7 +22,12 @@ public class UserVerificationService : IUserVerificationService
 
     public async Task<string> GenerateUserVerificationToken(User user)
     {
-        var token = RandomNumberGenerator.GetInt32(10000, 100000).ToString();
+        string token;
+        do
+        {
+            token = RandomNumberGenerator.GetInt32(10000, 100000).ToString();
+        } while (_context.PasswordResets.Any(p => p.Token == token));
+
         _context.EmailVerifications.Add(new EmailVerification
         {
             UserId = user.Id,
