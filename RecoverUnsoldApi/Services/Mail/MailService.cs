@@ -23,6 +23,7 @@ public class MailService : IMailService
     {
         var email = await mailable.Build();
         email.Sender = MailboxAddress.Parse(_settings.MailUser);
+        email.From.Add(MailboxAddress.Parse(_settings.MailUser));
         using var smtp = new SmtpClient();
         await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls);
         await smtp.AuthenticateAsync(_settings.MailUser, _settings.MailPassword);
