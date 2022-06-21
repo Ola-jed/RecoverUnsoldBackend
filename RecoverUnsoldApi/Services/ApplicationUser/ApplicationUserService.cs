@@ -74,7 +74,7 @@ public class ApplicationUserService : IApplicationUserService
 
         distributor.Username = distributorUpdateDto.Username;
         distributor.Phone = distributorUpdateDto.Phone;
-        distributor.TaxId = distributorUpdateDto.Ifu;
+        distributor.TaxId = distributorUpdateDto.TaxId;
         distributor.Rccm = distributorUpdateDto.Rccm;
         distributor.WebsiteUrl = distributorUpdateDto.WebsiteUrl;
         _context.Distributors.Update(distributor);
