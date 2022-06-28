@@ -82,7 +82,7 @@ public class ProductsController : ControllerBase
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ProductReadDto>> UpdateProduct(Guid id, ProductUpdateDto productUpdateDto)
+    public async Task<ActionResult> UpdateProduct(Guid id, ProductUpdateDto productUpdateDto)
     {
         var distributorId = this.GetUserId();
         var isProductOwner = await _productsService.IsOwner(id, distributorId);
