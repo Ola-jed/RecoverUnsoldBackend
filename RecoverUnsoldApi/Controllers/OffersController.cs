@@ -38,7 +38,7 @@ public class OffersController : ControllerBase
         return await _offersService.GetOffers(urlPaginationParam, filterDto);
     }
 
-    [HttpGet("Distributor/{id:guid}")]
+    [HttpGet("Distributors/{id:guid}")]
     public async Task<UrlPage<OfferReadDto>> GetDistributorOffers(Guid id, [FromQuery] OfferFilterDto filterDto)
     {
         var urlPaginationParam = new UrlPaginationParameter(
