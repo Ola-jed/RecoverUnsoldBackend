@@ -19,13 +19,13 @@ public static class Mapping
 
     public static CustomerReadDto ToCustomerReadDto(this Customer customer)
     {
-        return new CustomerReadDto(customer.Username, customer.Email, customer.LastName, customer.FirstName,
+        return new CustomerReadDto(customer.Id, customer.Username, customer.Email, customer.LastName, customer.FirstName,
             customer.EmailVerifiedAt, customer.CreatedAt);
     }
 
     public static DistributorReadDto ToDistributorReadDto(this Distributor distributor)
     {
-        return new DistributorReadDto(distributor.Username, distributor.Email, distributor.Phone,
+        return new DistributorReadDto(distributor.Id, distributor.Username, distributor.Email, distributor.Phone,
             distributor.TaxId, distributor.Rccm, distributor.WebsiteUrl, distributor.EmailVerifiedAt,
             distributor.CreatedAt);
     }
