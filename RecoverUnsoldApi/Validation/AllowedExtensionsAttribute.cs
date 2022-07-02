@@ -17,22 +17,20 @@ public class AllowedExtensionsAttribute : ValidationAttribute
         object? value,
         ValidationContext validationContext)
     {
-        if (value == null && Nullable)
+        switch (value)
         {
-            return ValidationResult.Success;
+            case null when Nullable:
+                return ValidationResult.Success;
+            case IEnumerable<IFormFile> values:
+                return values.Any(
+                    formFile => !Extensions.Contains(Path.GetExtension(formFile.FileName).ToLowerInvariant()))
+                    ? new ValidationResult(GetErrorMessage())
+                    : ValidationResult.Success;
         }
 
         if (value is not IFormFile file)
         {
             return new ValidationResult("No file detected");
-        }
-
-        if (value is IEnumerable<IFormFile> values)
-        {
-            return values.Any(
-                formFile => !Extensions.Contains(Path.GetExtension(formFile.FileName).ToLowerInvariant()))
-                ? new ValidationResult(GetErrorMessage())
-                : ValidationResult.Success;
         }
 
         var extension = Path.GetExtension(file.FileName);
