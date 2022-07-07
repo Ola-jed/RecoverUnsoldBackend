@@ -61,7 +61,7 @@ public class OffersController : ControllerBase
     [Authorize(Roles = Roles.Distributor)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> Update(Guid id, OfferUpdateDto offerUpdateDto)
+    public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] OfferUpdateDto offerUpdateDto)
     {
         var distributorId = this.GetUserId();
         var isOwner = await _offersService.IsOwner(distributorId, id);
