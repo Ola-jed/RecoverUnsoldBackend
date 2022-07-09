@@ -15,11 +15,13 @@ public class ProductsService : IProductsService
 {
     private readonly DataContext _context;
     private readonly Cloudinary _cloudinary;
+    private readonly ILogger<ProductsService> _logger;
 
-    public ProductsService(DataContext context, Cloudinary cloudinary)
+    public ProductsService(DataContext context, Cloudinary cloudinary, ILogger<ProductsService> logger)
     {
         _context = context;
         _cloudinary = cloudinary;
+        _logger = logger;
     }
 
     public async Task<bool> IsOwner(Guid id, Guid distributorId)
@@ -79,6 +81,7 @@ public class ProductsService : IProductsService
         var imageModels = await Task.WhenAll(images.Select(async i =>
         {
             var uploadResult = (await i.UploadToCloudinary(_cloudinary))!;
+            _logger.LogDebug("Created Image for a product");
             return new Image
             {
                 PublicId = uploadResult.PublicId,
@@ -106,6 +109,7 @@ public class ProductsService : IProductsService
             .FirstOrDefaultAsync(p => p.Id == id);
         if (product == null || product.Offer?.DistributorId != distributorId)
         {
+            _logger.LogDebug("Product {ProductId} not found for distributor {DistributorId}", id, distributorId);
             return;
         }
 
@@ -123,6 +127,7 @@ public class ProductsService : IProductsService
             .FirstOrDefaultAsync(p => p.Id == id);
         if (product == null || product.Offer?.DistributorId != distributorId)
         {
+            _logger.LogDebug("Product {ProductId} not found for distributor {DistributorId}", id, distributorId);
             return;
         }
 
