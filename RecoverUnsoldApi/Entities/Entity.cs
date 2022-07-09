@@ -7,6 +7,6 @@ public abstract class Entity
     [Key]
     public Guid Id { get; set; }
 
-    public DateTime CreatedAt = DateTime.Now;
+    public DateTime CreatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
 }

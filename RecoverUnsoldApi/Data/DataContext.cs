@@ -21,6 +21,40 @@ public class DataContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
+    public override int SaveChanges()
+    {
+        ApplyCreatedAtToNewEntities();
+        return base.SaveChanges();
+    }
+    
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        ApplyCreatedAtToNewEntities();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+    
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        ApplyCreatedAtToNewEntities();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+    {
+        ApplyCreatedAtToNewEntities();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+    
+    private void ApplyCreatedAtToNewEntities()
+    {
+        var entityEntries = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Added);
+        foreach (var entityEntry in entityEntries)
+        {
+            ((Entity) entityEntry.Entity).CreatedAt = DateTime.Now;
+        }
+    }
+
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Customer> Customers { get; set; } = null!;
     public DbSet<EmailVerification> EmailVerifications { get; set; } = null!;
