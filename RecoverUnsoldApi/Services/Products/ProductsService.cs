@@ -137,5 +137,6 @@ public class ProductsService : IProductsService
         }
 
         _context.Products.Remove(product);
+        await _context.SaveChangesAsync();
     }
 }

@@ -31,6 +31,9 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<int>("AlertType")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
@@ -53,6 +56,9 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
@@ -78,6 +84,9 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
@@ -112,6 +121,9 @@ namespace RecoverUnsoldApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -144,6 +156,9 @@ namespace RecoverUnsoldApi.Migrations
 
                     b.Property<int?>("Beneficiaries")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
@@ -182,6 +197,9 @@ namespace RecoverUnsoldApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -203,6 +221,9 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
@@ -239,6 +260,9 @@ namespace RecoverUnsoldApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -263,6 +287,9 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
@@ -291,6 +318,9 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");

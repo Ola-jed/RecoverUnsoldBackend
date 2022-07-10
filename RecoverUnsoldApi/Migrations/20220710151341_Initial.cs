@@ -16,6 +16,7 @@ namespace RecoverUnsoldApi.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Token = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -30,6 +31,7 @@ namespace RecoverUnsoldApi.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Token = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -53,6 +55,7 @@ namespace RecoverUnsoldApi.Migrations
                     TaxId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Rccm = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     WebsiteUrl = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -68,6 +71,7 @@ namespace RecoverUnsoldApi.Migrations
                     AlertType = table.Column<int>(type: "integer", nullable: false),
                     Trigger = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -91,6 +95,7 @@ namespace RecoverUnsoldApi.Migrations
                     Indication = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<string>(type: "text", nullable: true),
                     DistributorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -115,6 +120,7 @@ namespace RecoverUnsoldApi.Migrations
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     DistributorId = table.Column<Guid>(type: "uuid", nullable: false),
                     LocationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -144,6 +150,7 @@ namespace RecoverUnsoldApi.Migrations
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     OfferId = table.Column<Guid>(type: "uuid", nullable: false),
                     LocationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -177,6 +184,7 @@ namespace RecoverUnsoldApi.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     OfferId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -198,6 +206,7 @@ namespace RecoverUnsoldApi.Migrations
                     Rating = table.Column<int>(type: "integer", nullable: false),
                     Comment = table.Column<string>(type: "text", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
@@ -219,6 +228,7 @@ namespace RecoverUnsoldApi.Migrations
                     Url = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     PublicId = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
