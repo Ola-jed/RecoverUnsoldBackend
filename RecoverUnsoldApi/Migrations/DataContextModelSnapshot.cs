@@ -48,6 +48,8 @@ namespace RecoverUnsoldApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("CustomerId");
 
                     b.ToTable("Alerts");
@@ -74,6 +76,8 @@ namespace RecoverUnsoldApi.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Token")
                         .IsUnique();
@@ -107,6 +111,8 @@ namespace RecoverUnsoldApi.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("ProductId");
 
@@ -145,6 +151,8 @@ namespace RecoverUnsoldApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("DistributorId");
 
                     b.ToTable("Locations");
@@ -182,6 +190,8 @@ namespace RecoverUnsoldApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("DistributorId");
 
                     b.HasIndex("LocationId");
@@ -212,6 +222,8 @@ namespace RecoverUnsoldApi.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("OrderId");
 
@@ -247,6 +259,8 @@ namespace RecoverUnsoldApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("LocationId");
@@ -277,6 +291,8 @@ namespace RecoverUnsoldApi.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Token")
                         .IsUnique();
@@ -309,6 +325,8 @@ namespace RecoverUnsoldApi.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("OfferId");
 
@@ -349,6 +367,8 @@ namespace RecoverUnsoldApi.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
 
                     b.HasIndex("Email")
                         .IsUnique();

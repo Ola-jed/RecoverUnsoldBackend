@@ -246,9 +246,19 @@ namespace RecoverUnsoldApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Alerts_CreatedAt",
+                table: "Alerts",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Alerts_CustomerId",
                 table: "Alerts",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmailVerifications_CreatedAt",
+                table: "EmailVerifications",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailVerifications_Token",
@@ -257,14 +267,29 @@ namespace RecoverUnsoldApi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Image_CreatedAt",
+                table: "Image",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Image_ProductId",
                 table: "Image",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Locations_CreatedAt",
+                table: "Locations",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Locations_DistributorId",
                 table: "Locations",
                 column: "DistributorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Offers_CreatedAt",
+                table: "Offers",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Offers_DistributorId",
@@ -277,9 +302,19 @@ namespace RecoverUnsoldApi.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Opinions_CreatedAt",
+                table: "Opinions",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Opinions_OrderId",
                 table: "Opinions",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CreatedAt",
+                table: "Orders",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_CustomerId",
@@ -297,15 +332,30 @@ namespace RecoverUnsoldApi.Migrations
                 column: "OfferId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PasswordResets_CreatedAt",
+                table: "PasswordResets",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PasswordResets_Token",
                 table: "PasswordResets",
                 column: "Token",
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Product_CreatedAt",
+                table: "Product",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_OfferId",
                 table: "Product",
                 column: "OfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_CreatedAt",
+                table: "Users",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
