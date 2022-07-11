@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
+using NetTopologySuite.Geometries;
 
 namespace RecoverUnsoldApi.Entities;
 
@@ -11,7 +12,11 @@ public class Location : Entity
     public string Name { get; set; } = null!;
 
     [Required]
-    public LatLong Coordinates { get; set; } = null!;
+    [Column(TypeName="geography")]
+    // X : Long
+    // Y : Lat
+    // Distance is in meters so divide by 1000
+    public Point Coordinates { get; set; } = null!;
 
     public string? Indication { get; set; }
     public string? Image { get; set; }

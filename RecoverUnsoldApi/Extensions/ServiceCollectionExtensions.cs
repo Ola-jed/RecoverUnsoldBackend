@@ -32,7 +32,8 @@ public static class ServiceCollectionExtensions
             Password = configuration["PgPassword"],
             Username = configuration["PgUserId"]
         };
-        serviceCollection.AddDbContext<DataContext>(opt => opt.UseNpgsql(builder.ConnectionString));
+        serviceCollection.AddDbContext<DataContext>(opt =>
+            opt.UseNpgsql(builder.ConnectionString, o => o.UseNetTopologySuite()));
     }
 
     public static void ConfigureAuthentication(this IServiceCollection serviceCollection,

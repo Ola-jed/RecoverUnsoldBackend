@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RecoverUnsoldApi.Data;
 
@@ -12,7 +13,7 @@ using RecoverUnsoldApi.Data;
 namespace RecoverUnsoldApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220710151341_Initial")]
+    [Migration("20220711084345_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,6 +23,7 @@ namespace RecoverUnsoldApi.Migrations
                 .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Alert", b =>
@@ -119,9 +121,9 @@ namespace RecoverUnsoldApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Coordinates")
+                    b.Property<Point>("Coordinates")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("geography (point)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");

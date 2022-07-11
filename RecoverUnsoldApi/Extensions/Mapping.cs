@@ -7,7 +7,8 @@ public static class Mapping
 {
     public static LocationReadDto ToLocationReadDto(this Location location)
     {
-        return new LocationReadDto(location.Id, location.Name, location.Coordinates, location.Indication,
+        return new LocationReadDto(location.Id, location.Name,
+            new LatLong(location.Coordinates.Y, location.Coordinates.X), location.Indication,
             location.Image,
             location.CreatedAt);
     }

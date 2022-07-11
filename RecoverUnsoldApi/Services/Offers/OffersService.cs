@@ -2,6 +2,7 @@
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Entities;
@@ -52,6 +53,26 @@ public class OffersService : IOffersService
             .ApplyFilters(offerFilterDto)
             .ToOfferReadDto()
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt)
+        );
+    }
+
+    public async Task<UrlPage<OfferWithRelativeDistanceDto>> GetOffersCloseTo(LatLong latLong,
+        UrlPaginationParameter urlPaginationParameter, double distance)
+    {
+        var referencePoint = new Point(latLong.Longitude, latLong.Latitude);
+        return await Task.Run(() => _context.Offers
+            .AsNoTracking()
+            .Include(o => o.Location)
+            .Include(o => o.Products)
+            .ThenInclude(p => p.Images)
+            .Where(o => o.Location!.Coordinates.Distance(
+                referencePoint
+            ) <= distance * 1000)
+            .Select(o => new OfferWithRelativeDistanceDto(
+                o.ToOfferReadDto(),
+                o.Location!.Coordinates.Distance(referencePoint)
+            ))
+            .UrlPaginate(urlPaginationParameter, o => o.Offer.CreatedAt)
         );
     }
 

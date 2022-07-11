@@ -3,6 +3,7 @@ using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Entities;
 using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.Offers;
@@ -45,6 +46,21 @@ public class OffersController : ControllerBase
             filterDto.PerPage, filterDto.Page, this.GetCleanUrl(), nameof(filterDto.Page), nameof(filterDto.PerPage)
         );
         return await _offersService.GetDistributorOffers(id, urlPaginationParam, filterDto);
+    }
+
+    [HttpGet("CloseToLocation")]
+    public async Task<UrlPage<OfferWithRelativeDistanceDto>> GetOffersCloseTo(
+        [FromQuery] OfferDistanceFilterDto distanceFilterDto)
+    {
+        var urlPaginationParam = new UrlPaginationParameter(
+            distanceFilterDto.PerPage, distanceFilterDto.Page, this.GetCleanUrl(),
+            nameof(distanceFilterDto.Page), nameof(distanceFilterDto.PerPage)
+        );
+        return await _offersService.GetOffersCloseTo(
+            new LatLong(distanceFilterDto.Latitude,distanceFilterDto.Longitude),
+            urlPaginationParam,
+            distanceFilterDto.Distance
+        );
     }
 
     [HttpPost]

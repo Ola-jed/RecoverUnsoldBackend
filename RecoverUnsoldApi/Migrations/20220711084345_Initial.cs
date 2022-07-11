@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
@@ -9,6 +10,9 @@ namespace RecoverUnsoldApi.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:postgis", ",,");
+
             migrationBuilder.CreateTable(
                 name: "EmailVerifications",
                 columns: table => new
@@ -91,7 +95,7 @@ namespace RecoverUnsoldApi.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Coordinates = table.Column<string>(type: "text", nullable: false),
+                    Coordinates = table.Column<Point>(type: "geography (point)", nullable: false),
                     Indication = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<string>(type: "text", nullable: true),
                     DistributorId = table.Column<Guid>(type: "uuid", nullable: false),

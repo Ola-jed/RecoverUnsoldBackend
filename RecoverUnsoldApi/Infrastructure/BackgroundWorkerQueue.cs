@@ -12,7 +12,7 @@ public class BackgroundWorkerQueue
         await _signal.WaitAsync(cancellationToken);
         _workItems.TryDequeue(out var workItem);
 
-        return workItem;
+        return workItem!;
     }
 
     public void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem)

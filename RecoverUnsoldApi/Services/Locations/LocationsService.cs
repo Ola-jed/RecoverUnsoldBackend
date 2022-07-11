@@ -6,8 +6,9 @@ using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldApi.Entities;
 using RecoverUnsoldApi.Extensions;
+using Location = RecoverUnsoldApi.Entities.Location;
+using Point = NetTopologySuite.Geometries.Point;
 
 namespace RecoverUnsoldApi.Services.Locations;
 
@@ -69,11 +70,7 @@ public class LocationsService : ILocationsService
         var location = _context.Locations.Add(new Location
         {
             Name = locationCreateDto.Name,
-            Coordinates = new LatLong
-            {
-                Latitude = locationCreateDto.Latitude,
-                Longitude = locationCreateDto.Longitude
-            },
+            Coordinates = new Point(locationCreateDto.Longitude, locationCreateDto.Latitude),
             Indication = locationCreateDto.Indication,
             Image = image,
             DistributorId = userId
@@ -103,11 +100,7 @@ public class LocationsService : ILocationsService
             }
 
             location.Name = locationUpdateDto.Name;
-            location.Coordinates = new LatLong
-            {
-                Latitude = locationUpdateDto.Latitude,
-                Longitude = locationUpdateDto.Longitude
-            };
+            location.Coordinates = new Point(locationUpdateDto.Longitude, locationUpdateDto.Latitude);
             location.Indication = locationUpdateDto.Indication;
             location.Image = image;
             await _context.SaveChangesAsync();

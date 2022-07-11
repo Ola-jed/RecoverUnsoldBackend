@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldApi.Entities;
+using Location = RecoverUnsoldApi.Entities.Location;
 
 namespace RecoverUnsoldApi.Data;
 
@@ -14,10 +15,8 @@ public class DataContext : DbContext
     {
         modelBuilder.Entity<Location>()
             .Property(l => l.Coordinates)
-            .HasConversion(
-                v => v.ToString(),
-                v => LatLong.FromString(v)
-            );
+            .HasColumnType("geography (point)");
+        modelBuilder.HasPostgresExtension("postgis");
         base.OnModelCreating(modelBuilder);
     }
 
@@ -26,32 +25,33 @@ public class DataContext : DbContext
         ApplyCreatedAtToNewEntities();
         return base.SaveChanges();
     }
-    
+
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         ApplyCreatedAtToNewEntities();
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
-    
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         ApplyCreatedAtToNewEntities();
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = new())
     {
         ApplyCreatedAtToNewEntities();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
-    
+
     private void ApplyCreatedAtToNewEntities()
     {
         var entityEntries = ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Added);
         foreach (var entityEntry in entityEntries)
         {
-            ((Entity) entityEntry.Entity).CreatedAt = DateTime.Now;
+            ((Entity)entityEntry.Entity).CreatedAt = DateTime.Now;
         }
     }
 
