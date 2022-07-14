@@ -12,11 +12,27 @@ public class MailService : IMailService
 {
     private readonly MailConfig _settings;
     private readonly BackgroundWorkerQueue _backgroundWorkerQueue;
+    private readonly ILogger<MailService> _logger;
 
-    public MailService(IOptions<MailConfig> settings, BackgroundWorkerQueue backgroundWorkerQueue)
+    public MailService(IOptions<MailConfig> settings, BackgroundWorkerQueue backgroundWorkerQueue,
+        ILogger<MailService> logger)
     {
         _backgroundWorkerQueue = backgroundWorkerQueue;
+        _logger = logger;
         _settings = settings.Value;
+    }
+
+    public async Task TrySend(IMailable mailable)
+    {
+        try
+        {
+            await SendEmailAsync(mailable);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Mail sending failed with exception {Message}", e.Message);
+            Queue(mailable);
+        }
     }
 
     public async Task SendEmailAsync(IMailable mailable)
