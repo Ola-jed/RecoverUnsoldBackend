@@ -7,6 +7,7 @@ namespace RecoverUnsoldApi.Services.Orders;
 public interface IOrdersService
 {
     Task<bool> IsOrderRequestValid(Guid offerId);
+    Task<OrderReadDto?> GetOrder(Guid id);
     Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId, UrlPaginationParameter urlPaginationParameter);
     Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter);
     Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId, UrlPaginationParameter urlPaginationParameter);

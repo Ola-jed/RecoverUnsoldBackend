@@ -30,6 +30,17 @@ public class OrdersService: IOrdersService
         return beneficiaries == null || beneficiaries < ordersValidated;
     }
 
+    public async Task<OrderReadDto?> GetOrder(Guid id)
+    {
+        var order = await _context.Orders
+            .AsNoTracking()
+            .Include(o => o.Offer)
+            .Include(o => o.Customer)
+            .Include(o => o.Opinions)
+            .FirstOrDefaultAsync(o => o.Id == id);
+        return order?.ToOrderReadDto();
+    }
+
     public async Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId, UrlPaginationParameter urlPaginationParameter)
     {
         return await Task.Run(() => _context.Orders
@@ -68,11 +79,15 @@ public class OrdersService: IOrdersService
 
     public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto,Guid customerId, Guid offerId)
     {
+        var offer = await _context.Offers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(o => o.Id == offerId);
         var order = new Order
         {
             WithdrawalDate = orderCreateDto.WithdrawalDate,
             CustomerId = customerId,
-            OfferId = offerId
+            OfferId = offerId,
+            Offer = offer
         };
         var entityEntry = _context.Orders.Add(order);
         await _context.SaveChangesAsync();
