@@ -21,10 +21,5 @@ public class Order : Entity
 
     public Offer? Offer { get; set; }
 
-    [ForeignKey(nameof(Location))]
-    public Guid LocationId { get; set; }
-
-    public Location? Location { get; set; }
-
     public ICollection<Opinion> Opinions { get; set; } = new HashSet<Opinion>();
 }
