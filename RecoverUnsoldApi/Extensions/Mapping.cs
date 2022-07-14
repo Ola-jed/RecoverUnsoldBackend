@@ -74,4 +74,30 @@ public static class Mapping
     {
         return offers.Select(o => o.ToOfferReadDto());
     }
+
+    public static OrderReadDto ToOrderReadDto(this Order order)
+    {
+        return new OrderReadDto(order.Id, order.WithdrawalDate, order!.Customer!.ToCustomerReadDto(),
+            order!.Offer!.ToOfferReadDto(), order.Status, order.Opinions.ToOpinionReadDto(), order.CreatedAt);
+    }
+
+    public static IQueryable<OrderReadDto> ToOrderReadDto(this IQueryable<Order> orders)
+    {
+        return orders.Select(o => o.ToOrderReadDto());
+    }
+
+    public static OpinionReadDto ToOpinionReadDto(this Opinion opinion)
+    {
+        return new OpinionReadDto(opinion.Id, opinion.Rating, opinion.Comment, opinion.OrderId);
+    }
+
+    public static IQueryable<OpinionReadDto> ToOpinionReadDto(this IQueryable<Opinion> opinions)
+    {
+        return opinions.Select(o => o.ToOpinionReadDto());
+    }
+
+    public static IEnumerable<OpinionReadDto> ToOpinionReadDto(this IEnumerable<Opinion> opinions)
+    {
+        return opinions.Select(o => o.ToOpinionReadDto());
+    }
 }

@@ -245,9 +245,6 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("LocationId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("OfferId")
                         .HasColumnType("uuid");
 
@@ -262,8 +259,6 @@ namespace RecoverUnsoldApi.Migrations
                     b.HasIndex("CreatedAt");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("LocationId");
 
                     b.HasIndex("OfferId");
 
@@ -498,12 +493,6 @@ namespace RecoverUnsoldApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecoverUnsoldApi.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RecoverUnsoldApi.Entities.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId")
@@ -511,8 +500,6 @@ namespace RecoverUnsoldApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Location");
 
                     b.Navigation("Offer");
                 });

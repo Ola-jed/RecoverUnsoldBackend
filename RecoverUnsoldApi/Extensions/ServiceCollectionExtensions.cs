@@ -14,6 +14,7 @@ using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Locations;
 using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Offers;
+using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.UserVerification;
 
@@ -136,5 +137,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
         serviceCollection.AddScoped<IProductsService, ProductsService>();
         serviceCollection.AddScoped<IOffersService, OffersService>();
+        serviceCollection.AddScoped<IOrdersService, OrdersService>();
     }
 }

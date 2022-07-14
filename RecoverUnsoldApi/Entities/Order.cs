@@ -6,7 +6,7 @@ namespace RecoverUnsoldApi.Entities;
 
 public class Order : Entity
 {
-    public DateTime? WithdrawalDate { get; set; }
+    public DateTime WithdrawalDate { get; set; }
 
     [Required]
     public Status Status { get; set; } = Status.Pending;

@@ -8,6 +8,7 @@ namespace RecoverUnsoldApi.Services.Offers;
 public interface IOffersService
 {
     Task<bool> IsOwner(Guid distributorId, Guid id);
+    Task<bool> Exists(Guid id);
     Task<UrlPage<OfferReadDto>> GetOffers(UrlPaginationParameter urlPaginationParameter, OfferFilterDto offerFilterDto);
     Task<UrlPage<OfferReadDto>> GetDistributorOffers(Guid distributorId, UrlPaginationParameter urlPaginationParameter,
         OfferFilterDto offerFilterDto);

@@ -27,6 +27,11 @@ public class OffersService : IOffersService
         return await _context.Offers.AnyAsync(x => x.DistributorId == distributorId && x.Id == id);
     }
 
+    public async Task<bool> Exists(Guid id)
+    {
+        return await _context.Offers.AnyAsync(x => x.Id == id);
+    }
+
     public async Task<UrlPage<OfferReadDto>> GetOffers(UrlPaginationParameter urlPaginationParameter,
         OfferFilterDto offerFilterDto)
     {
