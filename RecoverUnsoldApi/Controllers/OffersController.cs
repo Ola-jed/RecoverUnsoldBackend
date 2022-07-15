@@ -6,6 +6,7 @@ using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Entities;
 using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldApi.Services.Locations;
 using RecoverUnsoldApi.Services.Offers;
 
 namespace RecoverUnsoldApi.Controllers;
@@ -15,10 +16,12 @@ namespace RecoverUnsoldApi.Controllers;
 public class OffersController : ControllerBase
 {
     private readonly IOffersService _offersService;
+    private readonly ILocationsService _locationsService;
 
-    public OffersController(IOffersService offersService)
+    public OffersController(IOffersService offersService, ILocationsService locationsService)
     {
         _offersService = offersService;
+        _locationsService = locationsService;
     }
 
     [HttpGet("{id:guid}", Name = nameof(GetOffer))]
@@ -66,9 +69,18 @@ public class OffersController : ControllerBase
     [HttpPost]
     [Authorize(Roles = Roles.Distributor)]
     [ProducesResponseType(typeof(OfferReadDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(OfferReadDto), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<OfferReadDto>> Create([FromForm] OfferCreateDto offerCreateDto)
     {
         var distributorId = this.GetUserId();
+        var isLocationOwnedByCurrentDistributor = await _locationsService.IsOwner(
+            distributorId,
+            offerCreateDto.LocationId
+        );
+        if (!isLocationOwnedByCurrentDistributor)
+        {
+            return BadRequest();
+        }
         var offer = await _offersService.Create(distributorId, offerCreateDto);
         return CreatedAtRoute(nameof(GetOffer), new { id = offer.Id }, offer);
     }
