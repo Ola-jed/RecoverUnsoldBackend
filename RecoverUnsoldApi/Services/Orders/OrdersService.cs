@@ -27,16 +27,17 @@ public class OrdersService: IOrdersService
             .FirstOrDefaultAsync();
         var ordersValidated = await _context.Orders
             .CountAsync(o => o.OfferId == offerId && (o.Status == Status.Approved || o.Status == Status.Pending));
-        return beneficiaries == null || beneficiaries < ordersValidated;
+        return beneficiaries == null || ordersValidated < beneficiaries;
     }
 
     public async Task<OrderReadDto?> GetOrder(Guid id)
     {
         var order = await _context.Orders
             .AsNoTracking()
-            .Include(o => o.Offer)
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
+            .Include(o => o.Offer)
+            .ThenInclude(o => o!.Location)
             .FirstOrDefaultAsync(o => o.Id == id);
         return order?.ToOrderReadDto();
     }
@@ -79,15 +80,11 @@ public class OrdersService: IOrdersService
 
     public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto,Guid customerId, Guid offerId)
     {
-        var offer = await _context.Offers
-            .AsNoTracking()
-            .FirstOrDefaultAsync(o => o.Id == offerId);
         var order = new Order
         {
             WithdrawalDate = orderCreateDto.WithdrawalDate,
             CustomerId = customerId,
-            OfferId = offerId,
-            Offer = offer
+            OfferId = offerId
         };
         var entityEntry = _context.Orders.Add(order);
         await _context.SaveChangesAsync();

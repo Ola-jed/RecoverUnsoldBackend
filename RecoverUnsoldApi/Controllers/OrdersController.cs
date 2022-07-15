@@ -57,11 +57,13 @@ public class OrdersController : ControllerBase
         }
 
         var customer = (await _applicationUserService.FindById(this.GetUserId()))!;
-        var order = await _ordersService.CreateOrder(orderCreateDto, customer.Id, id);
+        var orderDto = await _ordersService.CreateOrder(orderCreateDto, customer.Id, id);
+        var order = (await _ordersService.GetOrder(orderDto.Id))!;
+        var distributor = (await _applicationUserService.FindById(order.Offer?.DistributorId ?? Guid.Empty))!;
         var offerValidatedMail = new OfferValidatedMail(customer.Username, customer.Email);
-        var orderMadeMail = new OrderMadeMail(order.Offer.CreatedAt, customer.Username, customer.Email);
+        var orderMadeMail = new OrderMadeMail(order.Offer!.CreatedAt, distributor.Username, distributor.Email);
         await _mailService.TrySend(offerValidatedMail);
         await _mailService.TrySend(orderMadeMail);
-        return CreatedAtRoute(nameof(GetOrder),new {id = order.Id},order);
+        return CreatedAtRoute(nameof(GetOrder), new { id = order.Id }, order);
     }
 }
