@@ -43,6 +43,7 @@ public class OrdersController : ControllerBase
     [HttpPost("/api/Offers/{id:guid}/Orders")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<OrderReadDto>> MakeOrder(Guid id, OrderCreateDto orderCreateDto)
     {
@@ -52,6 +53,11 @@ public class OrdersController : ControllerBase
         }
 
         if (!await _ordersService.IsOrderRequestValid(id))
+        {
+            return Forbid();
+        }
+
+        if (!await _ordersService.IsOrderRequestInDateInterval(id, orderCreateDto.WithdrawalDate))
         {
             return BadRequest();
         }

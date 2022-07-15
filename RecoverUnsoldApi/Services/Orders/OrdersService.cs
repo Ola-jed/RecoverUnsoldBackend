@@ -10,10 +10,10 @@ using RecoverUnsoldApi.Extensions;
 
 namespace RecoverUnsoldApi.Services.Orders;
 
-public class OrdersService: IOrdersService
+public class OrdersService : IOrdersService
 {
     private readonly DataContext _context;
-    
+
     public OrdersService(DataContext context)
     {
         _context = context;
@@ -30,6 +30,12 @@ public class OrdersService: IOrdersService
         return beneficiaries == null || ordersValidated < beneficiaries;
     }
 
+    public async Task<bool> IsOrderRequestInDateInterval(Guid offerId, DateTime dateTime)
+    {
+        return await _context.Offers
+            .AnyAsync(o => o.Id == offerId && dateTime > o.StartDate && o.StartDate.AddSeconds(o.Duration) <= dateTime);
+    }
+
     public async Task<OrderReadDto?> GetOrder(Guid id)
     {
         var order = await _context.Orders
@@ -42,7 +48,8 @@ public class OrdersService: IOrdersService
         return order?.ToOrderReadDto();
     }
 
-    public async Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId, UrlPaginationParameter urlPaginationParameter)
+    public async Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId,
+        UrlPaginationParameter urlPaginationParameter)
     {
         return await Task.Run(() => _context.Orders
             .AsNoTracking()
@@ -66,7 +73,8 @@ public class OrdersService: IOrdersService
             .UrlPaginate(urlPaginationParameter, o => o));
     }
 
-    public async Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId, UrlPaginationParameter urlPaginationParameter)
+    public async Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId,
+        UrlPaginationParameter urlPaginationParameter)
     {
         return await Task.Run(() => _context.Orders
             .AsNoTracking()
@@ -78,7 +86,7 @@ public class OrdersService: IOrdersService
             .UrlPaginate(urlPaginationParameter, o => o));
     }
 
-    public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto,Guid customerId, Guid offerId)
+    public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId)
     {
         var order = new Order
         {
