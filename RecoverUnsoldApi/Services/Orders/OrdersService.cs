@@ -33,7 +33,7 @@ public class OrdersService : IOrdersService
     public async Task<bool> IsOrderRequestInDateInterval(Guid offerId, DateTime dateTime)
     {
         return await _context.Offers
-            .AnyAsync(o => o.Id == offerId && dateTime > o.StartDate && o.StartDate.AddSeconds(o.Duration) <= dateTime);
+            .AnyAsync(o => o.Id == offerId && dateTime > o.StartDate && o.StartDate.AddSeconds(o.Duration) >= dateTime);
     }
 
     public async Task<OrderReadDto?> GetOrder(Guid id)
