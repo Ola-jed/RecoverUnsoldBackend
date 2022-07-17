@@ -1,5 +1,6 @@
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Entities;
+using RecoverUnsoldApi.Entities.Enums;
 
 namespace RecoverUnsoldApi.Extensions;
 
@@ -37,5 +38,17 @@ public static class QueryableExtensions
         };
 
         return self;
+    }
+
+    public static IQueryable<Order> ApplyFilters(this IQueryable<Order> self, OrderFilterDto orderFilterDto)
+    {
+        return orderFilterDto.Status?.ToLowerInvariant() switch
+        {
+            "pending"   => self.Where(o => o.Status == Status.Pending),
+            "approved"  => self.Where(o => o.Status == Status.Approved),
+            "rejected"  => self.Where(o => o.Status == Status.Rejected),
+            "completed" => self.Where(o => o.Status == Status.Completed),
+            _           => self
+        };
     }
 }

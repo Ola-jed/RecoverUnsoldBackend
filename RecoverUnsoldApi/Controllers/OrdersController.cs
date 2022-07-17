@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentPaginator.Lib.Page;
+using FluentPaginator.Lib.Parameter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Extensions;
@@ -38,6 +40,48 @@ public class OrdersController : ControllerBase
         var order = await _ordersService.GetOrder(id);
         return order == null ? NotFound() : Ok(order);
     }
+
+    [Authorize(Roles = Roles.Customer)]
+    [HttpGet("Customer")]
+    public async Task<UrlPage<OrderReadDto>> GetCustomerOrders([FromQuery] OrderFilterDto orderFilterDto)
+    {
+        var urlPaginationParam = new UrlPaginationParameter(
+            orderFilterDto.PerPage, orderFilterDto.Page, this.GetCleanUrl(),
+            nameof(orderFilterDto.Page), nameof(orderFilterDto.PerPage)
+        );
+        return await _ordersService.GetCustomerOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
+    }
+
+    [Authorize(Roles = Roles.Distributor)]
+    [HttpGet("Distributor")]
+    public async Task<UrlPage<OrderReadDto>> GetDistributorReceivedOrders([FromQuery] OrderFilterDto orderFilterDto)
+    {
+        var urlPaginationParam = new UrlPaginationParameter(
+            orderFilterDto.PerPage, orderFilterDto.Page, this.GetCleanUrl(),
+            nameof(orderFilterDto.Page), nameof(orderFilterDto.PerPage)
+        );
+        return await _ordersService.GetDistributorOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
+    }
+    
+    [Authorize(Roles = Roles.Distributor)]
+    [HttpGet("/api/Offers/{id:guid}/Orders")]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    public async Task<ActionResult<UrlPage<OrderReadDto>>> GetOfferOffers(Guid id,[FromQuery] OrderFilterDto orderFilterDto)
+    {
+        var urlPaginationParam = new UrlPaginationParameter(
+            orderFilterDto.PerPage, orderFilterDto.Page, this.GetCleanUrl(),
+            nameof(orderFilterDto.Page), nameof(orderFilterDto.PerPage)
+        );
+        var distributorId = this.GetUserId();
+        var isOfferOwner = await _offersService.IsOwner(distributorId, id);
+        if (!isOfferOwner)
+        {
+            return Forbid();
+        }
+        
+        return await _ordersService.GetOfferOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
+    }
+
 
     [Authorize(Roles = Roles.Customer)]
     [HttpPost("/api/Offers/{id:guid}/Orders")]

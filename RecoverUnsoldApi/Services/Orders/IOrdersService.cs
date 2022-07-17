@@ -9,8 +9,15 @@ public interface IOrdersService
     Task<bool> IsOrderRequestValid(Guid offerId);
     Task<bool> IsOrderRequestInDateInterval(Guid offerId, DateTime dateTime);
     Task<OrderReadDto?> GetOrder(Guid id);
-    Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId, UrlPaginationParameter urlPaginationParameter);
-    Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter);
-    Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId, UrlPaginationParameter urlPaginationParameter);
-    Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto,Guid customerId, Guid offerId);
+
+    Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId, UrlPaginationParameter urlPaginationParameter,
+        OrderFilterDto orderFilterDto);
+
+    Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter,
+        OrderFilterDto orderFilterDto);
+
+    Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId, UrlPaginationParameter urlPaginationParameter,
+        OrderFilterDto orderFilterDto);
+
+    Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId);
 }

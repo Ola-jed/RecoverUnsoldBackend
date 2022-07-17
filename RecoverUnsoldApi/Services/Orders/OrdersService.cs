@@ -49,7 +49,7 @@ public class OrdersService : IOrdersService
     }
 
     public async Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId,
-        UrlPaginationParameter urlPaginationParameter)
+        UrlPaginationParameter urlPaginationParameter, OrderFilterDto orderFilterDto)
     {
         return await Task.Run(() => _context.Orders
             .AsNoTracking()
@@ -57,11 +57,13 @@ public class OrdersService : IOrdersService
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
             .Where(o => o.CustomerId == customerId)
+            .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
             .UrlPaginate(urlPaginationParameter, o => o));
     }
 
-    public async Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter)
+    public async Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter,
+        OrderFilterDto orderFilterDto)
     {
         return await Task.Run(() => _context.Orders
             .AsNoTracking()
@@ -69,12 +71,13 @@ public class OrdersService : IOrdersService
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
             .Where(o => o.OfferId == offerId)
+            .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
             .UrlPaginate(urlPaginationParameter, o => o));
     }
 
     public async Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId,
-        UrlPaginationParameter urlPaginationParameter)
+        UrlPaginationParameter urlPaginationParameter, OrderFilterDto orderFilterDto)
     {
         return await Task.Run(() => _context.Orders
             .AsNoTracking()
@@ -82,6 +85,7 @@ public class OrdersService : IOrdersService
             .Include(o => o.Opinions)
             .Include(o => o.Offer)
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
+            .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
             .UrlPaginate(urlPaginationParameter, o => o));
     }
