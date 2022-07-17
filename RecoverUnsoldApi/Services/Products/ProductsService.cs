@@ -1,5 +1,6 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using FluentPaginator.Lib.Core;
 using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
@@ -41,7 +42,7 @@ public class ProductsService : IProductsService
             .Include(p => p.Images)
             .Where(p => p.OfferId == offerId)
             .ToProductReadDto()
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending));
     }
 
     public async Task<UrlPage<ProductReadDto>> GetProducts(UrlPaginationParameter urlPaginationParameter)
@@ -50,7 +51,7 @@ public class ProductsService : IProductsService
             .AsNoTracking()
             .Include(p => p.Images)
             .ToProductReadDto()
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending));
     }
 
     public async Task<UrlPage<ProductReadDto>> GetDistributorProducts(Guid distributorId,
@@ -62,7 +63,7 @@ public class ProductsService : IProductsService
             .Include(p => p.Offer)
             .Where(p => p.Offer != null && p.Offer.DistributorId == distributorId)
             .ToProductReadDto()
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt));
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending));
     }
 
     public async Task<ProductReadDto?> GetProduct(Guid id)

@@ -1,5 +1,6 @@
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using FluentPaginator.Lib.Core;
 using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
@@ -34,7 +35,7 @@ public class LocationsService : ILocationsService
             .AsNoTracking()
             .Where(x => x.DistributorId == userId)
             .ToLocationReadDto()
-            .UrlPaginate(urlPaginationParameter, x => x.CreatedAt)
+            .UrlPaginate(urlPaginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
         );
     }
 
@@ -53,7 +54,7 @@ public class LocationsService : ILocationsService
             .AsNoTracking()
             .Where(x => x.Name.Contains(search))
             .ToLocationReadDto()
-            .UrlPaginate(urlPaginationParameter, x => x.CreatedAt)
+            .UrlPaginate(urlPaginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
         );
     }
 

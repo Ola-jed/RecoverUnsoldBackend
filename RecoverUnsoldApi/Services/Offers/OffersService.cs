@@ -1,4 +1,5 @@
-﻿using FluentPaginator.Lib.Extensions;
+﻿using FluentPaginator.Lib.Core;
+using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +43,7 @@ public class OffersService : IOffersService
             .ThenInclude(p => p.Images)
             .ApplyFilters(offerFilterDto)
             .ToOfferReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt)
+            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
         );
     }
 
@@ -57,7 +58,7 @@ public class OffersService : IOffersService
             .Where(o => o.DistributorId == distributorId)
             .ApplyFilters(offerFilterDto)
             .ToOfferReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt)
+            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
         );
     }
 
@@ -77,7 +78,7 @@ public class OffersService : IOffersService
                 o.ToOfferReadDto(),
                 o.Location!.Coordinates.Distance(referencePoint)
             ))
-            .UrlPaginate(urlPaginationParameter, o => o.Offer.CreatedAt)
+            .UrlPaginate(urlPaginationParameter, o => o.Offer.CreatedAt, PaginationOrder.Descending)
         );
     }
 

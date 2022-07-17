@@ -1,4 +1,5 @@
-﻿using FluentPaginator.Lib.Extensions;
+﻿using FluentPaginator.Lib.Core;
+using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.CustomerId == customerId)
             .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o));
+            .UrlPaginate(urlPaginationParameter, o => o, PaginationOrder.Descending));
     }
 
     public async Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter,
@@ -73,7 +74,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.OfferId == offerId)
             .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o));
+            .UrlPaginate(urlPaginationParameter, o => o, PaginationOrder.Descending));
     }
 
     public async Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId,
@@ -87,7 +88,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
             .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o));
+            .UrlPaginate(urlPaginationParameter, o => o, PaginationOrder.Descending));
     }
 
     public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId)
