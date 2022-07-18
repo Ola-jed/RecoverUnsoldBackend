@@ -29,6 +29,21 @@ namespace RecoverUnsoldApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FcmTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FcmTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PasswordResets",
                 columns: table => new
                 {
@@ -149,7 +164,7 @@ namespace RecoverUnsoldApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WithdrawalDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    WithdrawalDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     OfferId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -258,6 +273,11 @@ namespace RecoverUnsoldApi.Migrations
                 table: "EmailVerifications",
                 column: "Token",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FcmTokens_CreatedAt",
+                table: "FcmTokens",
+                column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Image_CreatedAt",
@@ -383,6 +403,9 @@ namespace RecoverUnsoldApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmailVerifications");
+
+            migrationBuilder.DropTable(
+                name: "FcmTokens");
 
             migrationBuilder.DropTable(
                 name: "Image");

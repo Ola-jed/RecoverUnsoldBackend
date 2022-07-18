@@ -67,4 +67,5 @@ public class DataContext : DbContext
     public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<Opinion> Opinions { get; set; } = null!;
     public DbSet<Alert> Alerts { get; set; } = null!;
+    public DbSet<FcmToken> FcmTokens { get; set; } = null!;
 }

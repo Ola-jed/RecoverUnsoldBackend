@@ -13,7 +13,7 @@ using RecoverUnsoldApi.Data;
 namespace RecoverUnsoldApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220714090411_Initial")]
+    [Migration("20220718194953_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,33 @@ namespace RecoverUnsoldApi.Migrations
                         .IsUnique();
 
                     b.ToTable("EmailVerifications");
+                });
+
+            modelBuilder.Entity("RecoverUnsoldApi.Entities.FcmToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.ToTable("FcmTokens");
                 });
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Image", b =>
@@ -253,7 +280,7 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("WithdrawalDate")
+                    b.Property<DateTime>("WithdrawalDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
