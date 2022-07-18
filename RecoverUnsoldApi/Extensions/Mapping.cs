@@ -77,7 +77,7 @@ public static class Mapping
 
     public static OrderReadDto ToOrderReadDto(this Order order)
     {
-        return new OrderReadDto(order.Id, order.WithdrawalDate, order.Customer?.ToCustomerReadDto(),
+        return new OrderReadDto(order.Id, order.WithdrawalDate, order.Customer?.ToCustomerReadDto(), order.OfferId,
             order.Offer?.ToOfferReadDto(), order.Status, order.Opinions.ToOpinionReadDto(), order.CreatedAt);
     }
 
