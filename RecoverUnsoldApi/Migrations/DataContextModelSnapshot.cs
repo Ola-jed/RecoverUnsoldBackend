@@ -109,6 +109,8 @@ namespace RecoverUnsoldApi.Migrations
 
                     b.HasIndex("CreatedAt");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("FcmTokens");
                 });
 
@@ -464,6 +466,15 @@ namespace RecoverUnsoldApi.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("RecoverUnsoldApi.Entities.FcmToken", b =>
+                {
+                    b.HasOne("RecoverUnsoldApi.Entities.User", null)
+                        .WithMany("FcmTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Image", b =>
                 {
                     b.HasOne("RecoverUnsoldApi.Entities.Product", null)
@@ -560,6 +571,11 @@ namespace RecoverUnsoldApi.Migrations
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Product", b =>
                 {
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("RecoverUnsoldApi.Entities.User", b =>
+                {
+                    b.Navigation("FcmTokens");
                 });
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Customer", b =>

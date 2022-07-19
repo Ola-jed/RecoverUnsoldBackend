@@ -1,5 +1,7 @@
 using System.Text;
 using CloudinaryDotNet;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +15,7 @@ using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Locations;
 using RecoverUnsoldApi.Services.Mail;
+using RecoverUnsoldApi.Services.Notification;
 using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
@@ -57,6 +60,14 @@ public static class ServiceCollectionExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
                 };
             });
+    }
+
+    public static void ConfigureFirebase(this IServiceCollection serviceCollection, IConfiguration configuration)
+    {
+        FirebaseApp.Create(new AppOptions
+        {
+            Credential = GoogleCredential.FromJson(configuration["FirebaseCredential"])
+        });
     }
 
     public static void ConfigureMail(this IServiceCollection serviceCollection,
@@ -138,5 +149,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IProductsService, ProductsService>();
         serviceCollection.AddScoped<IOffersService, OffersService>();
         serviceCollection.AddScoped<IOrdersService, OrdersService>();
+        serviceCollection.AddScoped<INotificationService, NotificationService>();
     }
 }

@@ -13,7 +13,7 @@ using RecoverUnsoldApi.Data;
 namespace RecoverUnsoldApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220718194953_Initial")]
+    [Migration("20220719090337_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,8 @@ namespace RecoverUnsoldApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedAt");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FcmTokens");
                 });
@@ -466,6 +468,15 @@ namespace RecoverUnsoldApi.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("RecoverUnsoldApi.Entities.FcmToken", b =>
+                {
+                    b.HasOne("RecoverUnsoldApi.Entities.User", null)
+                        .WithMany("FcmTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Image", b =>
                 {
                     b.HasOne("RecoverUnsoldApi.Entities.Product", null)
@@ -562,6 +573,11 @@ namespace RecoverUnsoldApi.Migrations
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Product", b =>
                 {
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("RecoverUnsoldApi.Entities.User", b =>
+                {
+                    b.Navigation("FcmTokens");
                 });
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Customer", b =>

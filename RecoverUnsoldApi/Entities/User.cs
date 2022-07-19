@@ -19,4 +19,6 @@ public abstract class User : Entity
     public string Password { get; set; } = null!;
 
     public DateTime? EmailVerifiedAt { get; set; }
+
+    public ICollection<FcmToken> FcmTokens { get; set; } = new HashSet<FcmToken>();
 }

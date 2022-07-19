@@ -29,21 +29,6 @@ namespace RecoverUnsoldApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FcmTokens",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Value = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FcmTokens", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PasswordResets",
                 columns: table => new
                 {
@@ -99,6 +84,27 @@ namespace RecoverUnsoldApi.Migrations
                     table.ForeignKey(
                         name: "FK_Alerts_Users_CustomerId",
                         column: x => x.CustomerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FcmTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FcmTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FcmTokens_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -278,6 +284,11 @@ namespace RecoverUnsoldApi.Migrations
                 name: "IX_FcmTokens_CreatedAt",
                 table: "FcmTokens",
                 column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FcmTokens_UserId",
+                table: "FcmTokens",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Image_CreatedAt",
