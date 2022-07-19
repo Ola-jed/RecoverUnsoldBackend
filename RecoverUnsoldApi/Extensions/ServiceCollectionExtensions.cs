@@ -12,6 +12,7 @@ using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldApi.Services.FcmTokens;
 using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Locations;
 using RecoverUnsoldApi.Services.Mail;
@@ -150,5 +151,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IOffersService, OffersService>();
         serviceCollection.AddScoped<IOrdersService, OrdersService>();
         serviceCollection.AddScoped<INotificationService, NotificationService>();
+        serviceCollection.AddScoped<IFcmTokensService, FcmTokensService>();
     }
 }
