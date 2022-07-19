@@ -8,6 +8,8 @@ using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Mail.Mailable;
+using RecoverUnsoldApi.Services.Notification;
+using RecoverUnsoldApi.Services.Notification.NotificationMessage;
 using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 
@@ -21,14 +23,16 @@ public class OrdersController : ControllerBase
     private readonly IOffersService _offersService;
     private readonly IApplicationUserService _applicationUserService;
     private readonly IMailService _mailService;
+    private readonly INotificationService _notificationService;
 
     public OrdersController(IOrdersService ordersService, IApplicationUserService applicationUserService,
-        IMailService mailService, IOffersService offersService)
+        IMailService mailService, IOffersService offersService, INotificationService notificationService)
     {
         _ordersService = ordersService;
         _applicationUserService = applicationUserService;
         _mailService = mailService;
         _offersService = offersService;
+        _notificationService = notificationService;
     }
 
     [Authorize]
@@ -106,14 +110,17 @@ public class OrdersController : ControllerBase
             return BadRequest();
         }
 
-        var customer = (await _applicationUserService.FindById(this.GetUserId()))!;
+        var customer = (await _applicationUserService.FindByIdWithFcmTokens(this.GetUserId()))!;
         var orderDto = await _ordersService.CreateOrder(orderCreateDto, customer.Id, id);
         var order = (await _ordersService.GetOrder(orderDto.Id))!;
-        var distributor = (await _applicationUserService.FindById(order.Offer?.DistributorId ?? Guid.Empty))!;
+        var distributor = (await _applicationUserService.FindByIdWithFcmTokens(order.Offer?.DistributorId ?? Guid.Empty))!;
+        var offerPublishDate = order.Offer!.CreatedAt;
         var offerValidatedMail = new OfferValidatedMail(customer.Username, customer.Email);
-        var orderMadeMail = new OrderMadeMail(order.Offer!.CreatedAt, distributor.Username, distributor.Email);
+        var orderMadeMail = new OrderMadeMail(offerPublishDate, distributor.Username, distributor.Email);
         await _mailService.TrySend(offerValidatedMail);
         await _mailService.TrySend(orderMadeMail);
+        await _notificationService.Send(new OfferValidatedNotificationMessage(), customer);
+        await _notificationService.Send(new OrderMadeNotificationMessage(offerPublishDate), distributor);
         return CreatedAtRoute(nameof(GetOrder), new { id = order.Id }, order);
     }
 }

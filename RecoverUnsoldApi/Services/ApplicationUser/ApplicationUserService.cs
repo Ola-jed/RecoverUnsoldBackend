@@ -19,6 +19,14 @@ public class ApplicationUserService : IApplicationUserService
         return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<User?> FindByIdWithFcmTokens(Guid id)
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .Include(u => u.FcmTokens)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<User?> FindByEmail(string email)
     {
         return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);

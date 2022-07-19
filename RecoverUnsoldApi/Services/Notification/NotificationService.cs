@@ -1,7 +1,7 @@
 using FirebaseAdmin.Messaging;
-using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Entities;
 using RecoverUnsoldApi.Infrastructure;
+using RecoverUnsoldApi.Services.Notification.NotificationMessage;
 
 namespace RecoverUnsoldApi.Services.Notification;
 
@@ -17,15 +17,15 @@ public class NotificationService : INotificationService
         _backgroundWorkerQueue = backgroundWorkerQueue;
     }
 
-    public async Task Send(string title, string body, params User[] users)
+    public async Task Send(INotificationMessage notificationMessage, params User[] users)
     {
         var messages = users.SelectMany(user => user.FcmTokens, (_, fcmToken) => new Message
         {
             Token = fcmToken.Value,
             Notification = new FirebaseAdmin.Messaging.Notification
             {
-                Title = title,
-                Body = body
+                Title = notificationMessage.Title,
+                Body = notificationMessage.Body
             }
         });
 
@@ -39,8 +39,8 @@ public class NotificationService : INotificationService
         }
     }
 
-    public void BackgroundSend(string title, string body, params User[] users)
+    public void BackgroundSend(INotificationMessage notificationMessage, params User[] users)
     {
-        _backgroundWorkerQueue.QueueBackgroundWorkItem(async _ => await Send(title, body, users));
+        _backgroundWorkerQueue.QueueBackgroundWorkItem(async _ => await Send(notificationMessage, users));
     }
 }

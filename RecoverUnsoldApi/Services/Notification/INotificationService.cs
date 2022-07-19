@@ -1,9 +1,10 @@
 using RecoverUnsoldApi.Entities;
+using RecoverUnsoldApi.Services.Notification.NotificationMessage;
 
 namespace RecoverUnsoldApi.Services.Notification;
 
 public interface INotificationService
 {
-    Task Send(string title, string body, params User[] users);
-    void BackgroundSend(string title, string body, params User[] users);
+    Task Send(INotificationMessage notificationMessage, params User[] users);
+    void BackgroundSend(INotificationMessage notificationMessage, params User[] users);
 }
