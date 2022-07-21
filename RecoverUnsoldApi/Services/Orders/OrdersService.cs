@@ -60,7 +60,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.CustomerId == customerId)
             .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o, PaginationOrder.Descending));
+            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending));
     }
 
     public async Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter,
@@ -74,7 +74,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.OfferId == offerId)
             .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o, PaginationOrder.Descending));
+            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending));
     }
 
     public async Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId,
@@ -88,7 +88,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
             .ApplyFilters(orderFilterDto)
             .ToOrderReadDto()
-            .UrlPaginate(urlPaginationParameter, o => o, PaginationOrder.Descending));
+            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending));
     }
 
     public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId)
