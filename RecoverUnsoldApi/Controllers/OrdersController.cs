@@ -85,8 +85,7 @@ public class OrdersController : ControllerBase
         
         return await _ordersService.GetOfferOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
     }
-
-
+    
     [Authorize(Roles = Roles.Customer)]
     [HttpPost("/api/Offers/{id:guid}/Orders")]
     [ProducesResponseType(StatusCodes.Status201Created)]
