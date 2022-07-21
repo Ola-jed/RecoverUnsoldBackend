@@ -7,6 +7,7 @@ namespace RecoverUnsoldApi.Services.Orders;
 public interface IOrdersService
 {
     Task<bool> IsOrderRequestValid(Guid offerId);
+    Task<bool> IsRelativeToDistributor(Guid orderId, Guid distributorId);
     Task<bool> IsOrderRequestInDateInterval(Guid offerId, DateTime dateTime);
     Task<OrderReadDto?> GetOrder(Guid id);
 
@@ -20,4 +21,6 @@ public interface IOrdersService
         OrderFilterDto orderFilterDto);
 
     Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId);
+    Task Accept(Guid orderId);
+    Task Reject(Guid orderId);
 }

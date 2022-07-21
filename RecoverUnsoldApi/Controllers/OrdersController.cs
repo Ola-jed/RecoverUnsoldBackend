@@ -122,4 +122,60 @@ public class OrdersController : ControllerBase
         await _notificationService.Send(new OrderMadeNotificationMessage(offerPublishDate), distributor);
         return CreatedAtRoute(nameof(GetOrder), new { id = order.Id }, order);
     }
+    
+    [Authorize(Roles = Roles.Distributor)]
+    [HttpPost("{id:guid}/Accept")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> AcceptOrder(Guid id)
+    {
+        var order = await _ordersService.GetOrder(id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        var isOwner = await _ordersService.IsRelativeToDistributor(id, this.GetUserId());
+        if (!isOwner)
+        {
+            return Forbid();
+        }
+
+        var relatedOffer = order.Offer!;
+        var customer = order.Customer!;
+        await _ordersService.Accept(id);
+        var orderAcceptedMail = new OrderAcceptedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
+            relatedOffer.CreatedAt, order.WithdrawalDate, customer.Email);
+        await _mailService.SendEmailAsync(orderAcceptedMail);
+        return NoContent();
+    }
+    
+    [Authorize(Roles = Roles.Distributor)]
+    [HttpPost("{id:guid}/Reject")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> RejectOrder(Guid id)
+    {
+        var order = await _ordersService.GetOrder(id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        var isOwner = await _ordersService.IsRelativeToDistributor(id, this.GetUserId());
+        if (!isOwner)
+        {
+            return Forbid();
+        }
+
+        var relatedOffer = order.Offer!;
+        var customer = order.Customer!;
+        await _ordersService.Reject(id);
+        var orderRejectedMail = new OrderRejectedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
+            relatedOffer.CreatedAt, customer.Email);
+        await _mailService.SendEmailAsync(orderRejectedMail);
+        return NoContent();
+    }
 }

@@ -31,6 +31,12 @@ public class OrdersService : IOrdersService
         return beneficiaries == null || ordersValidated < beneficiaries;
     }
 
+    public async Task<bool> IsRelativeToDistributor(Guid orderId, Guid distributorId)
+    {
+        return await _context.Orders.Include(o => o.Offer)
+            .AnyAsync(o => o.Offer != null && o.Offer.DistributorId == distributorId);
+    }
+
     public async Task<bool> IsOrderRequestInDateInterval(Guid offerId, DateTime dateTime)
     {
         return await _context.Offers
@@ -102,5 +108,25 @@ public class OrdersService : IOrdersService
         var entityEntry = _context.Orders.Add(order);
         await _context.SaveChangesAsync();
         return entityEntry.Entity.ToOrderReadDto();
+    }
+
+    public async Task Accept(Guid orderId)
+    {
+        var order = await _context.Orders.FindAsync(orderId);
+        
+        if (order == null) return;
+        order.Status = Status.Approved;
+        _context.Orders.Update(order);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task Reject(Guid orderId)
+    {
+        var order = await _context.Orders.FindAsync(orderId);
+        
+        if (order == null) return;
+        order.Status = Status.Rejected;
+        _context.Orders.Update(order);
+        await _context.SaveChangesAsync();
     }
 }
