@@ -66,11 +66,12 @@ public class OrdersController : ControllerBase
         );
         return await _ordersService.GetDistributorOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
     }
-    
+
     [Authorize(Roles = Roles.Distributor)]
     [HttpGet("/api/Offers/{id:guid}/Orders")]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<UrlPage<OrderReadDto>>> GetOfferOffers(Guid id,[FromQuery] OrderFilterDto orderFilterDto)
+    public async Task<ActionResult<UrlPage<OrderReadDto>>> GetOfferOffers(Guid id,
+        [FromQuery] OrderFilterDto orderFilterDto)
     {
         var urlPaginationParam = new UrlPaginationParameter(
             orderFilterDto.PerPage, orderFilterDto.Page, this.GetCleanUrl(),
@@ -82,10 +83,10 @@ public class OrdersController : ControllerBase
         {
             return Forbid();
         }
-        
+
         return await _ordersService.GetOfferOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
     }
-    
+
     [Authorize(Roles = Roles.Customer)]
     [HttpPost("/api/Offers/{id:guid}/Orders")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -112,7 +113,8 @@ public class OrdersController : ControllerBase
         var customer = (await _applicationUserService.FindByIdWithFcmTokens(this.GetUserId()))!;
         var orderDto = await _ordersService.CreateOrder(orderCreateDto, customer.Id, id);
         var order = (await _ordersService.GetOrder(orderDto.Id))!;
-        var distributor = (await _applicationUserService.FindByIdWithFcmTokens(order.Offer?.DistributorId ?? Guid.Empty))!;
+        var distributor =
+            (await _applicationUserService.FindByIdWithFcmTokens(order.Offer?.DistributorId ?? Guid.Empty))!;
         var offerPublishDate = order.Offer!.CreatedAt;
         var offerValidatedMail = new OfferValidatedMail(customer.Username, customer.Email);
         var orderMadeMail = new OrderMadeMail(offerPublishDate, distributor.Username, distributor.Email);
@@ -122,7 +124,7 @@ public class OrdersController : ControllerBase
         await _notificationService.Send(new OrderMadeNotificationMessage(offerPublishDate), distributor);
         return CreatedAtRoute(nameof(GetOrder), new { id = order.Id }, order);
     }
-    
+
     [Authorize(Roles = Roles.Distributor)]
     [HttpPost("{id:guid}/Accept")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -144,13 +146,18 @@ public class OrdersController : ControllerBase
 
         var relatedOffer = order.Offer!;
         var customer = order.Customer!;
+        var customerEntity = (await _applicationUserService.FindByIdWithFcmTokens(customer.Id))!;
         await _ordersService.Accept(id);
         var orderAcceptedMail = new OrderAcceptedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
             relatedOffer.CreatedAt, order.WithdrawalDate, customer.Email);
         await _mailService.SendEmailAsync(orderAcceptedMail);
+        await _notificationService.Send(
+            new OrderAcceptedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt),
+            customerEntity
+        );
         return NoContent();
     }
-    
+
     [Authorize(Roles = Roles.Distributor)]
     [HttpPost("{id:guid}/Reject")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -172,10 +179,15 @@ public class OrdersController : ControllerBase
 
         var relatedOffer = order.Offer!;
         var customer = order.Customer!;
+        var customerEntity = (await _applicationUserService.FindByIdWithFcmTokens(customer.Id))!;
         await _ordersService.Reject(id);
         var orderRejectedMail = new OrderRejectedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
             relatedOffer.CreatedAt, customer.Email);
         await _mailService.SendEmailAsync(orderRejectedMail);
+        await _notificationService.Send(
+            new OrderRejectedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt),
+            customerEntity
+        );
         return NoContent();
     }
 }
