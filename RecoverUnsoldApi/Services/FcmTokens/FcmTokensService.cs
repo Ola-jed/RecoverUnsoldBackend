@@ -15,6 +15,12 @@ public class FcmTokensService: IFcmTokensService
     
     public async Task Create(Guid userId, string value)
     {
+        var sameTokenExists = await _context.FcmTokens.AnyAsync(x => x.Value == value);
+        if (sameTokenExists)
+        {
+            return;
+        }
+        
         _context.FcmTokens.Add(new FcmToken
         {
             Value = value,
