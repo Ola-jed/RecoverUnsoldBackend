@@ -31,7 +31,19 @@ public class NotificationService : INotificationService
 
         try
         {
-            await FirebaseMessaging.DefaultInstance.SendAllAsync(messages);
+            var result = await FirebaseMessaging.DefaultInstance.SendAllAsync(messages);
+            foreach (var resultResponse in result.Responses)
+            {
+                if (resultResponse.IsSuccess)
+                {
+                    _logger.LogInformation("Successfully sent message to: {MessageId}", resultResponse.MessageId);
+                }
+                else
+                {
+                    _logger.LogError("Error sending message to: {MessageId}\n Error : {ErrorMessage}",
+                        resultResponse.MessageId, resultResponse.Exception.Message);
+                }
+            }
         }
         catch (Exception e)
         {
