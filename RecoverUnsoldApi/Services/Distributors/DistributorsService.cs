@@ -18,11 +18,18 @@ public class DistributorsService: IDistributorsService
         _context = context;
     }
 
-    public async Task<UrlPage<DistributorInformationDto>> GetDistributors(UrlPaginationParameter urlPaginationParameter)
+    public async Task<UrlPage<DistributorInformationDto>> GetDistributors(UrlPaginationParameter urlPaginationParameter,
+        string? name = null)
     {
-        return await Task.Run(() => _context
+        var distributorsSource = _context
             .Distributors
-            .AsNoTracking()
+            .AsNoTracking();
+        if(name != null)
+        {
+            distributorsSource = distributorsSource.Where(d => EF.Functions.Like(d.Username, $"%{name}%"));
+        }
+
+        return await Task.Run(() => distributorsSource
             .ToDistributorInformationReadDto()
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
         );

@@ -17,12 +17,13 @@ public class DistributorsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<UrlPage<DistributorInformationDto>> GetDistributors([FromQuery] int page = 1, [FromQuery] int perPage = 10)
+    public async Task<UrlPage<DistributorInformationDto>> GetDistributors([FromQuery] DistributorFilterDto distributorFilterDto)
     {
         var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
+            distributorFilterDto.PerPage, distributorFilterDto.Page,
+            this.GetCleanUrl(), nameof(distributorFilterDto.Page), nameof(distributorFilterDto.PerPage)
         );
-        return await _distributorsService.GetDistributors(urlPaginationParam);
+        return await _distributorsService.GetDistributors(urlPaginationParam, distributorFilterDto.Name);
     }
 
     [HttpGet("{id:guid}")]
