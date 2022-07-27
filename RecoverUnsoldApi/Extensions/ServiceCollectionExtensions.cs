@@ -20,6 +20,7 @@ using RecoverUnsoldApi.Services.Notification;
 using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
+using RecoverUnsoldApi.Services.Distributors;
 using RecoverUnsoldApi.Services.UserVerification;
 
 namespace RecoverUnsoldApi.Extensions;
@@ -151,6 +152,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IOffersService, OffersService>();
         serviceCollection.AddScoped<IOrdersService, OrdersService>();
         serviceCollection.AddScoped<INotificationService, NotificationService>();
+        serviceCollection.AddScoped<IDistributorsService, DistributorsService>();
         serviceCollection.AddScoped<IFcmTokensService, FcmTokensService>();
     }
 }
