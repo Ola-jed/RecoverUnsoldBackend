@@ -32,6 +32,17 @@ public static class Mapping
             distributor.CreatedAt);
     }
 
+    public static DistributorInformationDto ToDistributorInformationDto(this Distributor distributor)
+    {
+        return new DistributorInformationDto(distributor.Id, distributor.Username, distributor.Email,
+            distributor.Phone, distributor.WebsiteUrl, distributor.CreatedAt);
+    }
+
+    public static IQueryable<DistributorInformationDto> ToDistributorInformationReadDto(this IQueryable<Distributor> distributors)
+    {
+        return distributors.Select(d => d.ToDistributorInformationDto());
+    }
+
     public static ProductReadDto ToProductReadDto(this Product product)
     {
         return new ProductReadDto(product.Id, product.Name, product.Description, product.OfferId,
