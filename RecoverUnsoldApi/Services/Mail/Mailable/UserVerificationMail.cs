@@ -16,7 +16,7 @@ public class UserVerificationMail : IMailable
         _destinationEmail = destinationEmail;
     }
 
-    public async Task<MimeMessage> Build()
+    public MimeMessage Build()
     {
         var email = new MimeMessage
         {
@@ -25,26 +25,24 @@ public class UserVerificationMail : IMailable
         };
         var builder = new BodyBuilder
         {
-            HtmlBody = await GetHtmlBody(),
-            TextBody = await GetPlainTextBody()
+            HtmlBody = GetHtmlBody(),
+            TextBody = GetPlainTextBody()
         };
         email.Body = builder.ToMessageBody();
         return email;
     }
 
-    public async Task<string> GetHtmlBody()
+    private string GetHtmlBody()
     {
-        return await Task.Run(() => UserVerificationMailTemplate.Html
+        return UserVerificationMailTemplate.Html
             .Replace("{token}", _token)
-            .Replace("{name}", _name)
-        );
+            .Replace("{name}", _name);
     }
 
-    public async Task<string> GetPlainTextBody()
+    private string GetPlainTextBody()
     {
-        return await Task.Run(() => UserVerificationMailTemplate.Text
+        return UserVerificationMailTemplate.Text
             .Replace("{token}", _token)
-            .Replace("{name}", _name)
-        );
+            .Replace("{name}", _name);
     }
 }

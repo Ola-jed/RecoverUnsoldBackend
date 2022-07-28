@@ -14,7 +14,7 @@ public class OfferValidatedMail: IMailable
         _name = name;
     }
 
-    public async Task<MimeMessage> Build()
+    public MimeMessage Build()
     {
         var email = new MimeMessage
         {
@@ -23,24 +23,20 @@ public class OfferValidatedMail: IMailable
         };
         var builder = new BodyBuilder
         {
-            HtmlBody = await GetHtmlBody(),
-            TextBody = await GetPlainTextBody()
+            HtmlBody = GetHtmlBody(),
+            TextBody = GetPlainTextBody()
         };
         email.Body = builder.ToMessageBody();
         return email;
     }
 
-    public async Task<string> GetHtmlBody()
+    private string GetHtmlBody()
     {
-        return await Task.Run(() => OfferValidatedMailTemplate.Html
-            .Replace("{name}",_name)
-        );
+        return OfferValidatedMailTemplate.Html.Replace("{name}",_name);
     }
 
-    public async Task<string> GetPlainTextBody()
+    private string GetPlainTextBody()
     {
-        return await Task.Run(() => OfferValidatedMailTemplate.Text
-            .Replace("{name}",_name)
-        );
+        return OfferValidatedMailTemplate.Text.Replace("{name}",_name);
     }
 }

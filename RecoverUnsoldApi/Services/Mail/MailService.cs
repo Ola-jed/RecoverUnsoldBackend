@@ -37,7 +37,7 @@ public class MailService : IMailService
 
     public async Task SendEmailAsync(IMailable mailable)
     {
-        var email = await mailable.Build();
+        var email = mailable.Build();
         email.Sender = MailboxAddress.Parse(_settings.MailUser);
         email.From.Add(MailboxAddress.Parse(_settings.MailUser));
         using var smtp = new SmtpClient();
