@@ -16,7 +16,7 @@ public class OrderMadeMail : IMailable
         _name = name;
     }
 
-    public async Task<MimeMessage> Build()
+    public MimeMessage Build()
     {
         var email = new MimeMessage
         {
@@ -25,26 +25,24 @@ public class OrderMadeMail : IMailable
         };
         var builder = new BodyBuilder
         {
-            HtmlBody = await GetHtmlBody(),
-            TextBody = await GetPlainTextBody()
+            HtmlBody = GetHtmlBody(),
+            TextBody = GetPlainTextBody()
         };
         email.Body = builder.ToMessageBody();
         return email;
     }
 
-    public async Task<string> GetHtmlBody()
+    private string GetHtmlBody()
     {
-        return await Task.Run(() => OrderMadeMailTemplate.Html
+        return OrderMadeMailTemplate.Html
             .Replace("{name}", _name)
-            .Replace("{publishDate}", _publishDate.ToShortDateString())
-        );
+            .Replace("{publishDate}", _publishDate.ToShortDateString());
     }
 
-    public async Task<string> GetPlainTextBody()
+    private string GetPlainTextBody()
     {
-        return await Task.Run(() => OrderMadeMailTemplate.Text
+        return OrderMadeMailTemplate.Text
             .Replace("{name}", _name)
-            .Replace("{publishDate}", _publishDate.ToShortDateString())
-        );
+            .Replace("{publishDate}", _publishDate.ToShortDateString());
     }
 }

@@ -24,7 +24,7 @@ public class OrderAcceptedMail : IMailable
         _destinationEmail = destinationEmail;
     }
 
-    public async Task<MimeMessage> Build()
+    public MimeMessage Build()
     {
         var email = new MimeMessage
         {
@@ -33,30 +33,30 @@ public class OrderAcceptedMail : IMailable
         };
         var builder = new BodyBuilder
         {
-            HtmlBody = await GetHtmlBody(),
-            TextBody = await GetPlainTextBody()
+            HtmlBody = GetHtmlBody(),
+            TextBody = GetPlainTextBody()
         };
         email.Body = builder.ToMessageBody();
         return email;
     }
 
-    public async Task<string> GetHtmlBody()
+    private string GetHtmlBody()
     {
-        return await Task.Run(() => OrderAcceptedMailTemplate.Email
+        return OrderAcceptedMailTemplate.Email
             .Replace("{name}", _name)
             .Replace("{orderDate}", _orderDate.ToShortDateString())
             .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
             .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString())
-            .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString()));
+            .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString());
     }
 
-    public async Task<string> GetPlainTextBody()
+    private string GetPlainTextBody()
     {
-        return await Task.Run(() => OrderAcceptedMailTemplate.Text
+        return OrderAcceptedMailTemplate.Text
             .Replace("{name}", _name)
             .Replace("{orderDate}", _orderDate.ToShortDateString())
             .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
             .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString())
-            .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString()));
+            .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString());
     }
 }

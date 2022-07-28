@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using FirebaseAdmin.Messaging;
 using RecoverUnsoldApi.Entities;
 using RecoverUnsoldApi.Infrastructure;
@@ -32,7 +33,7 @@ public class NotificationService : INotificationService
         try
         {
             var result = await FirebaseMessaging.DefaultInstance.SendAllAsync(messages);
-            foreach (var resultResponse in result.Responses)
+            foreach (var resultResponse in result?.Responses ?? ImmutableList<SendResponse>.Empty)
             {
                 if (resultResponse.IsSuccess)
                 {
