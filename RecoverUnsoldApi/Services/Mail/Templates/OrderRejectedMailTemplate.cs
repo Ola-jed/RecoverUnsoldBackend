@@ -1,6 +1,6 @@
 namespace RecoverUnsoldApi.Services.Mail.Templates;
 
-public static class OfferRejectedMailTemplate
+public static class OrderRejectedMailTemplate
 {
     public const string Text =
         "Bonjour {name}.\nLa commande que vous avez passée le {orderDate}, relative à une offre d'un montant total de {offerAmount} et publiée le {offerPublishDate} vient d'être refusée par le distributeur.\nCordialement";
