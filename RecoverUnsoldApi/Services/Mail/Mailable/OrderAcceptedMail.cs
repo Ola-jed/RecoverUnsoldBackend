@@ -42,7 +42,7 @@ public class OrderAcceptedMail : IMailable
 
     private string GetHtmlBody()
     {
-        return OrderAcceptedMailTemplate.Email
+        return OrderAcceptedMailTemplate.Html
             .Replace("{name}", _name)
             .Replace("{orderDate}", _orderDate.ToShortDateString())
             .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
