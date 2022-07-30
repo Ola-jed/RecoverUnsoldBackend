@@ -129,4 +129,14 @@ public class OrdersService : IOrdersService
         _context.Orders.Update(order);
         await _context.SaveChangesAsync();
     }
+
+    public async Task Complete(Guid orderId)
+    {
+        var order = await _context.Orders.FindAsync(orderId);
+        
+        if (order == null) return;
+        order.Status = Status.Completed;
+        _context.Orders.Update(order);
+        await _context.SaveChangesAsync();
+    }
 }
