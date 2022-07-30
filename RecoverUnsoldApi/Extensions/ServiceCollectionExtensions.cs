@@ -21,6 +21,7 @@ using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.Distributors;
+using RecoverUnsoldApi.Services.Reviews;
 using RecoverUnsoldApi.Services.UserVerification;
 
 namespace RecoverUnsoldApi.Extensions;
@@ -82,6 +83,15 @@ public static class ServiceCollectionExtensions
         cfg["MailDisplayName"] = configuration["MailDisplayName"];
         cfg["MailPassword"] = configuration["MailPassword"];
         serviceCollection.Configure<MailConfig>(cfg);
+    }
+
+    public static void ConfigureAppOwner(this IServiceCollection serviceCollection,
+        IConfiguration configuration)
+    {
+        var cfg = configuration.GetSection("AppOwner");
+        cfg["Name"] = configuration["AppOwnerName"];
+        cfg["Email"] = configuration["AppOwnerEmail"];
+        serviceCollection.Configure<AppOwner>(cfg);
     }
 
     public static void ConfigureCloudinary(this IServiceCollection serviceCollection,
@@ -154,5 +164,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<INotificationService, NotificationService>();
         serviceCollection.AddScoped<IDistributorsService, DistributorsService>();
         serviceCollection.AddScoped<IFcmTokensService, FcmTokensService>();
+        serviceCollection.AddScoped<IReviewsService, ReviewsService>();
     }
 }
