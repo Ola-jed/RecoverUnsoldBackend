@@ -190,4 +190,37 @@ public class OrdersController : ControllerBase
         );
         return NoContent();
     }
+    
+    [Authorize(Roles = Roles.Distributor)]
+    [HttpPost("{id:guid}/Complete")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> CompleteOrder(Guid id)
+    {
+        var order = await _ordersService.GetOrder(id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        var isOwner = await _ordersService.IsRelativeToDistributor(id, this.GetUserId());
+        if (!isOwner)
+        {
+            return Forbid();
+        }
+
+        var relatedOffer = order.Offer!;
+        var customer = order.Customer!;
+        var customerEntity = (await _applicationUserService.FindByIdWithFcmTokens(customer.Id))!;
+        await _ordersService.Reject(id);
+        var orderCompletedMail = new OrderCompletedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
+            relatedOffer.CreatedAt, customer.Email);
+        await _mailService.SendEmailAsync(orderCompletedMail);
+        await _notificationService.Send(
+            new OrderCompletedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt),
+            customerEntity
+        );
+        return NoContent();
+    }
 }
