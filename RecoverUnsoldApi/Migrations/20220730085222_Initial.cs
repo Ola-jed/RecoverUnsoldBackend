@@ -135,6 +135,27 @@ namespace RecoverUnsoldApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Comment = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Offers",
                 columns: table => new
                 {
@@ -372,6 +393,16 @@ namespace RecoverUnsoldApi.Migrations
                 column: "OfferId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_CreatedAt",
+                table: "Reviews",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_CreatedAt",
                 table: "Users",
                 column: "CreatedAt");
@@ -426,6 +457,9 @@ namespace RecoverUnsoldApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "PasswordResets");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Product");

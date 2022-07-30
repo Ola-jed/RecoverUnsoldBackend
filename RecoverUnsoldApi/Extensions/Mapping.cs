@@ -38,7 +38,8 @@ public static class Mapping
             distributor.Phone, distributor.WebsiteUrl, distributor.CreatedAt);
     }
 
-    public static IQueryable<DistributorInformationDto> ToDistributorInformationReadDto(this IQueryable<Distributor> distributors)
+    public static IQueryable<DistributorInformationDto> ToDistributorInformationReadDto(
+        this IQueryable<Distributor> distributors)
     {
         return distributors.Select(d => d.ToDistributorInformationDto());
     }
@@ -110,5 +111,18 @@ public static class Mapping
     public static IEnumerable<OpinionReadDto> ToOpinionReadDto(this IEnumerable<Opinion> opinions)
     {
         return opinions.Select(o => o.ToOpinionReadDto());
+    }
+
+    public static ReviewReadDto ToReviewReadDto(this Review review)
+    {
+        return new ReviewReadDto(review.Comment,
+            review.User! is Customer
+                ? (review.User as Customer)!.ToCustomerReadDto()
+                : (review.User as Distributor)!.ToDistributorReadDto(), review.CreatedAt);
+    }
+
+    public static IQueryable<ReviewReadDto> ToReviewReadDto(this IQueryable<Review> reviews)
+    {
+        return reviews.Select(r => r.ToReviewReadDto());
     }
 }

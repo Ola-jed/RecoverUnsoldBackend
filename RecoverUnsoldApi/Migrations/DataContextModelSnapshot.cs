@@ -370,17 +370,17 @@ namespace RecoverUnsoldApi.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedAt");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -583,13 +583,13 @@ namespace RecoverUnsoldApi.Migrations
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Review", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Customer", "Customer")
+                    b.HasOne("RecoverUnsoldApi.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RecoverUnsoldApi.Entities.Location", b =>

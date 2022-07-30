@@ -9,8 +9,8 @@ public class Review: Entity
     [DataType(DataType.Text)]
     public string Comment { get; set; } = null!;
     
-    [ForeignKey(nameof(Customer))]
-    public Guid CustomerId { get; set; }
+    [ForeignKey(nameof(User))]
+    public Guid UserId { get; set; }
 
-    public Customer? Customer { get; set; }
+    public User? User { get; set; }
 }
