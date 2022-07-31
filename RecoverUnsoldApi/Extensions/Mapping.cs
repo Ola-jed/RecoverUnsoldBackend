@@ -44,6 +44,17 @@ public static class Mapping
         return distributors.Select(d => d.ToDistributorInformationDto());
     }
 
+    public static DistributorLabelReadDto ToDistributorLabelReadDto(this Distributor distributor)
+    {
+        return new DistributorLabelReadDto(distributor.Id, distributor.Username);
+    }
+
+    public static IQueryable<DistributorLabelReadDto> ToDistributorLabelReadDto(
+        this IQueryable<Distributor> distributors)
+    {
+        return distributors.Select(d => d.ToDistributorLabelReadDto());
+    }
+
     public static ProductReadDto ToProductReadDto(this Product product)
     {
         return new ProductReadDto(product.Id, product.Name, product.Description, product.OfferId,
