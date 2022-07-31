@@ -10,6 +10,7 @@ using Npgsql;
 using RecoverUnsoldApi.Config;
 using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Infrastructure;
+using RecoverUnsoldApi.Services.Alerts;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.FcmTokens;
@@ -21,6 +22,7 @@ using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.Distributors;
+using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 using RecoverUnsoldApi.Services.Reviews;
 using RecoverUnsoldApi.Services.UserVerification;
 
@@ -165,5 +167,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IDistributorsService, DistributorsService>();
         serviceCollection.AddScoped<IFcmTokensService, FcmTokensService>();
         serviceCollection.AddScoped<IReviewsService, ReviewsService>();
+        serviceCollection.AddScoped<IAlertsService, AlertsService>();
+        serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
     }
 }
