@@ -28,8 +28,13 @@ public class NotificationService : INotificationService
                 Title = notificationMessage.Title,
                 Body = notificationMessage.Body
             }
-        });
-
+        }).ToArray();
+        
+        if (messages.Length == 0)
+        {
+            return;
+        }
+        
         try
         {
             var result = await FirebaseMessaging.DefaultInstance.SendAllAsync(messages);

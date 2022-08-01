@@ -158,16 +158,16 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IApplicationUserService, ApplicationUserService>();
         serviceCollection.AddScoped<IUserVerificationService, UserVerificationService>();
         serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
-        serviceCollection.AddScoped<IMailService, MailService>();
+        serviceCollection.AddSingleton<IMailService, MailService>();
+        serviceCollection.AddSingleton<INotificationService, NotificationService>();
+        serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
         serviceCollection.AddScoped<IProductsService, ProductsService>();
         serviceCollection.AddScoped<IOffersService, OffersService>();
         serviceCollection.AddScoped<IOrdersService, OrdersService>();
-        serviceCollection.AddScoped<INotificationService, NotificationService>();
         serviceCollection.AddScoped<IDistributorsService, DistributorsService>();
         serviceCollection.AddScoped<IFcmTokensService, FcmTokensService>();
         serviceCollection.AddScoped<IReviewsService, ReviewsService>();
         serviceCollection.AddScoped<IAlertsService, AlertsService>();
-        serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
     }
 }
