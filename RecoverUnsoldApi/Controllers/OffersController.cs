@@ -3,10 +3,10 @@ using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldApi.Entities;
 using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.Locations;
+using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 using RecoverUnsoldApi.Services.Offers;
 
 namespace RecoverUnsoldApi.Controllers;
@@ -17,11 +17,14 @@ public class OffersController : ControllerBase
 {
     private readonly IOffersService _offersService;
     private readonly ILocationsService _locationsService;
-
-    public OffersController(IOffersService offersService, ILocationsService locationsService)
+    private readonly IOfferPublishedNotificationService _offerPublishedNotificationService;
+    
+    public OffersController(IOffersService offersService, ILocationsService locationsService,
+        IOfferPublishedNotificationService offerPublishedNotificationService)
     {
         _offersService = offersService;
         _locationsService = locationsService;
+        _offerPublishedNotificationService = offerPublishedNotificationService;
     }
 
     [HttpGet("{id:guid}", Name = nameof(GetOffer))]
@@ -60,10 +63,9 @@ public class OffersController : ControllerBase
             nameof(distanceFilterDto.Page), nameof(distanceFilterDto.PerPage)
         );
         return await _offersService.GetOffersCloseTo(
-            new LatLong(distanceFilterDto.Latitude,distanceFilterDto.Longitude),
+            distanceFilterDto.ToLatLong(),
             urlPaginationParam,
-            distanceFilterDto.Distance
-        );
+            distanceFilterDto.Distance);
     }
 
     [HttpPost]
@@ -82,6 +84,7 @@ public class OffersController : ControllerBase
             return BadRequest();
         }
         var offer = await _offersService.Create(distributorId, offerCreateDto);
+        _offerPublishedNotificationService.Process(offer.Id);
         return CreatedAtRoute(nameof(GetOffer), new { id = offer.Id }, offer);
     }
 

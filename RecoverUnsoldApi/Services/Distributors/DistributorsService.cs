@@ -35,6 +35,14 @@ public class DistributorsService: IDistributorsService
         );
     }
 
+    public async Task<IEnumerable<DistributorLabelReadDto>> GetDistributorsLabels()
+    {
+        return await _context.Distributors
+            .AsNoTracking()
+            .Select(d => d.ToDistributorLabelReadDto())
+            .ToListAsync();
+    }
+
     public async Task<DistributorInformationDto?> GetDistributor(Guid id)
     {
         var distributor = await _context.Distributors

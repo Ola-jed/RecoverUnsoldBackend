@@ -12,8 +12,7 @@ public class OrderRejectedNotificationMessage : INotificationMessage
         _offerAmount = offerAmount;
         _offerPublishDate = offerPublishDate;
     }
-
-
+    
     public string Title => "Commande refusée";
 
     public string Body =>

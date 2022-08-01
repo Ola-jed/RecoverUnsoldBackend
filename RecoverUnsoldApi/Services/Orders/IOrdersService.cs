@@ -23,4 +23,5 @@ public interface IOrdersService
     Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId);
     Task Accept(Guid orderId);
     Task Reject(Guid orderId);
+    Task Complete(Guid orderId);
 }

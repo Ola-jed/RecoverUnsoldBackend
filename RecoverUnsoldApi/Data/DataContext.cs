@@ -68,4 +68,5 @@ public class DataContext : DbContext
     public DbSet<Opinion> Opinions { get; set; } = null!;
     public DbSet<Alert> Alerts { get; set; } = null!;
     public DbSet<FcmToken> FcmTokens { get; set; } = null!;
+    public DbSet<Review> Reviews { get; set; } = null!;
 }

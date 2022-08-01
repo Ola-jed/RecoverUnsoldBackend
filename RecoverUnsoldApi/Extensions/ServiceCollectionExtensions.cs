@@ -10,6 +10,7 @@ using Npgsql;
 using RecoverUnsoldApi.Config;
 using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Infrastructure;
+using RecoverUnsoldApi.Services.Alerts;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.FcmTokens;
@@ -21,6 +22,8 @@ using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.Distributors;
+using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
+using RecoverUnsoldApi.Services.Reviews;
 using RecoverUnsoldApi.Services.UserVerification;
 
 namespace RecoverUnsoldApi.Extensions;
@@ -82,6 +85,15 @@ public static class ServiceCollectionExtensions
         cfg["MailDisplayName"] = configuration["MailDisplayName"];
         cfg["MailPassword"] = configuration["MailPassword"];
         serviceCollection.Configure<MailConfig>(cfg);
+    }
+
+    public static void ConfigureAppOwner(this IServiceCollection serviceCollection,
+        IConfiguration configuration)
+    {
+        var cfg = configuration.GetSection("AppOwner");
+        cfg["Name"] = configuration["AppOwnerName"];
+        cfg["Email"] = configuration["AppOwnerEmail"];
+        serviceCollection.Configure<AppOwner>(cfg);
     }
 
     public static void ConfigureCloudinary(this IServiceCollection serviceCollection,
@@ -146,13 +158,16 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IApplicationUserService, ApplicationUserService>();
         serviceCollection.AddScoped<IUserVerificationService, UserVerificationService>();
         serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
-        serviceCollection.AddScoped<IMailService, MailService>();
+        serviceCollection.AddSingleton<IMailService, MailService>();
+        serviceCollection.AddSingleton<INotificationService, NotificationService>();
+        serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
         serviceCollection.AddScoped<IProductsService, ProductsService>();
         serviceCollection.AddScoped<IOffersService, OffersService>();
         serviceCollection.AddScoped<IOrdersService, OrdersService>();
-        serviceCollection.AddScoped<INotificationService, NotificationService>();
         serviceCollection.AddScoped<IDistributorsService, DistributorsService>();
         serviceCollection.AddScoped<IFcmTokensService, FcmTokensService>();
+        serviceCollection.AddScoped<IReviewsService, ReviewsService>();
+        serviceCollection.AddScoped<IAlertsService, AlertsService>();
     }
 }

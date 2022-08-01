@@ -26,6 +26,12 @@ public class DistributorsController : ControllerBase
         return await _distributorsService.GetDistributors(urlPaginationParam, distributorFilterDto.Name);
     }
 
+    [HttpGet("Labels")]
+    public async Task<IEnumerable<DistributorLabelReadDto>> GetDistributorsLabels()
+    {
+        return await _distributorsService.GetDistributorsLabels();
+    }
+    
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -19,6 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureMail(configuration);
+builder.Services.ConfigureAppOwner(configuration);
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureCloudinary(configuration);
 builder.Services.AddServices();
