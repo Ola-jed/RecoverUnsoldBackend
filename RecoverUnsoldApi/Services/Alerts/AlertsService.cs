@@ -43,7 +43,8 @@ public class AlertsService : IAlertsService
         _context.Alerts.Add(new Alert
         {
             AlertType = AlertType.DistributorOfferPublished,
-            Trigger = distributorId.ToString()
+            Trigger = distributorId.ToString(),
+            CustomerId = customerId
         });
         await _context.SaveChangesAsync();
     }
@@ -63,6 +64,7 @@ public class AlertsService : IAlertsService
 
         return alerts.Select(a => new AlertReadDto
         (
+            a.Id,
             a.AlertType,
             a.Trigger == null ? null : distributors.First(d => d!.Id == Guid.Parse(a.Trigger))
         ));
