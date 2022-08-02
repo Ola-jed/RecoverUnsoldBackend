@@ -213,7 +213,7 @@ public class OrdersController : ControllerBase
         var relatedOffer = order.Offer!;
         var customer = order.Customer!;
         var customerEntity = (await _applicationUserService.FindByIdWithFcmTokens(customer.Id))!;
-        await _ordersService.Reject(id);
+        await _ordersService.Complete(id);
         var orderCompletedMail = new OrderCompletedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
             relatedOffer.CreatedAt, customer.Email);
         await _mailService.SendEmailAsync(orderCompletedMail);
