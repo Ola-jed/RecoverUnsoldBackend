@@ -57,7 +57,8 @@ public class AlertsService : IAlertsService
             .ToListAsync();
 
         var distributors = alerts.Where(a => a.Trigger != null)
-            .Select(a => a.Trigger!)
+            .AsEnumerable()
+            .Select(a => Guid.Parse(a.Trigger!))
             .Distinct()
             .Select(id => _context.Distributors.Find(id)?.ToDistributorInformationDto())
             .Where(d => d != null);
