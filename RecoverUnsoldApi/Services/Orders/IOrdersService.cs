@@ -8,6 +8,7 @@ public interface IOrdersService
 {
     Task<bool> IsOrderRequestValid(Guid offerId);
     Task<bool> IsRelativeToDistributor(Guid orderId, Guid distributorId);
+    Task<bool> IsRelativeToCustomer(Guid orderId, Guid customerId);
     Task<bool> IsOrderRequestInDateInterval(Guid offerId, DateTime dateTime);
     Task<OrderReadDto?> GetOrder(Guid id);
 

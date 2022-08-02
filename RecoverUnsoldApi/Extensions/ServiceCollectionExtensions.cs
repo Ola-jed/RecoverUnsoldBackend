@@ -23,6 +23,7 @@ using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.Distributors;
 using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
+using RecoverUnsoldApi.Services.Opinions;
 using RecoverUnsoldApi.Services.Reviews;
 using RecoverUnsoldApi.Services.UserVerification;
 
@@ -154,13 +155,13 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddHostedService<LongRunningService>();
         serviceCollection.AddSingleton<BackgroundWorkerQueue>();
+        serviceCollection.AddSingleton<IMailService, MailService>();
+        serviceCollection.AddSingleton<INotificationService, NotificationService>();
+        serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<IAuthService, AuthService>();
         serviceCollection.AddScoped<IApplicationUserService, ApplicationUserService>();
         serviceCollection.AddScoped<IUserVerificationService, UserVerificationService>();
         serviceCollection.AddScoped<IForgotPasswordService, ForgotPasswordService>();
-        serviceCollection.AddSingleton<IMailService, MailService>();
-        serviceCollection.AddSingleton<INotificationService, NotificationService>();
-        serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<ILocationsService, LocationsService>();
         serviceCollection.AddScoped<IProductsService, ProductsService>();
         serviceCollection.AddScoped<IOffersService, OffersService>();
@@ -169,5 +170,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IFcmTokensService, FcmTokensService>();
         serviceCollection.AddScoped<IReviewsService, ReviewsService>();
         serviceCollection.AddScoped<IAlertsService, AlertsService>();
+        serviceCollection.AddScoped<IOpinionsService, OpinionsService>();
     }
 }

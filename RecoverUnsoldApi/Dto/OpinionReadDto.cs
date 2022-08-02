@@ -1,3 +1,3 @@
 ﻿namespace RecoverUnsoldApi.Dto;
 
-public record OpinionReadDto(Guid Id, int Rating, string Comment, Guid OrderId);
+public record OpinionReadDto(Guid Id, int Rating, string Comment, Guid OrderId, DateTime CreatedAt);
