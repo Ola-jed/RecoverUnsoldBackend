@@ -24,7 +24,7 @@ public class OpinionsController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("api/Orders/{id:guid}/Opinions")]
+    [HttpGet("/api/Orders/{id:guid}/Opinions")]
     public async Task<UrlPage<OpinionReadDto>> GetAll([FromRoute] Guid id, [FromQuery] int page = 1,
         [FromQuery] int perPage = 10)
     {
@@ -46,7 +46,7 @@ public class OpinionsController : ControllerBase
     }
     
     [Authorize(Roles = Roles.Customer)]
-    [HttpPost("api/Orders/{id:guid}/Opinions")]
+    [HttpPost("/api/Orders/{id:guid}/Opinions")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<OpinionReadDto>> Create(Guid id, OpinionCreateDto opinionCreateDto)
@@ -78,7 +78,7 @@ public class OpinionsController : ControllerBase
     }
     
     [Authorize(Roles = Roles.Customer)]
-    [HttpPut("{id:guid}")]
+    [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult> Delete(Guid id)
