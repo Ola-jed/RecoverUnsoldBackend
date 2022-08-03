@@ -13,7 +13,7 @@ using RecoverUnsoldApi.Data;
 namespace RecoverUnsoldApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220730085222_Initial")]
+    [Migration("20220803071137_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,9 +248,6 @@ namespace RecoverUnsoldApi.Migrations
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

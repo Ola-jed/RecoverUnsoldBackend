@@ -49,7 +49,6 @@ public class OpinionsService : IOpinionsService
     {
         var opinionEntityEntry = _context.Opinions.Add(new Opinion
         {
-            Rating = opinionCreateDto.Rating,
             Comment = opinionCreateDto.Comment,
             OrderId = orderId
         });
@@ -66,7 +65,6 @@ public class OpinionsService : IOpinionsService
         }
 
         opinion.Comment = opinionUpdateDto.Comment;
-        opinion.Rating = opinionUpdateDto.Rating;
         _context.Opinions.Update(opinion);
         await _context.SaveChangesAsync();
     }

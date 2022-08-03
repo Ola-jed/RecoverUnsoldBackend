@@ -111,7 +111,7 @@ public static class Mapping
 
     public static OpinionReadDto ToOpinionReadDto(this Opinion opinion)
     {
-        return new OpinionReadDto(opinion.Id, opinion.Rating, opinion.Comment, opinion.OrderId, opinion.CreatedAt);
+        return new OpinionReadDto(opinion.Id, opinion.Comment, opinion.OrderId, opinion.CreatedAt);
     }
 
     public static IQueryable<OpinionReadDto> ToOpinionReadDto(this IQueryable<Opinion> opinions)
