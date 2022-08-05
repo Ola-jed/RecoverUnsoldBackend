@@ -22,6 +22,7 @@ using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.Distributors;
+using RecoverUnsoldApi.Services.Home;
 using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 using RecoverUnsoldApi.Services.Opinions;
 using RecoverUnsoldApi.Services.Reviews;
@@ -171,5 +172,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IReviewsService, ReviewsService>();
         serviceCollection.AddScoped<IAlertsService, AlertsService>();
         serviceCollection.AddScoped<IOpinionsService, OpinionsService>();
+        serviceCollection.AddScoped<IHomeService, HomeService>();
     }
 }
