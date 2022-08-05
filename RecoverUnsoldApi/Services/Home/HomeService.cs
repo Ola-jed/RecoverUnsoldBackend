@@ -5,10 +5,10 @@ using RecoverUnsoldApi.Extensions;
 
 namespace RecoverUnsoldApi.Services.Home;
 
-public class HomeService: IHomeService
+public class HomeService : IHomeService
 {
     private readonly DataContext _context;
-    
+
     public HomeService(DataContext context)
     {
         _context = context;
@@ -20,6 +20,8 @@ public class HomeService: IHomeService
         var offers = await _context
             .Offers
             .AsNoTracking()
+            .Include(o => o.Location)
+            .Include(o => o.Products)
             .Where(o => o.StartDate.AddSeconds(o.Duration) > now)
             .OrderByDescending(o => o.CreatedAt)
             .Take(5)
@@ -36,6 +38,53 @@ public class HomeService: IHomeService
 
         return new CustomerHomeDto(offers, distributors);
     }
-    
-    
+
+    public async Task<DistributorHomeDto> GetDistributorHomeInformation(Guid distributorId,
+        DateTime periodStart, DateTime periodEnd)
+    {
+        var offers = await _context
+            .Offers
+            .AsNoTracking()
+            .Include(o => o.Location)
+            .Include(o => o.Products)
+            .OrderByDescending(o => o.CreatedAt)
+            .Take(5)
+            .ToOfferReadDto()
+            .ToListAsync();
+
+        var orders = await _context.Orders
+            .AsNoTracking()
+            .Include(o => o.Customer)
+            .Include(o => o.Opinions)
+            .Include(o => o.Offer)
+            .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
+            .OrderByDescending(o => o.CreatedAt)
+            .Take(5)
+            .ToOrderReadDto()
+            .ToListAsync();
+
+        var ordersPerDay = await _context.Orders
+            .AsNoTracking()
+            .Include(o => o.Offer)
+            .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
+            .Where(o => o.CreatedAt > periodStart && o.CreatedAt < periodEnd)
+            .GroupBy(o => o.CreatedAt.Date)
+            .Select(g => new { Date = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(g => g.Date, g => g.Count);
+
+        foreach (var dateTime in Enumerable.Range(0, 1 + periodEnd.Subtract(periodStart).Days)
+                     .Select(offset => periodStart.AddDays(offset).Date))
+        {
+            if (!ordersPerDay.Keys.Contains(dateTime))
+            {
+                ordersPerDay.Add(dateTime, 0);
+            }
+        }
+
+        var ordersPerDayDict = ordersPerDay
+            .Select(o => KeyValuePair.Create(DateOnly.FromDateTime(o.Key), o.Value))
+            .ToDictionary(x => x.Key, x => x.Value);
+
+        return new DistributorHomeDto(ordersPerDayDict, offers, orders);
+    }
 }
