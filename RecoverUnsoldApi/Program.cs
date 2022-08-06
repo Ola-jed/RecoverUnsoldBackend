@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using RecoverUnsoldApi.Converters;
 using RecoverUnsoldApi.Extensions;
-using RecoverUnsoldApi.Infrastructure;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +19,7 @@ builder.Services.ConfigureFirebase(configuration);
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    x.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+    x.JsonSerializerOptions.Converters.Add(new JsonDictionaryConverter<DateTime, int>());
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureMail(configuration);

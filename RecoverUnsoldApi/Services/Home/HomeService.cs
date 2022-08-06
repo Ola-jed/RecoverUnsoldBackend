@@ -67,7 +67,7 @@ public class HomeService : IHomeService
             .AsNoTracking()
             .Include(o => o.Offer)
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
-            .Where(o => o.CreatedAt > periodStart && o.CreatedAt < periodEnd)
+            .Where(o => o.CreatedAt >= periodStart && o.CreatedAt <= periodEnd)
             .GroupBy(o => o.CreatedAt.Date)
             .Select(g => new { Date = g.Key, Count = g.Count() })
             .ToDictionaryAsync(g => g.Date, g => g.Count);
@@ -81,10 +81,6 @@ public class HomeService : IHomeService
             }
         }
 
-        var ordersPerDayDict = ordersPerDay
-            .Select(o => KeyValuePair.Create(DateOnly.FromDateTime(o.Key), o.Value))
-            .ToDictionary(x => x.Key, x => x.Value);
-
-        return new DistributorHomeDto(ordersPerDayDict, offers, orders);
+        return new DistributorHomeDto(ordersPerDay, offers, orders);
     }
 }

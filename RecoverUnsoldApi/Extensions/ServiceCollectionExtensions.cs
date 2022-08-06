@@ -156,7 +156,7 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddHostedService<LongRunningService>();
         serviceCollection.AddSingleton<BackgroundWorkerQueue>();
-        serviceCollection.AddSingleton<IMailService, MailService>();
+        serviceCollection.AddSingleton<IMailService, DummyMailService>();
         serviceCollection.AddSingleton<INotificationService, NotificationService>();
         serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<IAuthService, AuthService>();
