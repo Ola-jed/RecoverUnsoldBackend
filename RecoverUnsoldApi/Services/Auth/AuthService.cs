@@ -36,12 +36,11 @@ public class AuthService : IAuthService
 
     public async Task RegisterDistributor(DistributorRegisterDto distributorRegisterDto)
     {
-        var password = HashPassword(distributorRegisterDto.Password);
         var distributor = new Distributor
         {
             Username = distributorRegisterDto.Username,
             Email = distributorRegisterDto.Email,
-            Password = password,
+            Password = HashPassword(distributorRegisterDto.Password),
             Rccm = distributorRegisterDto.Rccm,
             TaxId = distributorRegisterDto.TaxId,
             Phone = distributorRegisterDto.Phone,
@@ -54,12 +53,7 @@ public class AuthService : IAuthService
     public async Task<JwtSecurityToken?> Login(LoginDto loginDto)
     {
         var user = await ValidateCredentials(loginDto);
-        if (user == null)
-        {
-            return null;
-        }
-
-        return await GenerateJwt(user);
+        return user == null ? null : GenerateJwt(user);
     }
 
     public async Task<User?> ValidateCredentials(LoginDto loginDto)
@@ -82,7 +76,7 @@ public class AuthService : IAuthService
         return Verify(password, userPassword ?? "");
     }
 
-    public async Task<JwtSecurityToken> GenerateJwt(User user)
+    public JwtSecurityToken GenerateJwt(User user)
     {
         var role = user switch
         {
@@ -103,6 +97,6 @@ public class AuthService : IAuthService
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         );
-        return await Task.Run(() => jwtToken);
+        return jwtToken;
     }
 }

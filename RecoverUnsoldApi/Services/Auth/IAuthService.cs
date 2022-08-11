@@ -11,5 +11,5 @@ public interface IAuthService
     public Task<JwtSecurityToken?> Login(LoginDto loginDto);
     public Task<User?> ValidateCredentials(LoginDto loginDto);
     public Task<bool> AreCredentialsValid(string email, string password);
-    public Task<JwtSecurityToken> GenerateJwt(User user);
+    public JwtSecurityToken GenerateJwt(User user);
 }
