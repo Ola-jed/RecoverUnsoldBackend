@@ -42,16 +42,6 @@ public class HomeService : IHomeService
     public async Task<DistributorHomeDto> GetDistributorHomeInformation(Guid distributorId,
         DateTime periodStart, DateTime periodEnd)
     {
-        var offers = await _context
-            .Offers
-            .AsNoTracking()
-            .Include(o => o.Location)
-            .Include(o => o.Products)
-            .OrderByDescending(o => o.CreatedAt)
-            .Take(5)
-            .ToOfferReadDto()
-            .ToListAsync();
-
         var orders = await _context.Orders
             .AsNoTracking()
             .Include(o => o.Customer)
@@ -83,6 +73,6 @@ public class HomeService : IHomeService
             }
         }
 
-        return new DistributorHomeDto(ordersPerDay, offers, orders);
+        return new DistributorHomeDto(ordersPerDay, orders);
     }
 }
