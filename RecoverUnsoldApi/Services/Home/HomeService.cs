@@ -63,11 +63,13 @@ public class HomeService : IHomeService
             .ToOrderReadDto()
             .ToListAsync();
 
+        var periodStartDate = periodStart.Date;
+        var periodEndDate = periodEnd.Date;
         var ordersPerDay = await _context.Orders
             .AsNoTracking()
             .Include(o => o.Offer)
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
-            .Where(o => o.CreatedAt >= periodStart && o.CreatedAt <= periodEnd)
+            .Where(o => o.CreatedAt.Date >= periodStartDate && o.CreatedAt.Date <= periodEndDate)
             .GroupBy(o => o.CreatedAt.Date)
             .Select(g => new { Date = g.Key, Count = g.Count() })
             .ToDictionaryAsync(g => g.Date, g => g.Count);
