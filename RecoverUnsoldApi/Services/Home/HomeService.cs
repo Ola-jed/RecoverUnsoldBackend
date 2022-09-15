@@ -3,17 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Extensions;
-using Serilog;
 
 namespace RecoverUnsoldApi.Services.Home;
 
 public class HomeService : IHomeService
 {
     private readonly DataContext _context;
-
-    public HomeService(DataContext context)
+    private readonly ILogger<HomeService> _logger;
+    
+    public HomeService(DataContext context, ILogger<HomeService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<CustomerHomeDto> GetCustomerHomeInformation(Guid? customerId)
@@ -103,7 +104,7 @@ public class HomeService : IHomeService
         }
         catch (Exception exception)
         {
-            Log.Logger.Fatal(exception,"Error when doing operation");
+            _logger.LogCritical(exception,"Error when doing operation");
             return null;
         }
         finally
