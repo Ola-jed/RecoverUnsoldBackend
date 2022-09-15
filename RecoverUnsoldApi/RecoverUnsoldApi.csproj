@@ -34,6 +34,7 @@
         <Folder Include="Logs" />
         <Folder Include="Services\Images" />
         <Folder Include="Services\Offers\" />
+        <Folder Include="wwwroot" />
     </ItemGroup>
 
 </Project>

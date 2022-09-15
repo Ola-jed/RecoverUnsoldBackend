@@ -1,7 +1,9 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldApi.Data;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Extensions;
+using Serilog;
 
 namespace RecoverUnsoldApi.Services.Home;
 
@@ -14,7 +16,7 @@ public class HomeService : IHomeService
         _context = context;
     }
 
-    public async Task<CustomerHomeDto> GetCustomerHomeInformation()
+    public async Task<CustomerHomeDto> GetCustomerHomeInformation(Guid? customerId)
     {
         var now = DateTime.Now;
         var offers = await _context
@@ -36,7 +38,9 @@ public class HomeService : IHomeService
             .ToDistributorInformationReadDto()
             .ToListAsync();
 
-        return new CustomerHomeDto(offers, distributors);
+        return customerId == null
+            ? new CustomerHomeDto(offers, distributors, null)
+            : new CustomerHomeDto(offers, distributors, await GetCustomerOrderStats(customerId.Value));
     }
 
     public async Task<DistributorHomeDto> GetDistributorHomeInformation(Guid distributorId,
@@ -74,5 +78,37 @@ public class HomeService : IHomeService
         }
 
         return new DistributorHomeDto(ordersPerDay, orders);
+    }
+
+    private async Task<CustomerOrderStatsDto?> GetCustomerOrderStats(Guid customerId)
+    {
+        var databaseConnection = _context.Database.GetDbConnection();
+        try
+        {
+            await databaseConnection.OpenAsync();
+            await using var command = databaseConnection.CreateCommand();
+            command.CommandText = "select count(\"Orders\".\"Id\"),sum(O.\"Price\") from \"Orders\" inner join \"Offers\" O on O.\"Id\" = \"Orders\".\"OfferId\" where \"Orders\".\"CustomerId\" = @CustomerId";
+            command.CommandType = CommandType.Text;
+            
+            var customerParameter = command.CreateParameter();
+            customerParameter.ParameterName = "@CustomerId";
+            customerParameter.Value = customerId;
+            customerParameter.DbType = DbType.Guid;
+            command.Parameters.Add(customerParameter);
+            
+            await using var dataReader = await command.ExecuteReaderAsync();
+            return dataReader.HasRows
+                ? new CustomerOrderStatsDto(dataReader.GetInt32(0), dataReader.GetDecimal(1))
+                : new CustomerOrderStatsDto(0, 0);
+        }
+        catch (Exception exception)
+        {
+            Log.Logger.Fatal(exception,"Error when doing operation");
+            return null;
+        }
+        finally
+        {
+            await databaseConnection.CloseAsync();
+        }
     }
 }

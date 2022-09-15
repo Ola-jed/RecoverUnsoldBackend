@@ -9,7 +9,7 @@ namespace RecoverUnsoldApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class HomeController: ControllerBase
+public class HomeController : ControllerBase
 {
     private readonly IHomeService _homeService;
 
@@ -21,9 +21,12 @@ public class HomeController: ControllerBase
     [HttpGet]
     public async Task<CustomerHomeDto> GetCustomerHome()
     {
-        return await _homeService.GetCustomerHomeInformation();
+        var idClaim = User.FindFirst(CustomClaims.Id)?.Value;
+        return idClaim == null
+            ? await _homeService.GetCustomerHomeInformation(null)
+            : await _homeService.GetCustomerHomeInformation(Guid.Parse(idClaim));
     }
-    
+
     [Authorize(Roles = Roles.Distributor)]
     [HttpGet("Distributors")]
     public async Task<DistributorHomeDto> GetDistributorHome([FromQuery] PeriodDto period)

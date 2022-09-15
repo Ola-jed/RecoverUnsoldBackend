@@ -84,17 +84,17 @@ public class AuthService : IAuthService
             Distributor => Roles.Distributor,
             _           => throw new InvalidOperationException()
         };
-        var authClaims = new List<Claim>
-        {
-            new(ClaimTypes.Name, user.Username),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(CustomClaims.Id, user.Id.ToString()),
-            new(ClaimTypes.Role, role)
-        };
+        
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
         var jwtToken = new JwtSecurityToken(
             expires: DateTime.Now.AddDays(30),
-            claims: authClaims,
+            claims: new Claim[]
+            {
+                new(ClaimTypes.Name, user.Username),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(CustomClaims.Id, user.Id.ToString()),
+                new(ClaimTypes.Role, role)
+            },
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         );
         return jwtToken;
