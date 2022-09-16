@@ -96,11 +96,16 @@ public class HomeService : IHomeService
             customerParameter.Value = customerId;
             customerParameter.DbType = DbType.Guid;
             command.Parameters.Add(customerParameter);
-            
+
             await using var dataReader = await command.ExecuteReaderAsync();
-            return dataReader.HasRows
-                ? new CustomerOrderStatsDto(dataReader.GetInt32(0), dataReader.GetDecimal(1))
-                : new CustomerOrderStatsDto(0, 0);
+            if (dataReader.HasRows && await dataReader.ReadAsync())
+            {
+                return new CustomerOrderStatsDto(dataReader.GetInt32(0), dataReader.GetDecimal(1));
+            }
+            else
+            {
+                return new CustomerOrderStatsDto(0, 0);
+            }
         }
         catch (Exception exception)
         {
