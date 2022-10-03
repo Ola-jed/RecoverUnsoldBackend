@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using RecoverUnsoldApi.Converters;
-using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

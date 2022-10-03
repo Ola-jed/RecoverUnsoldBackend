@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RecoverUnsoldApi.Dto;
-using RecoverUnsoldApi.Entities.Enums;
-using RecoverUnsoldApi.Extensions;
-using RecoverUnsoldApi.Services.Alerts;
-using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldDomain.Dto;
+using RecoverUnsoldDomain.Entities.Enums;
+using RecoverUnsoldDomain.Extensions;
+using RecoverUnsoldDomain.Services.Alerts;
+using RecoverUnsoldDomain.Services.Auth;
 
 namespace RecoverUnsoldApi.Controllers;
 

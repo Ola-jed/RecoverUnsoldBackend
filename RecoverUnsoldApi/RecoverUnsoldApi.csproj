@@ -32,9 +32,10 @@
 
     <ItemGroup>
         <Folder Include="Logs" />
-        <Folder Include="Services\Images" />
-        <Folder Include="Services\Offers\" />
-        <Folder Include="wwwroot" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using RecoverUnsoldApi.Config;
-using RecoverUnsoldApi.Dto;
-using RecoverUnsoldApi.Extensions;
-using RecoverUnsoldApi.Services.ApplicationUser;
-using RecoverUnsoldApi.Services.Mail;
-using RecoverUnsoldApi.Services.Mail.Mailable;
-using RecoverUnsoldApi.Services.Reviews;
+using RecoverUnsoldDomain.Config;
+using RecoverUnsoldDomain.Dto;
+using RecoverUnsoldDomain.Extensions;
+using RecoverUnsoldDomain.Services.ApplicationUser;
+using RecoverUnsoldDomain.Services.Mail;
+using RecoverUnsoldDomain.Services.Mail.Mailable;
+using RecoverUnsoldDomain.Services.Reviews;
 
 namespace RecoverUnsoldApi.Controllers;
 

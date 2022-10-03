@@ -1,9 +1,11 @@
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Mvc;
-using RecoverUnsoldApi.Dto;
-using RecoverUnsoldApi.Extensions;
-using RecoverUnsoldApi.Services.Distributors;
+using RecoverUnsoldDomain.Dto;
+using RecoverUnsoldDomain.Extensions;
+using RecoverUnsoldDomain.Services.Distributors;
+
+namespace RecoverUnsoldApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
