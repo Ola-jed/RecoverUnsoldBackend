@@ -13,7 +13,7 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220803071137_Initial")]
+    [Migration("20221003154657_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ namespace RecoverUnsoldDomain.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Alert", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Alert", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Alerts");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.EmailVerification", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.EmailVerification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("EmailVerifications");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.FcmToken", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.FcmToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,7 +116,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("FcmTokens");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Image", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Image", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,7 +150,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Image");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Location", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Location", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Offer", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Offer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,7 +230,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Offers");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Opinion", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Opinion", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,7 +258,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Opinions");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Order", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -293,7 +293,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.PasswordReset", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.PasswordReset", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -323,7 +323,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("PasswordResets");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Product", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -356,7 +356,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Review", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -384,7 +384,7 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.User", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -432,9 +432,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Customer", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Customer", b =>
                 {
-                    b.HasBaseType("RecoverUnsoldApi.Entities.User");
+                    b.HasBaseType("RecoverUnsoldDomain.Entities.User");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(100)
@@ -447,9 +447,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.HasDiscriminator().HasValue("Customer");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Distributor", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Distributor", b =>
                 {
-                    b.HasBaseType("RecoverUnsoldApi.Entities.User");
+                    b.HasBaseType("RecoverUnsoldDomain.Entities.User");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -482,9 +482,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.HasDiscriminator().HasValue("Distributor");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Alert", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Alert", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Customer", "Customer")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Customer", "Customer")
                         .WithMany("Alerts")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -493,25 +493,25 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.FcmToken", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.FcmToken", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.User", null)
+                    b.HasOne("RecoverUnsoldDomain.Entities.User", null)
                         .WithMany("FcmTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Image", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Image", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Product", null)
+                    b.HasOne("RecoverUnsoldDomain.Entities.Product", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Location", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Location", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Distributor", "Distributor")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Distributor", "Distributor")
                         .WithMany("Locations")
                         .HasForeignKey("DistributorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -520,15 +520,15 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("Distributor");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Offer", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Offer", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Distributor", "Distributor")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Distributor", "Distributor")
                         .WithMany()
                         .HasForeignKey("DistributorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecoverUnsoldApi.Entities.Location", "Location")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Location", "Location")
                         .WithMany("Offers")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -539,9 +539,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Opinion", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Opinion", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Order", "Order")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Order", "Order")
                         .WithMany("Opinions")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -550,15 +550,15 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Order", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Order", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Customer", "Customer")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecoverUnsoldApi.Entities.Offer", "Offer")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Offer", "Offer")
                         .WithMany()
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -569,9 +569,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("Offer");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Product", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Product", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.Offer", "Offer")
+                    b.HasOne("RecoverUnsoldDomain.Entities.Offer", "Offer")
                         .WithMany("Products")
                         .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -580,9 +580,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("Offer");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Review", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Review", b =>
                 {
-                    b.HasOne("RecoverUnsoldApi.Entities.User", "User")
+                    b.HasOne("RecoverUnsoldDomain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -591,37 +591,37 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Location", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Location", b =>
                 {
                     b.Navigation("Offers");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Offer", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Offer", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Order", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Order", b =>
                 {
                     b.Navigation("Opinions");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Product", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Product", b =>
                 {
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.User", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.User", b =>
                 {
                     b.Navigation("FcmTokens");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Customer", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Customer", b =>
                 {
                     b.Navigation("Alerts");
                 });
 
-            modelBuilder.Entity("RecoverUnsoldApi.Entities.Distributor", b =>
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Distributor", b =>
                 {
                     b.Navigation("Locations");
                 });
