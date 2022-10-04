@@ -1,0 +1,43 @@
+﻿@using RecoverUnsoldAdmin.Services
+@inherits LayoutComponentBase
+@inject ThemeService ThemeService
+
+<MudThemeProvider @bind-IsDarkMode="@ThemeService.IsDarkMode" Theme="ThemeService.Theme()"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit"
+                       Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
+        Dashboard
+
+        <MudSpacer/>
+
+        <MudIcon Icon="@Icons.Outlined.LightMode"/>
+
+        <MudSwitch Checked="ThemeService.IsDarkMode" CheckedChanged="ThemeService.ToggleDarkMode"
+                   Color="Color.Primary" Class="ma-4" T="bool"/>
+
+        <MudIcon Icon="@Icons.Outlined.DarkMode"/>
+    </MudAppBar>
+    <MudDrawer @bind-Open="@_drawerOpen">
+        <NavMenu/>
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle() {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        await ThemeService.LoadTheme();
+        StateHasChanged();
+    }
+}
