@@ -14,18 +14,18 @@ public class ThemeService
     {
         Palette = new Palette
         {
-            AppbarBackground = "#0097FF",
+            AppbarBackground = "#7278E0",
             AppbarText = "#FFFFFF",
-            Primary = "#007CD1",
+            Primary = "#7278E0",
             TextPrimary = "#FFFFFF",
-            Background = "#001524",
+            Background = "#3B3B3F",
             TextSecondary = "#E2EEF6",
-            DrawerBackground = "#093958",
-            DrawerText = "#FFFFFF",
-            Surface = "#093958",
-            ActionDefault = "#0C1217",
-            ActionDisabled = "#2F678C",
-            TextDisabled = "#B0B0B0",
+            DrawerBackground = "#08283A",
+            DrawerText = "#FAFAFA",
+            Surface = "#3B3B3F",
+            ActionDefault = "#2F678C",
+            ActionDisabled = "#0C1217",
+            TextDisabled = "#B0B0B0"
         }
     };
 
@@ -33,18 +33,18 @@ public class ThemeService
     {
         Palette = new Palette
         {
-            AppbarBackground = "#0097FF",
+            AppbarBackground = "#121B9E",
             AppbarText = "#FFFFFF",
-            Primary = "#007CD1",
+            Primary = "#121B9E",
             TextPrimary = "#0C1217",
             Background = "#F4FDFF",
             TextSecondary = "#0C1217",
-            DrawerBackground = "#C5E5FF",
-            DrawerText = "#0C1217",
-            Surface = "#E4FAFF",
+            DrawerBackground = "#05141D",
+            DrawerText = "#FAFAFA",
+            Surface = "#FFFBFF",
             ActionDefault = "#0C1217",
             ActionDisabled = "#2F678C",
-            TextDisabled = "#676767",
+            TextDisabled = "#676767"
         }
     };
     

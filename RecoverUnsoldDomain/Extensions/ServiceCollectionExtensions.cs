@@ -32,10 +32,9 @@ namespace RecoverUnsoldDomain.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void ConfigurePgsql(this IServiceCollection serviceCollection,
-        IConfiguration configuration, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    public static void ConfigurePgsql(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        var builder = new NpgsqlConnectionStringBuilder
+        var connectionBuilder = new NpgsqlConnectionStringBuilder
         {
             ConnectionString = configuration.GetConnectionString("DefaultConnection"),
             Database = configuration["PgDbName"] ?? "recover_unsold",
@@ -43,8 +42,10 @@ public static class ServiceCollectionExtensions
             Password = configuration["PgPassword"],
             Username = configuration["PgUserId"]
         };
-        serviceCollection.AddDbContext<DataContext>(opt =>
-            opt.UseNpgsql(builder.ConnectionString, o => o.UseNetTopologySuite()));
+        serviceCollection.AddDbContext<DataContext>(
+            opt => opt.UseNpgsql(connectionBuilder.ConnectionString,
+                o => o.UseNetTopologySuite())
+        );
     }
 
     public static void ConfigureAuthentication(this IServiceCollection serviceCollection,

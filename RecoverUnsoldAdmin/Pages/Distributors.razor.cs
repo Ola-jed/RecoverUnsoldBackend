@@ -1,8 +1,8 @@
 using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using RecoverUnsoldAdmin.Services.Distributors;
 using RecoverUnsoldDomain.Entities;
-using RecoverUnsoldDomain.Services.Distributors;
 
 namespace RecoverUnsoldAdmin.Pages;
 
@@ -22,7 +22,7 @@ public class DistributorsBase : ComponentBase
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        Table.RowsPerPage = 10;
+        Table.RowsPerPage = PageSize;
         return base.OnAfterRenderAsync(firstRender);
     }
 

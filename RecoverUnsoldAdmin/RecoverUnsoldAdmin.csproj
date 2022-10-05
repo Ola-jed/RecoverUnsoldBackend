@@ -13,11 +13,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot" />
+      <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
+      <Folder Include="wwwroot\font" />
     </ItemGroup>
 
 </Project>

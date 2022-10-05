@@ -3,7 +3,8 @@
 @inherits DistributorsBase
 
 <PageTitle>Distributors</PageTitle>
-<MudTable @ref="Table" Hover="true" Striped="true" Loading="Loading"
+<MudTable @ref="Table" Hover="true" Striped="true"
+          Loading="Loading"
           ServerData="@(new Func<TableState, Task<TableData<Distributor>>>(ServerData))">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Distributors</MudText>
@@ -13,6 +14,11 @@
                       OnAdornmentClick="@(s => OnSearch())"
                       Class="mt-0"/>
     </ToolBarContent>
+    <NoRecordsContent>
+        <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">
+            No distributor found
+        </MudText>
+    </NoRecordsContent>
     <HeaderContent>
         <MudTh>Username</MudTh>
         <MudTh>Email</MudTh>
