@@ -13,13 +13,26 @@ public class DistributorsBase : ComponentBase
     public int PageSize { get; set; } = 10;
     protected string? Search { get; set; }
     protected MudTable<Distributor> Table { get; set; }
-
+    protected HashSet<Guid> ExpandedRows { get; set; } = new();
+    
     [Inject]
     public NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject]
     private IDistributorsService DistributorsService { get; set; } = default!;
 
+    protected void ToggleDistributor(Guid id)
+    {
+        if (ExpandedRows.Contains(id))
+        {
+            ExpandedRows.Remove(id);
+        }
+        else
+        {
+            ExpandedRows.Add(id);
+        }
+    }
+    
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
         Table.RowsPerPage = PageSize;

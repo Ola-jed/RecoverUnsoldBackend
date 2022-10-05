@@ -11,7 +11,7 @@
         <MudSpacer/>
         <MudTextField @bind-Value="Search" Placeholder="Search" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                      OnAdornmentClick="@(s => OnSearch())"
+                      OnAdornmentClick="@(_ => OnSearch())"
                       Class="mt-0"/>
     </ToolBarContent>
     <NoRecordsContent>
@@ -20,24 +20,81 @@
         </MudText>
     </NoRecordsContent>
     <HeaderContent>
-        <MudTh>Username</MudTh>
-        <MudTh>Email</MudTh>
-        <MudTh>Phone</MudTh>
-        <MudTh>Tax Id</MudTh>
-        <MudTh>Rccm</MudTh>
-        <MudTh>Website</MudTh>
-        <MudTh>Creation date</MudTh>
+        <MudTh><strong>Username</strong></MudTh>
+        <MudTh><strong>Email</strong></MudTh>
+        <MudTh><strong>Phone</strong></MudTh>
+        <MudTh><strong>Tax Id</strong></MudTh>
+        <MudTh><strong>Rccm</strong></MudTh>
+        <MudTh><strong>Website</strong></MudTh>
+        <MudTh><strong>Creation date</strong></MudTh>
+        <MudTh/>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Username">@context.Username</MudTd>
+        <MudTd DataLabel="Username" Class="font-weight-bold">@context.Username</MudTd>
         <MudTd DataLabel="Email">@context.Email</MudTd>
         <MudTd DataLabel="Phone">@context.Phone</MudTd>
         <MudTd DataLabel="Website">@context.TaxId</MudTd>
         <MudTd DataLabel="Website">@context.Rccm</MudTd>
         <MudTd DataLabel="Website">@(context.WebsiteUrl ?? "-")</MudTd>
         <MudTd DataLabel="Creation date">@context.CreatedAt.ToShortDateString()</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@(ExpandedRows.Contains(context.Id) ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                           OnClick="@(() => ToggleDistributor(context.Id))"/>
+        </MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager/>
     </PagerContent>
+    <ChildRowContent>
+        @if (ExpandedRows.Contains(context.Id)) {
+            <td colspan="8">
+                <MudCard Elevation="0">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.body1">Details for Distributor <strong>@context.Username</strong></MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent Class="pa-0">
+                        @if (@context.EmailVerifiedAt != null) {
+                            <MudText Typo="Typo.body1" Class="ml-5">
+                                Account verified the @context.EmailVerifiedAt?.ToShortDateString()
+                            </MudText>
+                        } else {
+                            <MudText Typo="Typo.body1" Class="ml-5">
+                                Account not verified
+                            </MudText>
+                        }
+                        
+                        @if (context.Locations.Count > 0) {
+                            <div style="display: flex; justify-content: center">
+                                <MudText Typo="Typo.h6">Locations</MudText>
+                            </div>
+                            <MudTable Items="@context.Locations" Context="LocationContext" Hover="true"
+                                      Breakpoint="Breakpoint.Sm" Elevation="0">
+                                <ColGroup>
+                                    <col /><col /><col style="width:200px;"/>
+                                </ColGroup>
+                                <HeaderContent>
+                                    <MudTh>Name</MudTh>
+                                    <MudTh>Indication</MudTh>
+                                    <MudTh>Image</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="Location Name">@LocationContext.Name</MudTd>
+                                    <MudTd DataLabel="Location Indication">@(LocationContext.Indication ?? "-")</MudTd>
+                                    <MudTd DataLabel="Location Image">
+                                        @if (LocationContext.Image != null) {
+                                            <MudImage Src="@LocationContext.Image" Elevation="25" Class="rounded-lg"/>
+                                        } else {
+                                            <span>-</span>
+                                        }
+                                    </MudTd>
+                                </RowTemplate>
+                            </MudTable>
+                        }
+                    </MudCardContent>
+                </MudCard>
+            </td>
+        }
+    </ChildRowContent>
 </MudTable>

@@ -10,14 +10,14 @@ public class ThemeService
     private readonly ILocalStorageService _localStorage;
     public bool IsDarkMode { get; set; }
 
-    private readonly MudTheme _darkTheme = new()
+    private static readonly MudTheme DarkTheme = new()
     {
         Palette = new Palette
         {
-            AppbarBackground = "#7278E0",
-            AppbarText = "#FFFFFF",
+            AppbarBackground = "#08283A",
+            AppbarText = "#FAFAFA",
             Primary = "#7278E0",
-            TextPrimary = "#FFFFFF",
+            TextPrimary = "#FAFAFA",
             Background = "#3B3B3F",
             TextSecondary = "#E2EEF6",
             DrawerBackground = "#08283A",
@@ -26,16 +26,23 @@ public class ThemeService
             ActionDefault = "#2F678C",
             ActionDisabled = "#0C1217",
             TextDisabled = "#B0B0B0"
+        },
+        Typography = new Typography
+        {
+            Default = new Default
+            {
+                FontFamily = new[] { "Open Sans" }
+            }
         }
     };
 
-    private readonly MudTheme _lightTheme = new()
+    private static readonly MudTheme LightTheme = new()
     {
         Palette = new Palette
         {
-            AppbarBackground = "#121B9E",
-            AppbarText = "#FFFFFF",
-            Primary = "#121B9E",
+            AppbarBackground = "#05141D",
+            AppbarText = "#FAFAFA",
+            Primary = "#8A92FF",
             TextPrimary = "#0C1217",
             Background = "#F4FDFF",
             TextSecondary = "#0C1217",
@@ -45,13 +52,20 @@ public class ThemeService
             ActionDefault = "#0C1217",
             ActionDisabled = "#2F678C",
             TextDisabled = "#676767"
+        },
+        Typography = new Typography
+        {
+            Default = new Default
+            {
+                FontFamily = new[] { "Open Sans" }
+            }
         }
     };
-    
+
     public ThemeService(ILocalStorageService localStorage)
     {
         _localStorage = localStorage;
-        _theme = _lightTheme;
+        _theme = LightTheme;
     }
 
     public MudTheme Theme()
@@ -62,13 +76,13 @@ public class ThemeService
     public async Task LoadTheme()
     {
         IsDarkMode = await _localStorage.GetItemAsync<bool>(ThemeKey);
-        _theme = IsDarkMode ? _darkTheme : _lightTheme;
+        _theme = IsDarkMode ? DarkTheme : LightTheme;
     }
-    
+
     public async Task ToggleDarkMode(bool isDarkMode)
     {
         await _localStorage.SetItemAsync(ThemeKey, isDarkMode);
         IsDarkMode = isDarkMode;
-        _theme = IsDarkMode ? _darkTheme : _lightTheme;
+        _theme = IsDarkMode ? DarkTheme : LightTheme;
     }
 }

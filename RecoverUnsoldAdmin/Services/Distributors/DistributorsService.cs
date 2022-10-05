@@ -22,6 +22,7 @@ public class DistributorsService: IDistributorsService
         var context = await _dbContextFactory.CreateDbContextAsync();
         var distributorsSource = context
             .Distributors
+            .Include(d => d.Locations)
             .AsNoTracking();
         if(name != null && name.Trim() != string.Empty)
         {
