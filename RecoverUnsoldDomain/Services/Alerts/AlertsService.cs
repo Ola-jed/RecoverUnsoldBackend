@@ -18,8 +18,7 @@ public class AlertsService : IAlertsService
 
     public async Task CreateAlertForAllOffers(Guid customerId)
     {
-        if (await _context.Alerts.AnyAsync(
-                a => a.CustomerId == customerId && a.AlertType == AlertType.AnyOfferPublished))
+        if (await _context.Alerts.AnyAsync(a => a.CustomerId == customerId && a.AlertType == AlertType.AnyOfferPublished))
         {
             return;
         }

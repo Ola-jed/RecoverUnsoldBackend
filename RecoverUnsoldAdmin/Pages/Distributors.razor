@@ -1,4 +1,37 @@
 @page "/Distributors"
-@inherits DistributorsController
+@using RecoverUnsoldDomain.Entities
+@inherits DistributorsBase
 
-<h3>Distributors</h3>
+<PageTitle>Distributors</PageTitle>
+<MudTable @ref="Table" Hover="true" Striped="true" Loading="Loading"
+          ServerData="@(new Func<TableState, Task<TableData<Distributor>>>(ServerData))">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Distributors</MudText>
+        <MudSpacer/>
+        <MudTextField @bind-Value="Search" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
+                      OnAdornmentClick="@(s => OnSearch())"
+                      Class="mt-0"/>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Username</MudTh>
+        <MudTh>Email</MudTh>
+        <MudTh>Phone</MudTh>
+        <MudTh>Tax Id</MudTh>
+        <MudTh>Rccm</MudTh>
+        <MudTh>Website</MudTh>
+        <MudTh>Creation date</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Username">@context.Username</MudTd>
+        <MudTd DataLabel="Email">@context.Email</MudTd>
+        <MudTd DataLabel="Phone">@context.Phone</MudTd>
+        <MudTd DataLabel="Website">@context.TaxId</MudTd>
+        <MudTd DataLabel="Website">@context.Rccm</MudTd>
+        <MudTd DataLabel="Website">@(context.WebsiteUrl ?? "-")</MudTd>
+        <MudTd DataLabel="Creation date">@context.CreatedAt.ToShortDateString()</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>

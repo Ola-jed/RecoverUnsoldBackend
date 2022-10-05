@@ -41,8 +41,9 @@ public class ProductsService : IProductsService
             .AsNoTracking()
             .Include(p => p.Images)
             .Where(p => p.OfferId == offerId)
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
             .ToProductReadDto()
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending));
+        );
     }
 
     public async Task<UrlPage<ProductReadDto>> GetProducts(UrlPaginationParameter urlPaginationParameter)
@@ -50,8 +51,9 @@ public class ProductsService : IProductsService
         return await Task.Run(() => _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
             .ToProductReadDto()
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending));
+        );
     }
 
     public async Task<UrlPage<ProductReadDto>> GetDistributorProducts(Guid distributorId,
@@ -62,8 +64,9 @@ public class ProductsService : IProductsService
             .Include(p => p.Images)
             .Include(p => p.Offer)
             .Where(p => p.Offer != null && p.Offer.DistributorId == distributorId)
+            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
             .ToProductReadDto()
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending));
+        );
     }
 
     public async Task<ProductReadDto?> GetProduct(Guid id)

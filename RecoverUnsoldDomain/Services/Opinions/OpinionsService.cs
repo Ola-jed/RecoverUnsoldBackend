@@ -31,8 +31,8 @@ public class OpinionsService : IOpinionsService
         return await Task.Run(() => _context.Opinions
             .AsNoTracking()
             .Where(o => o.OrderId == orderId)
-            .ToOpinionReadDto()
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .ToOpinionReadDto()
         );
     }
 

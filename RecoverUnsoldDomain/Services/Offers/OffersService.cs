@@ -42,8 +42,8 @@ public class OffersService : IOffersService
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .ApplyFilters(offerFilterDto)
-            .ToOfferReadDto()
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .ToOfferReadDto()
         );
     }
 
@@ -57,8 +57,8 @@ public class OffersService : IOffersService
             .ThenInclude(p => p.Images)
             .Where(o => o.DistributorId == distributorId)
             .ApplyFilters(offerFilterDto)
-            .ToOfferReadDto()
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .ToOfferReadDto()
         );
     }
 

@@ -23,8 +23,8 @@ public class ReviewsService : IReviewsService
     {
         return await Task.Run(() => _context.Reviews
             .AsNoTracking()
-            .ToReviewReadDto()
             .UrlPaginate(urlPaginationParameter, r => r.CreatedAt, PaginationOrder.Descending)
+            .ToReviewReadDto()
         );
     }
 

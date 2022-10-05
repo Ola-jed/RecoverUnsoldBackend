@@ -34,8 +34,8 @@ public class LocationsService : ILocationsService
         return await Task.Run(() => _context.Locations
             .AsNoTracking()
             .Where(x => x.DistributorId == userId)
-            .ToLocationReadDto()
             .UrlPaginate(urlPaginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
+            .ToLocationReadDto()
         );
     }
 
@@ -53,8 +53,8 @@ public class LocationsService : ILocationsService
         return await Task.Run(() => _context.Locations
             .AsNoTracking()
             .Where(x => x.Name.Contains(search))
-            .ToLocationReadDto()
             .UrlPaginate(urlPaginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
+            .ToLocationReadDto()
         );
     }
 

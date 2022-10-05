@@ -33,7 +33,7 @@ namespace RecoverUnsoldDomain.Extensions;
 public static class ServiceCollectionExtensions
 {
     public static void ConfigurePgsql(this IServiceCollection serviceCollection,
-        IConfiguration configuration)
+        IConfiguration configuration, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
     {
         var builder = new NpgsqlConnectionStringBuilder
         {
