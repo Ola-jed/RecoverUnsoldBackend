@@ -2,9 +2,24 @@
     <div style="display: flex;flex-flow: row nowrap; justify-content: center">
         <img src="icon.ico" alt="RecoverUnsold Admin" style="height: 75px;width: auto">
     </div>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-    <MudNavLink Href="/Customers" Match="NavLinkMatch.Prefix">Customers</MudNavLink>
-    <MudNavLink Href="/Distributors" Match="NavLinkMatch.Prefix">Distributors</MudNavLink>
-    <MudNavLink Href="/Offers" Match="NavLinkMatch.Prefix">Offers</MudNavLink>
-    <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+    
+    @foreach (var navItem in NavItems) {
+        <MudNavLink Href="@navItem.Href" Match="navItem.Match" Class="w-100 align-content-start">
+            <MudContainer Class="d-flex align-center" style="padding-left: 0 !important;" Elevation="0">
+                <MudIcon Icon="@navItem.Icon" Class="mr-2"/> @navItem.Text
+            </MudContainer>
+        </MudNavLink>    
+    }
 </MudNavMenu>
+
+@code {
+    internal record NavItem(string Href, NavLinkMatch Match, string Icon, string Text);
+
+    private static readonly NavItem[] NavItems = {
+        new("/", NavLinkMatch.All, Icons.Filled.Dashboard, "Dashboard"),
+        new("/Customers", NavLinkMatch.Prefix, Icons.Filled.People, "Customers"),
+        new("/Distributors", NavLinkMatch.Prefix, Icons.Filled.Person, "Distributors"),
+        new("/Offers", NavLinkMatch.Prefix, Icons.Filled.ShoppingBag, "Offers"),
+        new("/about", NavLinkMatch.Prefix, Icons.Filled.QuestionMark, "About"),
+    };
+}

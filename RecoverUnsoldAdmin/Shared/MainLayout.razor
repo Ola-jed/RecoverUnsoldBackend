@@ -8,17 +8,13 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit"
+        <MudIconButton Icon="@_menuIcon" Color="Color.Inherit"
                        Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
         Dashboard
-
         <MudSpacer/>
-
         <MudIcon Icon="@Icons.Outlined.LightMode"/>
-
         <MudSwitch Checked="ThemeService.IsDarkMode" CheckedChanged="ThemeService.ToggleDarkMode"
                    Color="Color.Primary" Class="ma-4" T="bool"/>
-
         <MudIcon Icon="@Icons.Outlined.DarkMode"/>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
@@ -27,17 +23,24 @@
     <MudMainContent>
         @Body
     </MudMainContent>
+    
+    <MudScrollToTop>
+        <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp" />
+    </MudScrollToTop>
 </MudLayout>
 
 @code {
+    string _menuIcon = Icons.Filled.MenuOpen;
     bool _drawerOpen = true;
 
     void DrawerToggle() {
         _drawerOpen = !_drawerOpen;
+        _menuIcon = _drawerOpen ? Icons.Filled.MenuOpen : Icons.Filled.Menu;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         await ThemeService.LoadTheme();
         StateHasChanged();
     }
+
 }
