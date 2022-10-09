@@ -5,6 +5,7 @@ using Npgsql;
 using RecoverUnsoldAdmin.Services;
 using RecoverUnsoldDomain.Data;
 using RecoverUnsoldAdmin.Services.Distributors;
+using RecoverUnsoldAdmin.Services.Stats;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ThemeService>();
 builder.Services.AddScoped<IDistributorsService, DistributorsService>();
+builder.Services.AddScoped<IStatsService, StatsService>();
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())

@@ -1,5 +1,89 @@
 @page "/"
+@inherits IndexBase
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Dashboard</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (Loading) {
+    <div style="display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 90vh;">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+    </div>
+} else {
+    <div style="display: flex; flex-flow: row wrap; justify-content: space-between">
+        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
+            <MudCardHeader>
+                <MudIcon Icon="@Icons.Filled.People" Class="mr-3"/>
+                <MudText Typo="Typo.h6">Customers</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.h5" Align="Align.End">
+                    @Stats?.CustomersCount
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
+            <MudCardHeader>
+                <MudIcon Icon="@Icons.Filled.Person" Class="mr-3"/>
+                <MudText Typo="Typo.h6">Distributors</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.h5" Align="Align.End">
+                    @Stats?.DistributorsCount
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
+            <MudCardHeader>
+                <MudIcon Icon="@Icons.Filled.ShoppingBag" Class="mr-3"/>
+                <MudText Typo="Typo.h6">Offers</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.h5" Align="Align.End">
+                    @Stats?.OffersCount
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
+            <MudCardHeader>
+                <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
+                <MudText Typo="Typo.h6">Orders</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.h5" Align="Align.End">
+                    @Stats?.OrdersCount
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+    </div>
+    
+    <div style="display: flex; flex-flow: row wrap; justify-content: space-between">
+        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
+            <MudCardHeader>
+                <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
+                <MudText Typo="Typo.h6">Finalized Orders</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.h5" Align="Align.End">
+                    @Stats?.FinalizedOrdersCount
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
+            <MudCardHeader>
+                <MudIcon Icon="@Icons.Filled.ShoppingCartCheckout" Class="mr-3"/>
+                <MudText Typo="Typo.h6">Total Sales</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText Typo="Typo.h5" Align="Align.End">
+                    @Stats?.TotalSales
+                </MudText>
+            </MudCardContent>
+        </MudCard>
+    </div>
+    
+    @if (Series.Count > 0) {
+        <div>
+            <MudChart ChartType="ChartType.Line" ChartSeries="Series" XAxisLabels="Labels"
+                      Width="100%" Height="300px" ChartOptions="Options" />
+        </div>
+    }
+}

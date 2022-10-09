@@ -6,7 +6,7 @@
     @foreach (var navItem in NavItems) {
         <MudNavLink Href="@navItem.Href" Match="navItem.Match" Class="w-100 align-content-start">
             <MudContainer Class="d-flex align-center" style="padding-left: 0 !important;" Elevation="0">
-                <MudIcon Icon="@navItem.Icon" Class="mr-2"/> @navItem.Text
+                <MudIcon Icon="@navItem.Icon" Class="mr-3"/> @navItem.Text
             </MudContainer>
         </MudNavLink>    
     }
