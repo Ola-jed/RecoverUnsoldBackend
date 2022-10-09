@@ -36,6 +36,14 @@ public class IndexBase : ComponentBase
                     .OrderBy(x => x.Key.Date)
                     .Select(x => (double)x.Value)
                     .ToArray()
+            },
+            new()
+            {
+                Name = "Orders per day",
+                Data = Stats.OrdersPerDay
+                    .OrderBy(x => x.Key.Date)
+                    .Select(x => (double)x.Value)
+                    .ToArray()
             }
         };
         Loading = false;
