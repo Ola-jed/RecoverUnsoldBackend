@@ -8,8 +8,7 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudIconButton Icon="@_menuIcon" Color="Color.Inherit"
-                       Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
+        <MudIconButton Icon="@_menuIcon" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
         Dashboard
         <MudSpacer/>
         <MudIcon Icon="@Icons.Outlined.LightMode"/>
@@ -17,7 +16,7 @@
                    Color="Color.Primary" Class="ma-4" T="bool"/>
         <MudIcon Icon="@Icons.Outlined.DarkMode"/>
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
+    <MudDrawer @bind-Open="@_drawerOpen" Variant="@DrawerVariant.Mini">
         <NavMenu/>
     </MudDrawer>
     <MudMainContent>
@@ -30,8 +29,8 @@
 </MudLayout>
 
 @code {
-    string _menuIcon = Icons.Filled.MenuOpen;
-    bool _drawerOpen = true;
+    bool _drawerOpen;
+    string _menuIcon = Icons.Filled.Menu;
 
     void DrawerToggle() {
         _drawerOpen = !_drawerOpen;

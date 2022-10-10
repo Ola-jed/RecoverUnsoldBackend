@@ -1,14 +1,12 @@
 ﻿<MudNavMenu>
     <div style="display: flex;flex-flow: row nowrap; justify-content: center">
-        <img src="icon.ico" alt="RecoverUnsold Admin" style="height: 75px;width: auto">
+        <img src="icon.ico" alt="RecoverUnsold Admin" style="height: 55px;width: auto">
     </div>
     
     @foreach (var navItem in NavItems) {
-        <MudNavLink Href="@navItem.Href" Match="navItem.Match" Class="w-100 align-content-start">
-            <MudContainer Class="d-flex align-center" style="padding-left: 0 !important;" Elevation="0">
-                <MudIcon Icon="@navItem.Icon" Class="mr-3"/> @navItem.Text
-            </MudContainer>
-        </MudNavLink>    
+        <MudNavLink Href="@navItem.Href" Match="navItem.Match" Icon="@navItem.Icon" IconColor="Color.Surface">
+            @navItem.Text        
+        </MudNavLink>
     }
 </MudNavMenu>
 
@@ -20,6 +18,6 @@
         new("/Customers", NavLinkMatch.Prefix, Icons.Filled.People, "Customers"),
         new("/Distributors", NavLinkMatch.Prefix, Icons.Filled.Person, "Distributors"),
         new("/Offers", NavLinkMatch.Prefix, Icons.Filled.ShoppingBag, "Offers"),
-        new("/about", NavLinkMatch.Prefix, Icons.Filled.QuestionMark, "About"),
+        new("/About", NavLinkMatch.Prefix, Icons.Filled.QuestionMark, "About"),
     };
 }

@@ -42,6 +42,9 @@
                 </MudText>
             </MudCardContent>
         </MudCard>
+    </div>
+
+    <div style="display: flex; flex-flow: row wrap; justify-content: space-between">
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
@@ -53,9 +56,6 @@
                 </MudText>
             </MudCardContent>
         </MudCard>
-    </div>
-    
-    <div style="display: flex; flex-flow: row wrap; justify-content: space-between">
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
@@ -79,11 +79,9 @@
             </MudCardContent>
         </MudCard>
     </div>
-    
+
     @if (Series.Count > 0) {
-        <div>
-            <MudChart ChartType="ChartType.Line" ChartSeries="Series" XAxisLabels="Labels"
-                      Width="100%" Height="300px" ChartOptions="Options" />
-        </div>
+        <MudChart ChartType="ChartType.Line" ChartSeries="Series" XAxisLabels="Labels" Width="100%"
+                  Height="300px" ChartOptions="Options"/>
     }
 }
