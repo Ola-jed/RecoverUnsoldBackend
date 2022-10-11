@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using RecoverUnsoldApi.Converters;
 using RecoverUnsoldApi.Extensions;
@@ -5,7 +6,6 @@ using RecoverUnsoldApi.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Logging.ClearProviders();
 builder.Services.ConfigurePgsql(configuration);
 builder.Services.ConfigureFirebase(configuration);
 builder.Services.AddControllers().AddJsonOptions(x =>
@@ -28,8 +28,16 @@ if (app.Environment.IsProduction())
     app.Urls.Add($"http://*:{port}");
 }
 
+app.UseStaticFiles();
 app.UseSwagger();
-app.UseSwaggerUI();
+var currentAssembly = Assembly.GetAssembly(typeof(Program))!;
+app.UseSwaggerUI(c =>
+{
+    c.DocumentTitle = "RecoverUnsold Api";
+    c.IndexStream = () =>
+        currentAssembly.GetManifestResourceStream($"{currentAssembly.GetName().Name}.wwwroot.swagger-index.html");
+    c.InjectStylesheet("/swagger-theme-material.css");
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
