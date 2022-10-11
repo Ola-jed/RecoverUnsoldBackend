@@ -32,6 +32,7 @@
 
     <ItemGroup>
         <Folder Include="Logs" />
+        <Folder Include="Services\Images" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RecoverUnsoldDomain.Dto;
-using RecoverUnsoldDomain.Extensions;
-using RecoverUnsoldDomain.Services.FcmTokens;
+using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldApi.Services.FcmTokens;
 
 namespace RecoverUnsoldApi.Controllers;
 

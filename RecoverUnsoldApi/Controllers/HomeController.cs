@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RecoverUnsoldDomain.Dto;
-using RecoverUnsoldDomain.Extensions;
-using RecoverUnsoldDomain.Services.Auth;
-using RecoverUnsoldDomain.Services.Home;
+using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldApi.Services.Home;
 
 namespace RecoverUnsoldApi.Controllers;
 

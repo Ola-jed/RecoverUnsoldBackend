@@ -1,9 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using RecoverUnsoldDomain.Dto;
-using RecoverUnsoldDomain.Services.ApplicationUser;
-using RecoverUnsoldDomain.Services.Auth;
+using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Services.ApplicationUser;
+using RecoverUnsoldApi.Services.Auth;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 

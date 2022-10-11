@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using RecoverUnsoldDomain.Dto;
-using RecoverUnsoldDomain.Services.ApplicationUser;
-using RecoverUnsoldDomain.Services.ForgotPassword;
-using RecoverUnsoldDomain.Services.Mail;
-using RecoverUnsoldDomain.Services.Mail.Mailable;
+using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Services.ApplicationUser;
+using RecoverUnsoldApi.Services.ForgotPassword;
+using RecoverUnsoldApi.Services.Mail;
+using RecoverUnsoldApi.Services.Mail.Mailable;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 

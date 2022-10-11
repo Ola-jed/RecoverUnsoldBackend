@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Services\Images" />
         <PackageReference Include="CloudinaryDotNet" Version="1.19.0" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="MailKit" Version="3.2.0" />

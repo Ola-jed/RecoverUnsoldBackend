@@ -2,10 +2,10 @@ using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RecoverUnsoldDomain.Dto;
-using RecoverUnsoldDomain.Extensions;
-using RecoverUnsoldDomain.Services.Auth;
-using RecoverUnsoldDomain.Services.Locations;
+using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldApi.Services.Locations;
 
 namespace RecoverUnsoldApi.Controllers;
 
