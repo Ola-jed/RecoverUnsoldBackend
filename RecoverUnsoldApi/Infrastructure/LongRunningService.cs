@@ -1,4 +1,4 @@
-namespace RecoverUnsoldDomain.Infrastructure;
+namespace RecoverUnsoldApi.Infrastructure;
 
 public class LongRunningService : BackgroundService
 {

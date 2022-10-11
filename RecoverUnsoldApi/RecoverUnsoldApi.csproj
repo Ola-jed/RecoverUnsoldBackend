@@ -31,12 +31,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Logs" />
         <Folder Include="Services\Images" />
+        <Folder Include="wwwroot" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
     </ItemGroup>
-
 </Project>

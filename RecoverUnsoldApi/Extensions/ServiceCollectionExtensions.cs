@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Models;
 using Npgsql;
 using RecoverUnsoldDomain.Config;
 using RecoverUnsoldDomain.Data;
-using RecoverUnsoldDomain.Infrastructure;
+using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldApi.Services.Alerts;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;

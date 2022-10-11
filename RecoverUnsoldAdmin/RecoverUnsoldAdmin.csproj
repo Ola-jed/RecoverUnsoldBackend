@@ -8,8 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
-      <PackageReference Include="MudBlazor" Version="6.0.16" />
+        <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+        <PackageReference Include="MudBlazor" Version="6.0.16" />
+        <PackageReference Include="FluentPaginator.Lib" Version="2.3.0" />
     </ItemGroup>
 
     <ItemGroup>

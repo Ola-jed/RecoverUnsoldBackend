@@ -1,7 +1,7 @@
 using System.Collections.Immutable;
 using FirebaseAdmin.Messaging;
+using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldDomain.Entities;
-using RecoverUnsoldDomain.Infrastructure;
 using RecoverUnsoldApi.Services.Notification.NotificationMessage;
 
 namespace RecoverUnsoldApi.Services.Notification;

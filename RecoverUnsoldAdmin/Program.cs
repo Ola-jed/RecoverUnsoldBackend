@@ -6,6 +6,7 @@ using RecoverUnsoldAdmin.Services;
 using RecoverUnsoldAdmin.Services.Customers;
 using RecoverUnsoldDomain.Data;
 using RecoverUnsoldAdmin.Services.Distributors;
+using RecoverUnsoldAdmin.Services.Offers;
 using RecoverUnsoldAdmin.Services.Stats;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ThemeService>();
 builder.Services.AddScoped<IDistributorsService, DistributorsService>();
 builder.Services.AddScoped<ICustomersService, CustomersService>();
+builder.Services.AddScoped<IOffersService, OffersService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 
 var app = builder.Build();

@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
-using RecoverUnsoldDomain.Entities;
-using RecoverUnsoldDomain.Entities.Enums;
-using RecoverUnsoldDomain.Infrastructure;
+using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Mail.Mailable;
 using RecoverUnsoldApi.Services.Notification.NotificationMessage;
+using RecoverUnsoldDomain.Data;
+using RecoverUnsoldDomain.Entities;
+using RecoverUnsoldDomain.Entities.Enums;
 
 namespace RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 

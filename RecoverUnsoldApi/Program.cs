@@ -1,19 +1,11 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 using RecoverUnsoldApi.Converters;
 using RecoverUnsoldApi.Extensions;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .WriteTo.File($"Logs/{Assembly.GetExecutingAssembly().GetName().Name}.log")
-    .WriteTo.Console()
-    .CreateLogger();
 builder.Logging.ClearProviders();
-builder.Logging.AddSerilog();
 builder.Services.ConfigurePgsql(configuration);
 builder.Services.ConfigureFirebase(configuration);
 builder.Services.AddControllers().AddJsonOptions(x =>

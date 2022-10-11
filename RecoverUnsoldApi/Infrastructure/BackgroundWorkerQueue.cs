@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace RecoverUnsoldDomain.Infrastructure;
+namespace RecoverUnsoldApi.Infrastructure;
 
 public class BackgroundWorkerQueue
 {

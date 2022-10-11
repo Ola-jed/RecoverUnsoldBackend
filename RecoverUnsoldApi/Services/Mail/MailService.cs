@@ -2,9 +2,9 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using RecoverUnsoldDomain.Config;
-using RecoverUnsoldDomain.Infrastructure;
+using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldApi.Services.Mail.Mailable;
+using RecoverUnsoldDomain.Config;
 
 namespace RecoverUnsoldApi.Services.Mail;
 

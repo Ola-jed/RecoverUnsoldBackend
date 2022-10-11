@@ -1,6 +1,6 @@
 namespace RecoverUnsoldAdmin.Services.Offers;
 
-public class OffersService
+public class OffersService: IOffersService
 {
     
 }
