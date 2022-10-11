@@ -1,18 +1,18 @@
 @page "/Distributors"
 @using RecoverUnsoldDomain.Entities
+@using RecoverUnsoldAdmin.Extensions
 @inherits DistributorsBase
 
 <PageTitle>Distributors</PageTitle>
 <MudTable @ref="Table" Hover="true" Striped="true"
-          Loading="Loading"
+          Loading="Loading" Style="margin: 2rem;" Dense="true"
           ServerData="@(new Func<TableState, Task<TableData<Distributor>>>(ServerData))">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Distributors</MudText>
         <MudSpacer/>
         <MudTextField @bind-Value="Search" Placeholder="Search" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                      OnAdornmentClick="@(_ => OnSearch())"
-                      Class="mt-0"/>
+                      OnAdornmentClick="@(_ => OnSearch())" Class="mt-0"/>
     </ToolBarContent>
     <NoRecordsContent>
         <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">
@@ -20,26 +20,50 @@
         </MudText>
     </NoRecordsContent>
     <HeaderContent>
-        <MudTh><strong>Username</strong></MudTh>
-        <MudTh><strong>Email</strong></MudTh>
-        <MudTh><strong>Phone</strong></MudTh>
-        <MudTh><strong>Tax Id</strong></MudTh>
-        <MudTh><strong>Rccm</strong></MudTh>
-        <MudTh><strong>Website</strong></MudTh>
-        <MudTh><strong>Creation date</strong></MudTh>
+        <MudTh>
+            <strong>Username</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Email</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Phone</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Tax Id</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Rccm</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Website</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Creation date</strong>
+        </MudTh>
         <MudTh/>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Username" Class="font-weight-bold">@context.Username</MudTd>
-        <MudTd DataLabel="Email">@context.Email</MudTd>
-        <MudTd DataLabel="Phone">@context.Phone</MudTd>
-        <MudTd DataLabel="Website">@context.TaxId</MudTd>
-        <MudTd DataLabel="Website">@context.Rccm</MudTd>
-        <MudTd DataLabel="Website">@(context.WebsiteUrl ?? "-")</MudTd>
+        <MudTd DataLabel="Email">
+            <a href="@($"mailto:{context.Email}")" Color="Color.Default">@context.Email</a>
+        </MudTd>
+        <MudTd DataLabel="Phone">
+            <a href="@($"tel:{context.Phone}")" Color="Color.Default">@context.Phone</a>
+        </MudTd>
+        <MudTd DataLabel="Tax Id">@context.TaxId</MudTd>
+        <MudTd DataLabel="Rccm">@context.Rccm</MudTd>
+        <MudTd DataLabel="Website">
+            @if (context.WebsiteUrl == null) {
+                <span>-</span>
+            } else {
+                <a href="@(context.WebsiteUrl.ToUrl())" Color="Color.Default">@context.WebsiteUrl</a>
+            }
+        </MudTd>
         <MudTd DataLabel="Creation date">@context.CreatedAt.ToShortDateString()</MudTd>
         <MudTd>
-            <MudIconButton Icon="@(ExpandedRows.Contains(context.Id) ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
-                           OnClick="@(() => ToggleDistributor(context.Id))"/>
+            <MudIconButton OnClick="@(() => ToggleDistributor(context.Id))"
+                           Icon="@(ExpandedRows.Contains(context.Id) ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"/>
         </MudTd>
     </RowTemplate>
     <PagerContent>
@@ -64,7 +88,7 @@
                                 Account not verified
                             </MudText>
                         }
-                        
+
                         @if (context.Locations.Count > 0) {
                             <div style="display: flex; justify-content: center">
                                 <MudText Typo="Typo.h6">Locations</MudText>
@@ -72,7 +96,7 @@
                             <MudTable Items="@context.Locations" Context="LocationContext" Hover="true"
                                       Breakpoint="Breakpoint.Sm" Elevation="0">
                                 <ColGroup>
-                                    <col /><col /><col style="width:200px;"/>
+                                    <col/><col/><col style="width:200px;"/>
                                 </ColGroup>
                                 <HeaderContent>
                                     <MudTh>Name</MudTh>
