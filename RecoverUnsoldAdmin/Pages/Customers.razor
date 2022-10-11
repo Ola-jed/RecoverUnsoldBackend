@@ -1,5 +1,59 @@
 @page "/Customers"
+@using RecoverUnsoldDomain.Entities
+@using RecoverUnsoldAdmin.Extensions
 @inherits CustomersBase
 
 <PageTitle>Customers</PageTitle>
-<h3>Customers</h3>
+<MudTable @ref="Table" Hover="true" Striped="true"
+          Loading="Loading" Style="margin: 2rem;" Dense="true"
+          ServerData="@(new Func<TableState, Task<TableData<Customer>>>(ServerData))">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Customers</MudText>
+        <MudSpacer/>
+        <MudTextField @bind-Value="Search" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
+                      OnAdornmentClick="@(_ => OnSearch())" Class="mt-0"/>
+    </ToolBarContent>
+    <NoRecordsContent>
+        <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">No customer found</MudText>
+    </NoRecordsContent>
+    <HeaderContent>
+        <MudTh>
+            <strong>Username</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Email</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Full name</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Creation date</strong>
+        </MudTh>
+        <MudTh>
+            <strong>Account verification date</strong>
+        </MudTh>
+        <MudTh />
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Username" Class="font-weight-bold">@context.Username</MudTd>
+        <MudTd DataLabel="Email">
+            <a href="@($"mailto:{context.Email}")" Color="Color.Default">@context.Email</a>
+        </MudTd>
+        <MudTd DataLabel="Full name">@context.Fullname()</MudTd>
+        <MudTd DataLabel="Creation date">@context.CreatedAt.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Account verification date">@(context.EmailVerifiedAt?.ToShortDateString() ?? "-")</MudTd>
+        <MudTd>
+            <MudIconButton OnClick="@(() => ToggleCustomer(context.Id))"
+                           Icon="@(ExpandedRows.Contains(context.Id) ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"/>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+    <ChildRowContent>
+        @if (ExpandedRows.Contains(context.Id)) {
+            <div>TODO</div>
+        }
+    </ChildRowContent>
+</MudTable>

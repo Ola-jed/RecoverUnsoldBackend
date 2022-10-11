@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Npgsql;
 using RecoverUnsoldAdmin.Services;
+using RecoverUnsoldAdmin.Services.Customers;
 using RecoverUnsoldDomain.Data;
 using RecoverUnsoldAdmin.Services.Distributors;
 using RecoverUnsoldAdmin.Services.Stats;
@@ -29,6 +30,7 @@ builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ThemeService>();
 builder.Services.AddScoped<IDistributorsService, DistributorsService>();
+builder.Services.AddScoped<ICustomersService, CustomersService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 
 var app = builder.Build();

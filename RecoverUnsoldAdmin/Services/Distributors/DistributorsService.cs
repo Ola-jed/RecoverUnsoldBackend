@@ -28,8 +28,7 @@ public class DistributorsService: IDistributorsService
         {
             distributorsSource = distributorsSource.Where(d => EF.Functions.Like(d.Username, $"%{name}%"));
         }
-        var distributors = distributorsSource
+        return distributorsSource
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        return distributors;
     }
 }
