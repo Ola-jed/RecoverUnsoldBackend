@@ -16,9 +16,6 @@ public class DistributorsBase : ComponentBase
     protected HashSet<Guid> ExpandedRows { get; set; } = new();
 
     [Inject]
-    public NavigationManager NavigationManager { get; set; } = default!;
-
-    [Inject]
     private IDistributorsService DistributorsService { get; set; } = default!;
 
     protected void ToggleDistributor(Guid id)
@@ -42,7 +39,7 @@ public class DistributorsBase : ComponentBase
     {
         PageNumber = arg.Page + 1;
         PageSize = arg.PageSize;
-        var paginationParam = new UrlPaginationParameter(PageSize, PageNumber, NavigationManager.Uri, nameof(PageNumber));
+        var paginationParam = new PaginationParameter(PageSize, PageNumber);
         var distributorsPage = await DistributorsService.ListDistributors(paginationParam, Search);
         Loading = false;
         return new TableData<Distributor> { Items = distributorsPage.Items, TotalItems = distributorsPage.Total };

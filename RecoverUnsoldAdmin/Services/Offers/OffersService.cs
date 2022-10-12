@@ -19,15 +19,15 @@ public class OffersService: IOffersService
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<UrlPage<Offer>> ListOffers(OffersFilter offersFilter, UrlPaginationParameter paginationParameter)
+    public async Task<Page<Offer>> ListOffers(OffersFilter offersFilter)
     {
         var context = await _dbContextFactory.CreateDbContextAsync();
-
+        var paginationParameter = new PaginationParameter(offersFilter.PerPage, offersFilter.Page);
         return context
             .Offers
             .AsNoTracking()
             .Include(o => o.Products)
             .ApplyFilters(offersFilter)
-            .UrlPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
     }
 }

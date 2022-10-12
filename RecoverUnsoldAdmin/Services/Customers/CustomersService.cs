@@ -17,7 +17,7 @@ public class CustomersService : ICustomersService
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<UrlPage<Customer>> ListCustomers(UrlPaginationParameter urlPaginationParameter,
+    public async Task<Page<Customer>> ListCustomers(PaginationParameter paginationParameter,
         string? name = null)
     {
         var context = await _dbContextFactory.CreateDbContextAsync();
@@ -32,6 +32,6 @@ public class CustomersService : ICustomersService
                 || EF.Functions.Like(d.LastName, $"%{name}%"));
         }
 
-        return customersSource.UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        return customersSource.Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
     }
 }

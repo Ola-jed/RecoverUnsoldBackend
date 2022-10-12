@@ -6,7 +6,7 @@ using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldAdmin.Pages;
 
-public class CustomersBase: ComponentBase
+public class CustomersBase : ComponentBase
 {
     protected bool Loading { get; private set; } = true;
     public int PageNumber { get; set; } = 1;
@@ -14,9 +14,6 @@ public class CustomersBase: ComponentBase
     protected string? Search { get; set; }
     protected MudTable<Customer>? Table { get; set; }
     protected HashSet<Guid> ExpandedRows { get; set; } = new();
-
-    [Inject]
-    public NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject]
     private ICustomersService CustomersService { get; set; } = default!;
@@ -42,7 +39,7 @@ public class CustomersBase: ComponentBase
     {
         PageNumber = arg.Page + 1;
         PageSize = arg.PageSize;
-        var paginationParam = new UrlPaginationParameter(PageSize, PageNumber, NavigationManager.Uri, nameof(PageNumber));
+        var paginationParam = new PaginationParameter(PageSize, PageNumber);
         var distributorsPage = await CustomersService.ListCustomers(paginationParam, Search);
         Loading = false;
         return new TableData<Customer> { Items = distributorsPage.Items, TotalItems = distributorsPage.Total };

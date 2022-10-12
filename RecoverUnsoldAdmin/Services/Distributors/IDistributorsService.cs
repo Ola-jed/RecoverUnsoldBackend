@@ -5,6 +5,6 @@ namespace RecoverUnsoldAdmin.Services.Distributors;
 
 public interface IDistributorsService
 {
-    Task<UrlPage<RecoverUnsoldDomain.Entities.Distributor>> ListDistributors(UrlPaginationParameter urlPaginationParameter,
+    Task<Page<RecoverUnsoldDomain.Entities.Distributor>> ListDistributors(PaginationParameter paginationParameter,
         string? name = null);
 }

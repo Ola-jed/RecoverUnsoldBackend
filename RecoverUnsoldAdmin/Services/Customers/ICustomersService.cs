@@ -6,5 +6,5 @@ namespace RecoverUnsoldAdmin.Services.Customers;
 
 public interface ICustomersService
 {
-    Task<UrlPage<Customer>> ListCustomers(UrlPaginationParameter urlPaginationParameter, string? name = null);
+    Task<Page<Customer>> ListCustomers(PaginationParameter paginationParameter, string? name = null);
 }
