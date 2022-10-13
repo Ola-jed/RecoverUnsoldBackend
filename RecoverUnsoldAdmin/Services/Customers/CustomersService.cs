@@ -28,8 +28,8 @@ public class CustomersService : ICustomersService
         {
             customersSource = customersSource.Where(d =>
                 EF.Functions.Like(d.Username, $"%{name}%")
-                || EF.Functions.Like(d.FirstName, $"%{name}%")
-                || EF.Functions.Like(d.LastName, $"%{name}%"));
+                || EF.Functions.Like(d.FirstName!, $"%{name}%")
+                || EF.Functions.Like(d.LastName!, $"%{name}%"));
         }
 
         return customersSource.Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);

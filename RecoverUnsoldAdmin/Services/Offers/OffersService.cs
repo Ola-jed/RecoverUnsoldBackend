@@ -27,6 +27,8 @@ public class OffersService: IOffersService
             .Offers
             .AsNoTracking()
             .Include(o => o.Products)
+            .ThenInclude(p => p.Images)
+            .Include(o => o.Distributor)
             .ApplyFilters(offersFilter)
             .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
     }

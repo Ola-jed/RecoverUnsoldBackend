@@ -1,4 +1,12 @@
 namespace RecoverUnsoldAdmin.Models;
 
-public record OffersFilter(int Page = 1, int PerPage = 10, decimal? MinPrice = null, decimal? MaxPrice = null,
-    DateTime? MinDate = null, DateTime? MaxDate = null, bool? Active = null);
+public class OffersFilter
+{
+    public int Page { get; set; }
+    public int PerPage { get; set; }
+    public decimal? MinPrice { get; set; }
+    public decimal? MaxPrice { get; set; }
+    public DateTime? MinDate { get; set; }
+    public DateTime? MaxDate { get; set; }
+    public bool? Active { get; set; }
+}
