@@ -1,0 +1,59 @@
+@page "/Offers/{OfferId:guid}"
+@using System.Globalization
+@inherits OfferDetailsBase
+<PageTitle>Offer details</PageTitle>
+
+@if (Loading) {
+    <div style="display:flex; justify-content: center; align-items: center;">
+        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;margin-top: 40vh;" Indeterminate="true"/>
+    </div>
+} else {
+    @if (Offer == null) {
+        <div style="display:flex; justify-content: center; align-items: center;">
+            <MudText Typo="Typo.h5" Class="mud-text-secondary" Style="margin-top: 40vh;">
+                Offer not found
+            </MudText>
+        </div>
+    } else {
+        <div style="margin: 2rem">
+            <MudText Typo="Typo.h5" Class="mud-text-secondary">Offer details</MudText>
+        </div>
+
+        <MudGrid Class="m-2" Style="margin: 10px;width: 95%">
+            <MudItem xs="3">
+                <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
+                    <MudIcon Icon="@Icons.Filled.Payments" Class="mr-2"/>
+                    Total amount : @(Offer.Price) XOF
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="3">
+                <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
+                    <MudIcon Icon="@Icons.Filled.Payments" Class="mr-2"/>
+                    Beneficiaries : @(Offer.Beneficiaries.ToString() ?? "N/A")
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="3">
+                <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
+                    <MudIcon Icon="@Icons.Filled.Event" Class="mr-2"/>
+                    Start : @Offer.StartDate.ToString(CultureInfo.CurrentCulture)
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="3">
+                <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
+                    <MudIcon Icon="@Icons.Filled.EventBusy" Class="mr-2"/>
+                    End : @Offer.StartDate.AddSeconds(Offer.Duration).ToString(CultureInfo.CurrentCulture)
+                </MudPaper>
+            </MudItem>
+            
+            <MudItem xs="3">
+                <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
+                    <MudIcon Icon="@Icons.Filled.EventBusy" Class="mr-2"/>
+                    End : @Offer.StartDate.AddSeconds(Offer.Duration).ToString(CultureInfo.CurrentCulture)
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
+}

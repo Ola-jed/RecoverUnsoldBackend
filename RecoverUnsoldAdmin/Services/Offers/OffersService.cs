@@ -26,10 +26,20 @@ public class OffersService: IOffersService
         return context
             .Offers
             .AsNoTracking()
-            .Include(o => o.Products)
-            .ThenInclude(p => p.Images)
             .Include(o => o.Distributor)
             .ApplyFilters(offersFilter)
             .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+    }
+
+    public async Task<Offer?> GetOffer(Guid id)
+    {
+        var context = await _dbContextFactory.CreateDbContextAsync();
+        return await context
+            .Offers
+            .AsNoTracking()
+            .Include(o => o.Products)
+            .ThenInclude(p => p.Images)
+            .Include(o => o.Distributor)
+            .FirstOrDefaultAsync(o => o.Id == id);
     }
 }

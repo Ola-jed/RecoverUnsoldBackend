@@ -7,4 +7,5 @@ namespace RecoverUnsoldAdmin.Services.Offers;
 public interface IOffersService
 {
     Task<Page<Offer>> ListOffers(OffersFilter offersFilter);
+    Task<Offer?> GetOffer(Guid id);
 }

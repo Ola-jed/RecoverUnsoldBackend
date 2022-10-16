@@ -12,11 +12,7 @@ public class OffersBase : ComponentBase
     protected bool Loading { get; private set; } = true;
     protected bool ShowFilter { get; set; }
     protected MudTable<Offer>? Table { get; set; }
-    protected HashSet<Guid> ExpandedRows { get; set; } = new();
     protected OffersFilter Filter { get; set; } = new();
-
-    [Inject]
-    public NavigationManager NavigationManager { get; set; } = default!;
 
     [Inject]
     public IOffersService OffersService { get; set; } = default!;
@@ -39,18 +35,6 @@ public class OffersBase : ComponentBase
         var distributorsPage = await OffersService.ListOffers(Filter);
         Loading = false;
         return new TableData<Offer> { Items = distributorsPage.Items, TotalItems = distributorsPage.Total };
-    }
-
-    protected void ToggleOffer(Guid id)
-    {
-        if (ExpandedRows.Contains(id))
-        {
-            ExpandedRows.Remove(id);
-        }
-        else
-        {
-            ExpandedRows.Add(id);
-        }
     }
 
     protected void ToggleActiveLabel(string value)
