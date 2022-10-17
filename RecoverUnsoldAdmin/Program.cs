@@ -1,13 +1,15 @@
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Npgsql;
 using RecoverUnsoldAdmin.Services;
 using RecoverUnsoldAdmin.Services.Customers;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldAdmin.Services.Distributors;
 using RecoverUnsoldAdmin.Services.Offers;
 using RecoverUnsoldAdmin.Services.Stats;
+using RecoverUnsoldAdmin.Utils;
+using RecoverUnsoldDomain.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +23,12 @@ var connectionBuilder = new NpgsqlConnectionStringBuilder
     Username = configuration["PgUserId"]
 };
 builder.Services.AddDbContextFactory<DataContext>(
-    opt => opt.UseNpgsql(connectionBuilder.ConnectionString,
-        o => o.UseNetTopologySuite())
+    opt => opt.UseNpgsql(
+        connectionBuilder.ConnectionString,
+        o => o.UseNetTopologySuite()
+    )
 );
-
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
@@ -41,8 +45,16 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = AppCulture.SupportedCultures,
+    SupportedUICultures = AppCulture.SupportedCultures
+});
 app.UseStaticFiles();
 app.UseRouting();
 app.MapBlazorHub();
+app.MapControllers();
 app.MapFallbackToPage("/_Host");
 app.Run();

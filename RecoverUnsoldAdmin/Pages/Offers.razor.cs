@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using RecoverUnsoldAdmin.Models;
 using RecoverUnsoldAdmin.Services.Offers;
@@ -16,6 +17,9 @@ public class OffersBase : ComponentBase
 
     [Inject]
     public IOffersService OffersService { get; set; } = default!;
+
+    [Inject]
+    protected IStringLocalizer<App> StringLocalizer { get; set; } = default!;
 
     protected async Task OnSearch()
     {

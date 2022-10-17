@@ -1,7 +1,7 @@
 @page "/"
 @inherits IndexBase
 
-<PageTitle>Dashboard</PageTitle>
+<PageTitle>@StringLocalizer["Dashboard"]</PageTitle>
 
 @if (Loading) {
     <div style="display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;min-height: 90vh;">
@@ -12,7 +12,7 @@
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.People" Class="mr-3"/>
-                <MudText Typo="Typo.h6">Customers</MudText>
+                <MudText Typo="Typo.h6">@StringLocalizer["Customers"]</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudText Typo="Typo.h5" Align="Align.End">
@@ -23,7 +23,7 @@
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.Person" Class="mr-3"/>
-                <MudText Typo="Typo.h6">Distributors</MudText>
+                <MudText Typo="Typo.h6">@StringLocalizer["Distributors"]</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudText Typo="Typo.h5" Align="Align.End">
@@ -34,7 +34,7 @@
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.ShoppingBag" Class="mr-3"/>
-                <MudText Typo="Typo.h6">Offers</MudText>
+                <MudText Typo="Typo.h6">@StringLocalizer["Offers"]</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudText Typo="Typo.h5" Align="Align.End">
@@ -48,7 +48,7 @@
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
-                <MudText Typo="Typo.h6">Orders</MudText>
+                <MudText Typo="Typo.h6">@StringLocalizer["Orders"]</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudText Typo="Typo.h5" Align="Align.End">
@@ -59,7 +59,7 @@
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
-                <MudText Typo="Typo.h6">Finalized Orders</MudText>
+                <MudText Typo="Typo.h6">@StringLocalizer["FinalizedOrders"]</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudText Typo="Typo.h5" Align="Align.End">
@@ -70,7 +70,7 @@
         <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
             <MudCardHeader>
                 <MudIcon Icon="@Icons.Filled.ShoppingCartCheckout" Class="mr-3"/>
-                <MudText Typo="Typo.h6">Total Sales</MudText>
+                <MudText Typo="Typo.h6">@StringLocalizer["TotalSales"]</MudText>
             </MudCardHeader>
             <MudCardContent>
                 <MudText Typo="Typo.h5" Align="Align.End">

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="Dashboard" xml:space="preserve">
+        <value>Tableau de bord</value>
+    </data>
+    <data name="Customers" xml:space="preserve">
+        <value>Clients</value>
+    </data>
+    <data name="Distributors" xml:space="preserve">
+        <value>Distributeurs</value>
+    </data>
+    <data name="Offers" xml:space="preserve">
+        <value>Offres</value>
+    </data>
+    <data name="About" xml:space="preserve">
+        <value>À propos</value>
+    </data>
+    <data name="SelectLanguage" xml:space="preserve">
+        <value>Choisissez la langue</value>
+    </data>
+    <data name="Orders" xml:space="preserve">
+        <value>Commandes</value>
+    </data>
+    <data name="FinalizedOrders" xml:space="preserve">
+        <value>Commandes finalisées</value>
+    </data>
+    <data name="TotalSales" xml:space="preserve">
+        <value>Ventes totales</value>
+    </data>
+    <data name="OfferPublishedPerDay" xml:space="preserve">
+        <value>Offres publiées par jour</value>
+    </data>
+    <data name="OrdersPerDay" xml:space="preserve">
+        <value>Commandes par jour</value>
+    </data>
+    <data name="Username" xml:space="preserve">
+        <value>Nom d'utilisateur</value>
+    </data>
+    <data name="Email" xml:space="preserve">
+        <value>Adresse mail</value>
+    </data>
+    <data name="FullName" xml:space="preserve">
+        <value>Nom complet</value>
+    </data>
+    <data name="RegistrationDate" xml:space="preserve">
+        <value>Date d'inscription </value>
+    </data>
+    <data name="AccountVerificationDate" xml:space="preserve">
+        <value>Date de vérification du compte</value>
+    </data>
+    <data name="NoCustomerFound" xml:space="preserve">
+        <value>Aucun client trouvé</value>
+    </data>
+    <data name="DarkTheme" xml:space="preserve">
+        <value>Thème sombre</value>
+    </data>
+    <data name="LightTheme" xml:space="preserve">
+        <value>Thème clair</value>
+    </data>
+    <data name="NoDistributorsFound" xml:space="preserve">
+        <value>Aucun distributeur trouvé</value>
+    </data>
+    <data name="Phone" xml:space="preserve">
+        <value>Téléphone</value>
+    </data>
+    <data name="TaxId" xml:space="preserve">
+        <value>Identifiant fiscal</value>
+    </data>
+    <data name="Website" xml:space="preserve">
+        <value>Site web</value>
+    </data>
+    <data name="DetailsForDistributor" xml:space="preserve">
+        <value>Informations du distributeur {0}</value>
+    </data>
+    <data name="AccountNotVerified" xml:space="preserve">
+        <value>Compte non  vérifié</value>
+    </data>
+    <data name="AccountVerifiedThe" xml:space="preserve">
+        <value>Compte vérifié le {0}</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nom</value>
+    </data>
+    <data name="Indication" xml:space="preserve">
+        <value>Indication</value>
+    </data>
+    <data name="Image" xml:space="preserve">
+        <value>Image</value>
+    </data>
+    <data name="Rccm" xml:space="preserve">
+        <value>Rccm</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+        <value>Rechercher</value>
+    </data>
+    <data name="RowsPerPage" xml:space="preserve">
+        <value>Enregistrements par page</value>
+    </data>
+    <data name="MinDate" xml:space="preserve">
+        <value>Date minimum</value>
+    </data>
+    <data name="MaxDate" xml:space="preserve">
+        <value>Date maximum</value>
+    </data>
+    <data name="MinPrice" xml:space="preserve">
+        <value>Prix minimum</value>
+    </data>
+    <data name="MaxPrice" xml:space="preserve">
+        <value>Prix maximum</value>
+    </data>
+    <data name="StartDate" xml:space="preserve">
+        <value>Date de début</value>
+    </data>
+    <data name="EndDate" xml:space="preserve">
+        <value>Date de fin</value>
+    </data>
+    <data name="Beneficiaries" xml:space="preserve">
+        <value>Bénéficiaires</value>
+    </data>
+    <data name="Price" xml:space="preserve">
+        <value>Prix</value>
+    </data>
+    <data name="Distributor" xml:space="preserve">
+        <value>Distributeur</value>
+    </data>
+    <data name="CreationDate" xml:space="preserve">
+        <value>Date de création</value>
+    </data>
+    <data name="NoOfferFound" xml:space="preserve">
+        <value>Aucune offre trouvée</value>
+    </data>
+    <data name="PageInfo" xml:space="preserve">
+        <value>{first_item}-{last_item} sur {all_items}</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+        <value>Statut</value>
+    </data>
+</root>

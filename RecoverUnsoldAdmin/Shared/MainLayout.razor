@@ -9,12 +9,15 @@
 <MudLayout>
     <MudAppBar>
         <MudIconButton Icon="@_menuIcon" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
-        Dashboard
+        @StringLocalizer["Dashboard"]
         <MudSpacer/>
-        <MudIcon Icon="@Icons.Outlined.LightMode"/>
-        <MudSwitch Checked="ThemeService.IsDarkMode" CheckedChanged="ThemeService.ToggleDarkMode"
-                   Color="Color.Primary" Class="ma-4" T="bool"/>
-        <MudIcon Icon="@Icons.Outlined.DarkMode"/>
+        <div style="display: flex;align-items: center">
+            <MudToggleIconButton Toggled="ThemeService.IsDarkMode" ToggledChanged="ThemeService.ToggleDarkMode"
+                                 Color="@Color.Primary" ToggledColor="@Color.Primary"
+                                 ToggledIcon="@Icons.Filled.LightMode" ToggledTitle="@(StringLocalizer["LightTheme"])"
+                                 Icon="@Icons.Filled.DarkMode" Title="@(StringLocalizer["DarkTheme"])"/>
+            <CultureSwitcher/>
+        </div>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Variant="@DrawerVariant.Mini">
         <NavMenu/>
@@ -22,13 +25,16 @@
     <MudMainContent>
         @Body
     </MudMainContent>
-    
+
     <MudScrollToTop>
-        <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp" />
+        <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
     </MudScrollToTop>
 </MudLayout>
 
 @code {
+    [Inject]
+    private IStringLocalizer<App> StringLocalizer { get; set; } = default!;
+
     bool _drawerOpen;
     string _menuIcon = Icons.Filled.Menu;
 
@@ -41,4 +47,5 @@
         await ThemeService.LoadTheme();
         StateHasChanged();
     }
+
 }

@@ -3,37 +3,36 @@
 @using RecoverUnsoldAdmin.Extensions
 @inherits CustomersBase
 
-<PageTitle>Customers</PageTitle>
+<PageTitle>@StringLocalizer["Customers"]</PageTitle>
 <MudTable @ref="Table" Hover="true" Striped="true"
-          Loading="Loading" Style="margin: 2rem;" Dense="true"
+          Loading="Loading" Style="margin: 2rem;"
           ServerData="@(new Func<TableState, Task<TableData<Customer>>>(ServerData))">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Customers</MudText>
+        <MudText Typo="Typo.h6">@StringLocalizer["Customers"]</MudText>
         <MudSpacer/>
-        <MudTextField @bind-Value="Search" Placeholder="Search" Adornment="Adornment.Start"
+        <MudTextField @bind-Value="Search" Placeholder="@StringLocalizer["Search"]" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                       OnAdornmentClick="@(_ => OnSearch())" Class="mt-0"/>
     </ToolBarContent>
     <NoRecordsContent>
-        <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">No customer found</MudText>
+        <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">@StringLocalizer["NoCustomerFound"]</MudText>
     </NoRecordsContent>
     <HeaderContent>
         <MudTh>
-            <strong>Username</strong>
+            <strong>@StringLocalizer["Username"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Email</strong>
+            <strong>@StringLocalizer["Email"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Full name</strong>
+            <strong>@StringLocalizer["FullName"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Creation date</strong>
+            <strong>@StringLocalizer["RegistrationDate"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Account verification date</strong>
+            <strong>@StringLocalizer["AccountVerificationDate"]</strong>
         </MudTh>
-        <MudTh />
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Username" Class="font-weight-bold">@context.Username</MudTd>
@@ -43,17 +42,8 @@
         <MudTd DataLabel="Full name">@context.Fullname()</MudTd>
         <MudTd DataLabel="Creation date">@context.CreatedAt.ToShortDateString()</MudTd>
         <MudTd DataLabel="Account verification date">@(context.EmailVerifiedAt?.ToShortDateString() ?? "-")</MudTd>
-        <MudTd>
-            <MudIconButton OnClick="@(() => ToggleCustomer(context.Id))"
-                           Icon="@(ExpandedRows.Contains(context.Id) ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"/>
-        </MudTd>
     </RowTemplate>
     <PagerContent>
-        <MudTablePager/>
+        <MudTablePager RowsPerPageString="@StringLocalizer["RowsPerPage"]" InfoFormat="@StringLocalizer["PageInfo"]"/>
     </PagerContent>
-    <ChildRowContent>
-        @if (ExpandedRows.Contains(context.Id)) {
-            <div>TODO</div>
-        }
-    </ChildRowContent>
 </MudTable>

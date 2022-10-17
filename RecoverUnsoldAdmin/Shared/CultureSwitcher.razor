@@ -1,0 +1,31 @@
+@using System.Globalization
+@using RecoverUnsoldAdmin.Utils
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<App> StringLocalizer
+
+<div class="ml-2">
+    <MudSelect @bind-Value="Culture" Dense="true" Style="margin-top: 0 !important" DisableUnderLine="true">
+        @foreach (var culture in AppCulture.SupportedCultures) {
+            <MudSelectItem Value="@(culture)">
+                <img src="svg/@(culture.Name).svg" alt="" aria-hidden="true" height="14" class="mr-1">
+            </MudSelectItem>
+        }
+    </MudSelect>
+</div>
+
+@code {
+
+    protected override void OnInitialized() {
+        Culture = CultureInfo.CurrentCulture;
+    }
+
+    private CultureInfo Culture {
+        get => CultureInfo.CurrentCulture;
+        set {
+            if (Equals(CultureInfo.CurrentCulture, value)) return;
+            var cultureEscaped = Uri.EscapeDataString(value.Name);
+            NavigationManager.NavigateTo($"Culture?culture={cultureEscaped}", true);
+        }
+    }
+
+}

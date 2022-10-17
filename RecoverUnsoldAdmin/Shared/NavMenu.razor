@@ -2,22 +2,29 @@
     <div style="display: flex;flex-flow: row nowrap; justify-content: center">
         <img src="icon.ico" alt="RecoverUnsold Admin" style="height: 55px;width: auto">
     </div>
-    
-    @foreach (var navItem in NavItems) {
+
+    @foreach (var navItem in NavItems()) {
         <MudNavLink Href="@navItem.Href" Match="navItem.Match" Icon="@navItem.Icon" IconColor="Color.Surface">
-            @navItem.Text        
+            @navItem.Text
         </MudNavLink>
     }
 </MudNavMenu>
 
 @code {
+
+    [Inject]
+    private IStringLocalizer<App> StringLocalizer { get; set; } = default!;
+
     internal record NavItem(string Href, NavLinkMatch Match, string Icon, string Text);
 
-    private static readonly NavItem[] NavItems = {
-        new("/", NavLinkMatch.All, Icons.Filled.Dashboard, "Dashboard"),
-        new("/Customers", NavLinkMatch.Prefix, Icons.Filled.People, "Customers"),
-        new("/Distributors", NavLinkMatch.Prefix, Icons.Filled.Person, "Distributors"),
-        new("/Offers", NavLinkMatch.Prefix, Icons.Filled.ShoppingBag, "Offers"),
-        new("/About", NavLinkMatch.Prefix, Icons.Filled.QuestionMark, "About"),
-    };
+    private NavItem[] NavItems() {
+        return new NavItem[] {
+            new("/", NavLinkMatch.All, Icons.Filled.Dashboard, StringLocalizer["Dashboard"]),
+            new("/Customers", NavLinkMatch.Prefix, Icons.Filled.People, StringLocalizer["Customers"]),
+            new("/Distributors", NavLinkMatch.Prefix, Icons.Filled.Person, StringLocalizer["Distributors"]),
+            new("/Offers", NavLinkMatch.Prefix, Icons.Filled.ShoppingBag, StringLocalizer["Offers"]),
+            new("/About", NavLinkMatch.Prefix, Icons.Filled.QuestionMark, StringLocalizer["About"])
+        };
+    }
+
 }

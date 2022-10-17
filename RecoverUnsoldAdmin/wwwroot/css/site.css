@@ -6,3 +6,11 @@
 * {
     font-family: 'Open Sans', sans-serif;
 }
+
+header > .mud-toolbar .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+    margin-top: 0 !important;
+}
+
+.mud-list-item-gutters {
+    padding-right: 0 !important;
+}

@@ -1,5 +1,6 @@
 using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using RecoverUnsoldAdmin.Services.Customers;
 using RecoverUnsoldDomain.Entities;
@@ -8,27 +9,17 @@ namespace RecoverUnsoldAdmin.Pages;
 
 public class CustomersBase : ComponentBase
 {
+    [Inject]
+    protected IStringLocalizer<App> StringLocalizer { get; set; } = default!;
+
+    [Inject]
+    private ICustomersService CustomersService { get; set; } = default!;
+
     protected bool Loading { get; private set; } = true;
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 10;
     protected string? Search { get; set; }
     protected MudTable<Customer>? Table { get; set; }
-    protected HashSet<Guid> ExpandedRows { get; set; } = new();
-
-    [Inject]
-    private ICustomersService CustomersService { get; set; } = default!;
-
-    protected void ToggleCustomer(Guid id)
-    {
-        if (ExpandedRows.Contains(id))
-        {
-            ExpandedRows.Remove(id);
-        }
-        else
-        {
-            ExpandedRows.Add(id);
-        }
-    }
 
     protected async Task OnSearch()
     {

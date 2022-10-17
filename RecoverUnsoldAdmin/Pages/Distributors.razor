@@ -3,43 +3,43 @@
 @using RecoverUnsoldAdmin.Extensions
 @inherits DistributorsBase
 
-<PageTitle>Distributors</PageTitle>
+<PageTitle>@StringLocalizer["Distributors"]</PageTitle>
 <MudTable @ref="Table" Hover="true" Striped="true"
           Loading="Loading" Style="margin: 2rem;" Dense="true"
           ServerData="@(new Func<TableState, Task<TableData<Distributor>>>(ServerData))">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Distributors</MudText>
+        <MudText Typo="Typo.h6">@StringLocalizer["Distributors"]</MudText>
         <MudSpacer/>
-        <MudTextField @bind-Value="Search" Placeholder="Search" Adornment="Adornment.Start"
+        <MudTextField @bind-Value="Search" Placeholder="@StringLocalizer["Search"]" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
                       OnAdornmentClick="@(_ => OnSearch())" Class="mt-0"/>
     </ToolBarContent>
     <NoRecordsContent>
         <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">
-            No distributor found
+            @StringLocalizer["NoDistributorsFound"]
         </MudText>
     </NoRecordsContent>
     <HeaderContent>
         <MudTh>
-            <strong>Username</strong>
+            <strong>@StringLocalizer["Username"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Email</strong>
+            <strong>@StringLocalizer["Email"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Phone</strong>
+            <strong>@StringLocalizer["Phone"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Tax Id</strong>
+            <strong>@StringLocalizer["TaxId"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Rccm</strong>
+            <strong>@StringLocalizer["Rccm"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Website</strong>
+            <strong>@StringLocalizer["Website"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Creation date</strong>
+            <strong>@StringLocalizer["RegistrationDate"]</strong>
         </MudTh>
         <MudTh/>
     </HeaderContent>
@@ -67,7 +67,7 @@
         </MudTd>
     </RowTemplate>
     <PagerContent>
-        <MudTablePager/>
+        <MudTablePager RowsPerPageString="@StringLocalizer["RowsPerPage"]" InfoFormat="@StringLocalizer["PageInfo"]"/>
     </PagerContent>
     <ChildRowContent>
         @if (ExpandedRows.Contains(context.Id)) {
@@ -75,17 +75,17 @@
                 <MudCard Elevation="0">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.body1">Details for Distributor <strong>@context.Username</strong></MudText>
+                            <MudText Typo="Typo.body1">@StringLocalizer["DetailsForDistributor", context.Username]</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent Class="pa-0">
                         @if (@context.EmailVerifiedAt != null) {
                             <MudText Typo="Typo.body1" Class="ml-5">
-                                Account verified the @context.EmailVerifiedAt?.ToShortDateString()
+                                @StringLocalizer["AccountVerifiedThe", context.EmailVerifiedAt?.ToShortDateString()!]
                             </MudText>
                         } else {
                             <MudText Typo="Typo.body1" Class="ml-5">
-                                Account not verified
+                                @StringLocalizer["AccountNotVerified"]
                             </MudText>
                         }
 
@@ -99,9 +99,9 @@
                                     <col/><col/><col style="width:200px;"/>
                                 </ColGroup>
                                 <HeaderContent>
-                                    <MudTh>Name</MudTh>
-                                    <MudTh>Indication</MudTh>
-                                    <MudTh>Image</MudTh>
+                                    <MudTh>@StringLocalizer["Name"]</MudTh>
+                                    <MudTh>@StringLocalizer["Indication"]</MudTh>
+                                    <MudTh>@StringLocalizer["Image"]</MudTh>
                                 </HeaderContent>
                                 <RowTemplate>
                                     <MudTd DataLabel="Location Name">@LocationContext.Name</MudTd>

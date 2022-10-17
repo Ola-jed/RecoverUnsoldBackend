@@ -8,15 +8,40 @@
 
     <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
         <PackageReference Include="MudBlazor" Version="6.0.16" />
         <PackageReference Include="FluentPaginator.Lib" Version="2.3.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
+        <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\font" />
+        <Folder Include="wwwroot\font" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\App.fr.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>App.fr.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\App.en.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>App.en.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Resources\App.fr.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Translation.fr.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\App.en.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Translation.en.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 </Project>

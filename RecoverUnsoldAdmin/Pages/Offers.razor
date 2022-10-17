@@ -4,30 +4,30 @@
 @using RecoverUnsoldDomain.Entities
 @inherits OffersBase
 
-<PageTitle>Offers</PageTitle>
+<PageTitle>@StringLocalizer["Offers"]</PageTitle>
 
 <MudTable @ref="Table" Hover="true" Striped="true"
           Loading="Loading" Style="margin: 2rem;" Dense="true"
           ServerData="@(new Func<TableState, Task<TableData<Offer>>>(ServerData))">
     <ToolBarContent>
-        <MudText Typo="Typo.h6" Class="mr-2">Offers</MudText>
+        <MudText Typo="Typo.h6" Class="mr-2">@StringLocalizer["Offers"]</MudText>
         <MudToggleIconButton @bind-Toggled="ShowFilter" Icon="@Icons.Filled.FilterAltOff" Title="Show filters"
                              ToggledIcon="@Icons.Filled.FilterAlt" ToggledTitle="Hide filters" Class="mr-2"/>
         <MudSpacer/>
         @if (ShowFilter) {
             <div style="display: flex; align-items: baseline;">
-                <MudDatePicker Label="Min date" @bind-Date="Filter.MinDate" MaxDate="Filter.MaxDate"
+                <MudDatePicker Label="@StringLocalizer["MinDate"]" @bind-Date="Filter.MinDate" MaxDate="Filter.MaxDate"
                                Class="ml-4 mr-2" Clearable="true"/>
-                <MudDatePicker Label="Max date" @bind-Date="Filter.MaxDate" MinDate="Filter.MinDate"
+                <MudDatePicker Label="@StringLocalizer["MaxDate"]" @bind-Date="Filter.MaxDate" MinDate="Filter.MinDate"
                                Class="mx-2 my-0" Clearable="true"/>
-                <MudSelect T="string" Label="Status" AnchorOrigin="Origin.BottomCenter" ValueChanged="ToggleActiveLabel">
+                <MudSelect T="string" Label="@StringLocalizer["Status"]" AnchorOrigin="Origin.BottomCenter" ValueChanged="ToggleActiveLabel">
                     <MudSelectItem Value="@(ActiveLabels.NA)"/>
                     <MudSelectItem Value="@(ActiveLabels.Active)"/>
                     <MudSelectItem Value="@(ActiveLabels.Expired)"/>
                 </MudSelect>
-                <MudNumericField @bind-Value="Filter.MinPrice" Label="Min price" Min="0"
+                <MudNumericField @bind-Value="Filter.MinPrice" Label="@StringLocalizer["MaxPrice"]" Min="0"
                                  Max="Filter.MaxPrice ?? 1000000" Class="mx-2" Clearable="true"/>
-                <MudNumericField @bind-Value="Filter.MaxPrice" Label="Max price" Min="Filter.MinPrice ?? 0"
+                <MudNumericField @bind-Value="Filter.MaxPrice" Label="@StringLocalizer["MaxPrice"]" Min="Filter.MinPrice ?? 0"
                                  Max="1000000" Class="mx-2" Clearable="true"/>
                 <MudIconButton Icon="@Icons.Filled.Search" OnClick="@(_ => OnSearch())" Color="Color.Primary"/>
                 <MudIconButton Icon="@Icons.Filled.Clear" OnClick="@(_ => ResetFilters())" Color="Color.Warning"/>
@@ -36,27 +36,27 @@
     </ToolBarContent>
     <NoRecordsContent>
         <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">
-            No offer found
+            @StringLocalizer["NoOfferFound"]
         </MudText>
     </NoRecordsContent>
     <HeaderContent>
         <MudTh>
-            <strong>Start date</strong>
+            <strong>@StringLocalizer["StartDate"]</strong>
         </MudTh>
         <MudTh>
-            <strong>End date</strong>
+            <strong>@StringLocalizer["EndDate"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Beneficiaries</strong>
+            <strong>@StringLocalizer["Beneficiaries"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Price</strong>
+            <strong>@StringLocalizer["Price"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Distributor</strong>
+            <strong>@StringLocalizer["Distributor"]</strong>
         </MudTh>
         <MudTh>
-            <strong>Creation date</strong>
+            <strong>@StringLocalizer["CreationDate"]</strong>
         </MudTh>
         <MudTh/>
     </HeaderContent>
@@ -64,7 +64,7 @@
         <MudTd DataLabel="Start date">@context.StartDate.ToString(CultureInfo.CurrentCulture)</MudTd>
         <MudTd DataLabel="End date">@context.StartDate.AddSeconds(context.Duration).ToString(CultureInfo.CurrentCulture)</MudTd>
         <MudTd DataLabel="Beneficiaries">@(context.Beneficiaries?.ToString() ?? "-")</MudTd>
-        <MudTd DataLabel="Price">@context.Price</MudTd>
+        <MudTd DataLabel="Price">@context.Price XOF</MudTd>
         <MudTd DataLabel="Distributor">@(context.Distributor?.Username ?? "-")</MudTd>
         <MudTd DataLabel="Creation date">@context.CreatedAt.ToShortDateString()</MudTd>
         <MudTd>
@@ -72,6 +72,6 @@
         </MudTd>
     </RowTemplate>
     <PagerContent>
-        <MudTablePager/>
+        <MudTablePager RowsPerPageString="@StringLocalizer["RowsPerPage"]" InfoFormat="@StringLocalizer["PageInfo"]"/>
     </PagerContent>
 </MudTable>

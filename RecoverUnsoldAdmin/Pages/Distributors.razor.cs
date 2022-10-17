@@ -1,5 +1,6 @@
 using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 using RecoverUnsoldAdmin.Services.Distributors;
 using RecoverUnsoldDomain.Entities;
@@ -17,6 +18,9 @@ public class DistributorsBase : ComponentBase
 
     [Inject]
     private IDistributorsService DistributorsService { get; set; } = default!;
+
+    [Inject]
+    protected IStringLocalizer<App> StringLocalizer { get; set; } = default!;
 
     protected void ToggleDistributor(Guid id)
     {
