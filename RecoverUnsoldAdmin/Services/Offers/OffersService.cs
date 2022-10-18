@@ -37,6 +37,7 @@ public class OffersService: IOffersService
         return await context
             .Offers
             .AsNoTracking()
+            .Include(o => o.Location)
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .Include(o => o.Distributor)
