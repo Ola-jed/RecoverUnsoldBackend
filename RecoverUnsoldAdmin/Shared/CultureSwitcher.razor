@@ -23,8 +23,10 @@
         get => CultureInfo.CurrentCulture;
         set {
             if (Equals(CultureInfo.CurrentCulture, value)) return;
+            var uri = new Uri(NavigationManager.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var uriEscaped = Uri.EscapeDataString(uri);
             var cultureEscaped = Uri.EscapeDataString(value.Name);
-            NavigationManager.NavigateTo($"Culture?culture={cultureEscaped}", true);
+            NavigationManager.NavigateTo($"Culture?culture={cultureEscaped}&redirectUri={uriEscaped}", true);
         }
     }
 

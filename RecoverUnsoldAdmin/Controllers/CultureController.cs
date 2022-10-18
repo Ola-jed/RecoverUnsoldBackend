@@ -7,12 +7,12 @@ namespace RecoverUnsoldAdmin.Controllers;
 public class CultureController : ControllerBase
 {
     [HttpGet]
-    public IActionResult SetCulture([FromQuery] string culture)
+    public IActionResult SetCulture([FromQuery] string culture, [FromQuery] string redirectUri)
     {
         HttpContext.Response.Cookies.Append(
             DefaultCookieName,
             MakeCookieValue(new Microsoft.AspNetCore.Localization.RequestCulture(culture))
         );
-        return LocalRedirect("/");
+        return LocalRedirect(redirectUri);
     }
 }
