@@ -1,0 +1,22 @@
+<MudCard Outlined="true" Style="width: 23%;margin-right: 1rem;">
+    <MudCardContent>
+        <div>
+            <MudIcon Icon="@Icon" Class="mr-3"/>
+            <MudText Typo="Typo.h6">@Title</MudText>
+        </div>
+        <MudText Color="Color.Tertiary" Typo="Typo.h5" Align="Align.End">@Value</MudText>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public string Icon { get; set; } = default!;
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public string Value { get; set; } = default!;
+
+}

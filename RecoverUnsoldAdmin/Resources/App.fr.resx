@@ -158,4 +158,19 @@
     <data name="Status" xml:space="preserve">
         <value>Statut</value>
     </data>
+    <data name="OfferDetails" xml:space="preserve">
+        <value>Détails de l'offre</value>
+    </data>
+    <data name="TotalAmount" xml:space="preserve">
+        <value>Montant total</value>
+    </data>
+    <data name="OfferNotFound" xml:space="preserve">
+        <value>L'offre n'a pas été trouvée</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+        <value>Localisation</value>
+    </data>
+    <data name="Products" xml:space="preserve">
+        <value>Produits</value>
+    </data>
 </root>

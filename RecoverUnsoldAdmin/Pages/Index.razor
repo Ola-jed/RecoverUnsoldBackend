@@ -1,4 +1,5 @@
 @page "/"
+@using System.Globalization
 @inherits IndexBase
 
 <PageTitle>@StringLocalizer["Dashboard"]</PageTitle>
@@ -8,76 +9,22 @@
         <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
     </div>
 } else {
-    <div style="display: flex; flex-flow: row wrap; justify-content: space-between">
-        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
-            <MudCardHeader>
-                <MudIcon Icon="@Icons.Filled.People" Class="mr-3"/>
-                <MudText Typo="Typo.h6">@StringLocalizer["Customers"]</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.h5" Align="Align.End">
-                    @Stats?.CustomersCount
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
-            <MudCardHeader>
-                <MudIcon Icon="@Icons.Filled.Person" Class="mr-3"/>
-                <MudText Typo="Typo.h6">@StringLocalizer["Distributors"]</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.h5" Align="Align.End">
-                    @Stats?.DistributorsCount
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
-            <MudCardHeader>
-                <MudIcon Icon="@Icons.Filled.ShoppingBag" Class="mr-3"/>
-                <MudText Typo="Typo.h6">@StringLocalizer["Offers"]</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.h5" Align="Align.End">
-                    @Stats?.OffersCount
-                </MudText>
-            </MudCardContent>
-        </MudCard>
+    <div style="display: flex; flex-flow: row wrap; justify-content: space-between; margin: 1rem">
+        <StatCard Icon="@Icons.Filled.People" Title="@StringLocalizer["Customers"]"
+                  Value="@Stats?.CustomersCount.ToString()" />
+        <StatCard Icon="@Icons.Filled.Person" Title="@StringLocalizer["Distributors"]"
+                  Value="@Stats?.DistributorsCount.ToString()" />
+        <StatCard Icon="@Icons.Filled.ShoppingBag" Title="@StringLocalizer["Offers"]"
+                  Value="@Stats?.OffersCount.ToString()" />
+        <StatCard Icon="@Icons.Filled.ShoppingCart" Title="@StringLocalizer["Orders"]"
+                  Value="@Stats?.OrdersCount.ToString()" />
     </div>
-
-    <div style="display: flex; flex-flow: row wrap; justify-content: space-between">
-        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
-            <MudCardHeader>
-                <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
-                <MudText Typo="Typo.h6">@StringLocalizer["Orders"]</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.h5" Align="Align.End">
-                    @Stats?.OrdersCount
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
-            <MudCardHeader>
-                <MudIcon Icon="@Icons.Filled.ShoppingCart" Class="mr-3"/>
-                <MudText Typo="Typo.h6">@StringLocalizer["FinalizedOrders"]</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.h5" Align="Align.End">
-                    @Stats?.FinalizedOrdersCount
-                </MudText>
-            </MudCardContent>
-        </MudCard>
-        <MudCard Outlined="true" Style="flex: 1; margin: 1rem;">
-            <MudCardHeader>
-                <MudIcon Icon="@Icons.Filled.ShoppingCartCheckout" Class="mr-3"/>
-                <MudText Typo="Typo.h6">@StringLocalizer["TotalSales"]</MudText>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText Typo="Typo.h5" Align="Align.End">
-                    @Stats?.TotalSales
-                </MudText>
-            </MudCardContent>
-        </MudCard>
+    
+    <div style="display: flex; flex-flow: row wrap; justify-content: start; margin: 1rem">
+        <StatCard Icon="@Icons.Filled.ShoppingCart" Title="@StringLocalizer["FinalizedOrders"]" 
+                  Value="@Stats?.FinalizedOrdersCount.ToString()" />
+        <StatCard Icon="@Icons.Filled.ShoppingCartCheckout" Title="@StringLocalizer["TotalSales"]"
+                  Value="@Stats?.TotalSales.ToString(CultureInfo.CurrentCulture)" />
     </div>
 
     @if (Series.Count > 0) {

@@ -10,10 +10,10 @@ using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldAdmin.Services.Offers;
 
-public class OffersService: IOffersService
+public class OffersService : IOffersService
 {
     private readonly IDbContextFactory<DataContext> _dbContextFactory;
-    
+
     public OffersService(IDbContextFactory<DataContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
@@ -41,6 +41,7 @@ public class OffersService: IOffersService
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .Include(o => o.Distributor)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(o => o.Id == id);
     }
 }

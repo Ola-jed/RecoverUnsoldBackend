@@ -1,7 +1,9 @@
 @page "/Offers/{OfferId:guid}"
 @using System.Globalization
+@using GoogleMapsComponents
 @inherits OfferDetailsBase
-<PageTitle>Offer details</PageTitle>
+
+<PageTitle>@StringLocalizer["OfferDetails"]</PageTitle>
 
 @if (Loading) {
     <div style="display:flex; justify-content: center; align-items: center;">
@@ -11,49 +13,58 @@
     @if (Offer == null) {
         <div style="display:flex; justify-content: center; align-items: center;">
             <MudText Typo="Typo.h5" Class="mud-text-secondary" Style="margin-top: 40vh;">
-                Offer not found
+                @StringLocalizer["OfferNotFound"]
             </MudText>
         </div>
     } else {
-        <div style="margin: 2rem">
-            <MudText Typo="Typo.h5" Class="mud-text-secondary">Offer details</MudText>
+        <div style="margin-top: 2rem; margin-left: 2rem; margin-bottom: 1rem">
+            <MudText Typo="Typo.h5" Class="mud-text-secondary">
+                @StringLocalizer["OfferDetails"]
+            </MudText>
         </div>
 
         <MudGrid Class="m-2" Style="margin: 10px;width: 95%">
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
                     <MudIcon Icon="@Icons.Filled.Payments" Class="mr-2"/>
-                    Total amount : @(Offer.Price) XOF
+                    @StringLocalizer["TotalAmount"] : @Offer.Price.ToString(CultureInfo.CurrentCulture) XOF
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
                     <MudIcon Icon="@Icons.Filled.Payments" Class="mr-2"/>
-                    Beneficiaries : @(Offer.Beneficiaries.ToString() ?? "N/A")
+                    @StringLocalizer["Beneficiaries"] : @(Offer.Beneficiaries.ToString() ?? "N/A")
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
                     <MudIcon Icon="@Icons.Filled.Event" Class="mr-2"/>
-                    Start : @Offer.StartDate.ToString(CultureInfo.CurrentCulture)
+                    @StringLocalizer["StartDate"] : @Offer.StartDate.ToString(CultureInfo.CurrentCulture)
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
                     <MudIcon Icon="@Icons.Filled.EventBusy" Class="mr-2"/>
-                    End : @Offer.StartDate.AddSeconds(Offer.Duration).ToString(CultureInfo.CurrentCulture)
-                </MudPaper>
-            </MudItem>
-            
-            <MudItem xs="3">
-                <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
-                    <MudIcon Icon="@Icons.Filled.EventBusy" Class="mr-2"/>
-                    End : @Offer.StartDate.AddSeconds(Offer.Duration).ToString(CultureInfo.CurrentCulture)
+                    @StringLocalizer["EndDate"] : @Offer.StartDate.AddSeconds(Offer.Duration).ToString(CultureInfo.CurrentCulture)
                 </MudPaper>
             </MudItem>
         </MudGrid>
+
+        <div style="margin-top: 2rem; margin-left: 2rem; margin-bottom: 1rem">
+            <MudText Typo="Typo.h5">@StringLocalizer["Products"]</MudText>
+        </div>
+
+        // Table here
+
+        <div style="margin-top: 2rem; margin-left: 2rem; margin-bottom: 1rem">
+            <MudText Typo="Typo.h5">@StringLocalizer["Location"]</MudText>
+        </div>
+
+        <div style="margin: 3rem;height: 300px;">
+            <GoogleMap @ref="@OfferMap" Id="OfferMap" Options="@MapOptions" Height="100%" OnAfterInit="InitMarker"/>
+        </div>
     }
 }
