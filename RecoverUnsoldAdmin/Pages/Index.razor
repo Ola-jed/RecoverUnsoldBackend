@@ -11,20 +11,22 @@
 } else {
     <div style="display: flex; flex-flow: row wrap; justify-content: space-between; margin: 1rem">
         <StatCard Icon="@Icons.Filled.People" Title="@StringLocalizer["Customers"]"
-                  Value="@Stats?.CustomersCount.ToString()" />
+                  Value="@Stats?.CustomersCount.ToString()"/>
         <StatCard Icon="@Icons.Filled.Person" Title="@StringLocalizer["Distributors"]"
-                  Value="@Stats?.DistributorsCount.ToString()" />
+                  Value="@Stats?.DistributorsCount.ToString()"/>
         <StatCard Icon="@Icons.Filled.ShoppingBag" Title="@StringLocalizer["Offers"]"
-                  Value="@Stats?.OffersCount.ToString()" />
+                  Value="@Stats?.OffersCount.ToString()"/>
         <StatCard Icon="@Icons.Filled.ShoppingCart" Title="@StringLocalizer["Orders"]"
-                  Value="@Stats?.OrdersCount.ToString()" />
+                  Value="@Stats?.OrdersCount.ToString()"/>
     </div>
-    
-    <div style="display: flex; flex-flow: row wrap; justify-content: start; margin: 1rem">
-        <StatCard Icon="@Icons.Filled.ShoppingCart" Title="@StringLocalizer["FinalizedOrders"]" 
-                  Value="@Stats?.FinalizedOrdersCount.ToString()" />
+
+    <div style="display: flex; flex-flow: row wrap; justify-content: space-between; margin: 1rem">
+        <StatCard Icon="@Icons.Filled.ShoppingCart" Title="@StringLocalizer["FinalizedOrders"]"
+                  Value="@Stats?.FinalizedOrdersCount.ToString()"/>
         <StatCard Icon="@Icons.Filled.ShoppingCartCheckout" Title="@StringLocalizer["TotalSales"]"
-                  Value="@Stats?.TotalSales.ToString(CultureInfo.CurrentCulture)" />
+                  Value="@Stats?.TotalSales.ToString(CultureInfo.CurrentCulture)"/>
+        <div style="width: 23%;margin-right: 1rem;"></div>
+        <div style="width: 23%;margin-right: 1rem;"></div>
     </div>
 
     @if (Series.Count > 0) {

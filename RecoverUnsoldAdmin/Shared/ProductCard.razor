@@ -1,0 +1,16 @@
+@using RecoverUnsoldDomain.Entities
+
+<MudCard>
+    <MudCardMedia Image="@(Product.Images.FirstOrDefault()?.Url ?? "")" Height="200" />
+    <MudCardContent>
+        <MudText Typo="Typo.h5">@Product.Name</MudText>
+        <MudText Typo="Typo.body2">@Product.Description</MudText>
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public Product Product { get; set; } = default!;
+
+}

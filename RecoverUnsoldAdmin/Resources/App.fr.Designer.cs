@@ -344,5 +344,17 @@ namespace RecoverUnsoldAdmin.Resources {
                 return ResourceManager.GetString("Products", resourceCulture);
             }
         }
+        
+        internal static string NoProductsFound {
+            get {
+                return ResourceManager.GetString("NoProductsFound", resourceCulture);
+            }
+        }
+        
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
     }
 }

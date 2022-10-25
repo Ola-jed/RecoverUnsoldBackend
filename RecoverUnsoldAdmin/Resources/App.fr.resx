@@ -173,4 +173,10 @@
     <data name="Products" xml:space="preserve">
         <value>Produits</value>
     </data>
+    <data name="NoProductsFound" xml:space="preserve">
+        <value>Aucun produit trouvé</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Description</value>
+    </data>
 </root>

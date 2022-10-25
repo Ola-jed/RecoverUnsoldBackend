@@ -108,7 +108,8 @@
                                     <MudTd DataLabel="Location Indication">@(LocationContext.Indication ?? "-")</MudTd>
                                     <MudTd DataLabel="Location Image">
                                         @if (LocationContext.Image != null) {
-                                            <MudImage Src="@LocationContext.Image" Elevation="25" Class="rounded-lg"/>
+                                            <MudImage Src="@LocationContext.Image" Width="200" Height="100"
+                                                      Elevation="25" Class="rounded-lg"/>
                                         } else {
                                             <span>-</span>
                                         }
