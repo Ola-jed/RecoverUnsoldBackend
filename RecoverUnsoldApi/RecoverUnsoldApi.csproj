@@ -27,10 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Services\Images" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
     </ItemGroup>
 

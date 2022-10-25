@@ -16,16 +16,14 @@ public class MaxFileSizeAttribute : ValidationAttribute
     protected override ValidationResult? IsValid(object? value,
         ValidationContext validationContext)
     {
-        if ((value == null && Nullable))
+        switch (value)
         {
-            return ValidationResult.Success;
-        }
-
-        if (value is IEnumerable<IFormFile> values)
-        {
-            return values.Any(formFile => formFile.Length > MaxFileSize)
-                ? new ValidationResult(GetErrorMessage())
-                : ValidationResult.Success;
+            case null when Nullable:
+                return ValidationResult.Success;
+            case IEnumerable<IFormFile> values:
+                return values.Any(formFile => formFile.Length > MaxFileSize)
+                    ? new ValidationResult(GetErrorMessage())
+                    : ValidationResult.Success;
         }
 
         if (value is not IFormFile file)

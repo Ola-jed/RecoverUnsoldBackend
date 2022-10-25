@@ -23,12 +23,11 @@ public class AuthService : IAuthService
 
     public async Task RegisterCustomer(CustomerRegisterDto customerRegisterDto)
     {
-        var password = HashPassword(customerRegisterDto.Password);
         var customer = new Customer
         {
             Username = customerRegisterDto.Username,
             Email = customerRegisterDto.Email,
-            Password = password
+            Password = HashPassword(customerRegisterDto.Password)
         };
         _context.Customers.Add(customer);
         await _context.SaveChangesAsync();

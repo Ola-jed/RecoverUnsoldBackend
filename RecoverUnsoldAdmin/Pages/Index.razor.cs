@@ -34,7 +34,7 @@ public class IndexBase : ComponentBase
             .OrderBy(x => x.Date)
             .Select(x => x.Date.ToShortDateString())
             .ToArray();
-        Series = new List<ChartSeries>
+        Series = new List<ChartSeries>(2)
         {
             new()
             {
