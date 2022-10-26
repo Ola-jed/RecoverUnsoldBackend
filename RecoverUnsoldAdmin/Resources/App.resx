@@ -186,4 +186,13 @@
     <data name="InvalidCredentials" xml:space="preserve">
         <value>Invalid credentials</value>
     </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
+    <data name="LogoutSuccessful" xml:space="preserve">
+        <value>Logout successful</value>
+    </data>
 </root>

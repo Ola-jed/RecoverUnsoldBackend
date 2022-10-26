@@ -386,5 +386,23 @@ namespace RecoverUnsoldAdmin.Resources {
                 return ResourceManager.GetString("InvalidCredentials", resourceCulture);
             }
         }
+        
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        internal static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        internal static string LogoutSuccessful {
+            get {
+                return ResourceManager.GetString("LogoutSuccessful", resourceCulture);
+            }
+        }
     }
 }

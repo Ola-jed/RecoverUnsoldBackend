@@ -1,11 +1,11 @@
 using Blazored.LocalStorage;
 using MudBlazor;
+using RecoverUnsoldAdmin.Utils;
 
 namespace RecoverUnsoldAdmin.Services;
 
 public class ThemeService
 {
-    private const string ThemeKey = "dark-theme";
     private MudTheme _theme;
     private readonly ILocalStorageService _localStorage;
     public bool IsDarkMode { get; set; }
@@ -75,13 +75,13 @@ public class ThemeService
 
     public async Task LoadTheme()
     {
-        IsDarkMode = await _localStorage.GetItemAsync<bool>(ThemeKey);
+        IsDarkMode = await _localStorage.GetItemAsync<bool>(StorageItemKeys.ThemeKey);
         _theme = IsDarkMode ? DarkTheme : LightTheme;
     }
 
     public async Task ToggleDarkMode(bool isDarkMode)
     {
-        await _localStorage.SetItemAsync(ThemeKey, isDarkMode);
+        await _localStorage.SetItemAsync(StorageItemKeys.ThemeKey, isDarkMode);
         IsDarkMode = isDarkMode;
         _theme = IsDarkMode ? DarkTheme : LightTheme;
     }

@@ -194,4 +194,13 @@
     <data name="InvalidCredentials" xml:space="preserve">
         <value>Identifiants invalides</value>
     </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Déconnexion</value>
+    </data>
+    <data name="LogoutSuccessful" xml:space="preserve">
+        <value>Déconnexion réussie</value>
+    </data>
 </root>

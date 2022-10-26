@@ -20,6 +20,25 @@
                                              ToggledIcon="@Icons.Filled.LightMode" ToggledTitle="@(StringLocalizer["LightTheme"])"
                                              Icon="@Icons.Filled.DarkMode" Title="@(StringLocalizer["DarkTheme"])"/>
                         <CultureSwitcher/>
+
+                        <MudButton OnClick="AccountPopoverToggle">
+                            <MudAvatar Size="Size.Medium" Style="margin-right: 0.5rem">
+                                @context.User.Identity.Name[0].ToString()
+                            </MudAvatar>
+                        </MudButton>
+                        <MudPopover Open="_accountPopoverOpen" AnchorOrigin="Origin.BottomCenter"
+                                    TransformOrigin="Origin.TopRight">
+                            <div class="d-flex flex-column" style="align-items: start;">
+                                <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenSettings">
+                                    @StringLocalizer["Settings"]
+                                </MudButton>
+                                <MudButton StartIcon="@Icons.Material.Filled.Logout" OnClick="Logout">
+                                    @StringLocalizer["Logout"]
+                                </MudButton>
+                            </div>
+                        </MudPopover>
+
+                        @context.User.Identity.Name
                     </div>
                 </MudAppBar>
                 <MudDrawer @bind-Open="@_drawerOpen" Variant="@DrawerVariant.Mini">
@@ -35,7 +54,7 @@
             </Authorized>
 
             <NotAuthorized>
-                <LoginRedirect />
+                <LoginRedirect/>
             </NotAuthorized>
         </AuthorizeView>
     </CascadingAuthenticationState>
@@ -46,7 +65,17 @@
     [Inject]
     private IStringLocalizer<App> StringLocalizer { get; set; } = default!;
 
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = default!;
+
+    [Inject]
+    private AppAuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+    
     bool _drawerOpen;
+    bool _accountPopoverOpen;
     string _menuIcon = Icons.Filled.Menu;
 
     void DrawerToggle() {
@@ -54,9 +83,23 @@
         _menuIcon = _drawerOpen ? Icons.Filled.MenuOpen : Icons.Filled.Menu;
     }
 
+    void AccountPopoverToggle() {
+        _accountPopoverOpen = !_accountPopoverOpen;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender) {
         await ThemeService.LoadTheme();
         StateHasChanged();
+    }
+
+    protected void OpenSettings() { }
+
+    protected async Task Logout() {
+        await AuthenticationStateProvider.Logout();
+        NavigationManager.NavigateTo("/Login");
+        Snackbar.Clear();
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopEnd;
+        Snackbar.Add(@StringLocalizer["LogoutSuccessful"], Severity.Success);
     }
 
 }

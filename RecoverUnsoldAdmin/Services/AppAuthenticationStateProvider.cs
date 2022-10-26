@@ -1,8 +1,9 @@
 using System.Security.Claims;
-using Blazored.SessionStorage;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldAdmin.Models;
+using RecoverUnsoldAdmin.Utils;
 using RecoverUnsoldDomain.Data;
 
 namespace RecoverUnsoldAdmin.Services;
@@ -10,22 +11,20 @@ namespace RecoverUnsoldAdmin.Services;
 public class AppAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly IDbContextFactory<DataContext> _dbContextFactory;
-    private readonly ISessionStorageService _sessionStorageService;
-    private const string EmailKey = "1";
-    private const string UsernameKey = "2";
+    private readonly ILocalStorageService _localStorageService;
     private const string AuthenticationType = "Auth";
 
     public AppAuthenticationStateProvider(IDbContextFactory<DataContext> dbContextFactory,
-        ISessionStorageService sessionStorageService)
+        ILocalStorageService localStorageService)
     {
         _dbContextFactory = dbContextFactory;
-        _sessionStorageService = sessionStorageService;
+        _localStorageService = localStorageService;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var email = await _sessionStorageService.GetItemAsync<string>(EmailKey);
-        var username = await _sessionStorageService.GetItemAsync<string>(UsernameKey);
+        var email = await _localStorageService.GetItemAsync<string>(StorageItemKeys.EmailKey);
+        var username = await _localStorageService.GetItemAsync<string>(StorageItemKeys.UsernameKey);
         if (email == null || username == null)
         {
             return new AuthenticationState(new ClaimsPrincipal());
@@ -48,15 +47,19 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
         }
 
         var user = BuildIdentity(authenticatedAdmin);
-        await _sessionStorageService.SetItemAsync(EmailKey, authenticatedAdmin.Email);
-        await _sessionStorageService.SetItemAsync(UsernameKey, authenticatedAdmin.Username);
+        await _localStorageService.SetItemAsync(StorageItemKeys.EmailKey, authenticatedAdmin.Email);
+        await _localStorageService.SetItemAsync(StorageItemKeys.UsernameKey, authenticatedAdmin.Username);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         return true;
     }
 
     public async Task Logout()
     {
-        await _sessionStorageService.ClearAsync();
+        await _localStorageService.RemoveItemsAsync(new []
+        {
+            StorageItemKeys.EmailKey,
+            StorageItemKeys.UsernameKey
+        });
         var identity = new ClaimsIdentity();
         var user = new ClaimsPrincipal(identity);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
