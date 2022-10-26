@@ -8,10 +8,12 @@
 
     <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+        <PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
         <PackageReference Include="BlazorGoogleMaps" Version="2.2.6" />
         <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
         <PackageReference Include="MudBlazor" Version="6.0.16" />
         <PackageReference Include="FluentPaginator.Lib" Version="2.3.0" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     </ItemGroup>
 
     <ItemGroup>

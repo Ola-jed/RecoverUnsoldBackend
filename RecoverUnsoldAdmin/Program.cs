@@ -1,4 +1,6 @@
 using Blazored.LocalStorage;
+using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Localization;
 using MudBlazor.Services;
 using RecoverUnsoldAdmin.Extensions;
@@ -18,7 +20,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<ThemeService>();
+builder.Services.AddScoped<AuthenticationStateProvider,AppAuthenticationStateProvider>();
+builder.Services.AddScoped<AppAuthenticationStateProvider>();
 builder.Services.AddScoped<IDistributorsService, DistributorsService>();
 builder.Services.AddScoped<ICustomersService, CustomersService>();
 builder.Services.AddScoped<IOffersService, OffersService>();
@@ -40,6 +45,8 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 app.UseStaticFiles();
 app.UseRouting();
 app.MapBlazorHub();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToPage("/_Host");
 app.Run();

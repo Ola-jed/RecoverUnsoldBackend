@@ -13,21 +13,22 @@
                 <MudTextField T="string" Label="@StringLocalizer["Email"]" Required="true"
                               Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Email"
                               Variant="Variant.Outlined" Margin="Margin.Dense"
-                              @ref="EmailField" RequiredError="@StringLocalizer["EmailRequired"]"
+                              @bind-Value="AuthenticationModel.Email"
+                              RequiredError="@StringLocalizer["EmailRequired"]"
                               Validation="@(new EmailAddressAttribute {ErrorMessage = StringLocalizer["EmailRequired"]})"/>
                 <MudTextField T="string" Label="@StringLocalizer["Password"]"
                               Class="mt-5" Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
                               AdornmentIcon="@(PasswordVisible ? Icons.Filled.Visibility : Icons.Filled.VisibilityOff)"
                               OnAdornmentClick="@(() => PasswordVisible = !PasswordVisible)"
-                              @ref="PasswordField" Required="true"
+                              @bind-Value="AuthenticationModel.Password" Required="true"
                               InputType="@(PasswordVisible ? InputType.Text : InputType.Password)"
                               RequiredError="@StringLocalizer["PasswordRequired"]"/>
                 <div class="d-flex align-end justify-space-between mt-5">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!Success || Loading)"
                                Class="ml-auto" OnClick="Submit">
                         @if (Loading) {
-                            <MudProgressCircular Class="ms-n1" Size="Size.Small"
-                                                 Color="Color.Default" Indeterminate="true"/>
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Default"
+                                                 Indeterminate="true" />
                         } else {
                             @StringLocalizer["Login"]
                         }

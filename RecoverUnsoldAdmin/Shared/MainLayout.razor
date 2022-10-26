@@ -7,31 +7,42 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar>
-        <MudIconButton Icon="@_menuIcon" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
-        @StringLocalizer["Dashboard"]
-        <MudSpacer/>
-        <div style="display: flex;align-items: center">
-            <MudToggleIconButton Toggled="ThemeService.IsDarkMode" ToggledChanged="ThemeService.ToggleDarkMode"
-                                 Color="@Color.Primary" ToggledColor="@Color.Primary"
-                                 ToggledIcon="@Icons.Filled.LightMode" ToggledTitle="@(StringLocalizer["LightTheme"])"
-                                 Icon="@Icons.Filled.DarkMode" Title="@(StringLocalizer["DarkTheme"])"/>
-            <CultureSwitcher/>
-        </div>
-    </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen" Variant="@DrawerVariant.Mini">
-        <NavMenu/>
-    </MudDrawer>
-    <MudMainContent>
-        @Body
-    </MudMainContent>
+    <CascadingAuthenticationState>
+        <AuthorizeView>
+            <Authorized>
+                <MudAppBar>
+                    <MudIconButton Icon="@_menuIcon" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())"/>
+                    @StringLocalizer["Dashboard"]
+                    <MudSpacer/>
+                    <div style="display: flex;align-items: center">
+                        <MudToggleIconButton Toggled="ThemeService.IsDarkMode" ToggledChanged="ThemeService.ToggleDarkMode"
+                                             Color="@Color.Primary" ToggledColor="@Color.Primary"
+                                             ToggledIcon="@Icons.Filled.LightMode" ToggledTitle="@(StringLocalizer["LightTheme"])"
+                                             Icon="@Icons.Filled.DarkMode" Title="@(StringLocalizer["DarkTheme"])"/>
+                        <CultureSwitcher/>
+                    </div>
+                </MudAppBar>
+                <MudDrawer @bind-Open="@_drawerOpen" Variant="@DrawerVariant.Mini">
+                    <NavMenu/>
+                </MudDrawer>
+                <MudMainContent>
+                    @Body
+                </MudMainContent>
 
-    <MudScrollToTop>
-        <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
-    </MudScrollToTop>
+                <MudScrollToTop>
+                    <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
+                </MudScrollToTop>
+            </Authorized>
+
+            <NotAuthorized>
+                <LoginRedirect />
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
 </MudLayout>
 
 @code {
+
     [Inject]
     private IStringLocalizer<App> StringLocalizer { get; set; } = default!;
 

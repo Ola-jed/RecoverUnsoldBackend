@@ -56,6 +56,7 @@ public class DataContext : DbContext
 
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Customer> Customers { get; set; } = null!;
+    public DbSet<Administrator> Administrators { get; set; } = null!;
     public DbSet<EmailVerification> EmailVerifications { get; set; } = null!;
     public DbSet<PasswordReset> PasswordResets { get; set; } = null!;
     public DbSet<Distributor> Distributors { get; set; } = null!;

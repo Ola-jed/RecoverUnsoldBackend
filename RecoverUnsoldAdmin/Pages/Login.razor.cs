@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
+using RecoverUnsoldAdmin.Models;
+using RecoverUnsoldAdmin.Services;
 
 namespace RecoverUnsoldAdmin.Pages;
 
@@ -11,10 +13,12 @@ public class LoginBase: ComponentBase
 
     [Inject]
     protected NavigationManager NavigationManager { get; set; } = default!;
-    
+
+    [Inject]
+    protected AppAuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
     protected MudForm? Form { get; set; }
-    protected MudTextField<string>? EmailField { get; set; }
-    protected MudTextField<string>? PasswordField { get; set; }
+    protected AuthenticationModel AuthenticationModel { get; set; } = new();
     protected bool Success { get; set; }
     protected bool Loading { get; set; }
     protected bool LoginFailed { get; set; }
@@ -23,7 +27,13 @@ public class LoginBase: ComponentBase
     protected async Task Submit()
     {
         Loading = true;
-        await Task.Delay(3000);
+        var loginResult = await AuthenticationStateProvider.Authenticate(AuthenticationModel);
+        if (loginResult)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+        LoginFailed = true;
         Loading = false;
     }
 }
