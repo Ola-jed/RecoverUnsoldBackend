@@ -1,0 +1,44 @@
+@page "/Login"
+@using System.ComponentModel.DataAnnotations
+@inherits LoginBase
+@layout EmptyLayout
+
+<PageTitle>@StringLocalizer["Login"]</PageTitle>
+
+<MudGrid Justify="Justify.Center" Class="mt-3">
+    <MudItem xs="6" sm="6">
+        <MudPaper Class="pa-4">
+            <MudText Typo="Typo.h6" Class="mb-5">@StringLocalizer["Login"]</MudText>
+            <MudForm @ref="Form" @bind-IsValid="@Success">
+                <MudTextField T="string" Label="@StringLocalizer["Email"]" Required="true"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Email"
+                              Variant="Variant.Outlined" Margin="Margin.Dense"
+                              @ref="EmailField" RequiredError="@StringLocalizer["EmailRequired"]"
+                              Validation="@(new EmailAddressAttribute {ErrorMessage = StringLocalizer["EmailRequired"]})"/>
+                <MudTextField T="string" Label="@StringLocalizer["Password"]"
+                              Class="mt-5" Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
+                              AdornmentIcon="@(PasswordVisible ? Icons.Filled.Visibility : Icons.Filled.VisibilityOff)"
+                              OnAdornmentClick="@(() => PasswordVisible = !PasswordVisible)"
+                              @ref="PasswordField" Required="true"
+                              InputType="@(PasswordVisible ? InputType.Text : InputType.Password)"
+                              RequiredError="@StringLocalizer["PasswordRequired"]"/>
+                <div class="d-flex align-end justify-space-between mt-5">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!Success || Loading)"
+                               Class="ml-auto" OnClick="Submit">
+                        @if (Loading) {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small"
+                                                 Color="Color.Default" Indeterminate="true"/>
+                        } else {
+                            @StringLocalizer["Login"]
+                        }
+                    </MudButton>
+                </div>
+            </MudForm>
+            @if (LoginFailed) {
+                <MudText Typo="Typo.subtitle1" Color="Color.Error">
+                    @StringLocalizer["InvalidCredentials"]
+                </MudText>   
+            }
+        </MudPaper>
+    </MudItem>
+</MudGrid>

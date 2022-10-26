@@ -1,0 +1,18 @@
+@using RecoverUnsoldAdmin.Services
+@inherits LayoutComponentBase
+@inject ThemeService ThemeService
+
+<MudThemeProvider Theme="ThemeService.Theme()"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudMainContent>@Body</MudMainContent>
+</MudLayout>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        await ThemeService.LoadTheme();
+        StateHasChanged();
+    }
+}

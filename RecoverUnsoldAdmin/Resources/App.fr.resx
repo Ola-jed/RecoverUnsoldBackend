@@ -179,4 +179,19 @@
     <data name="Description" xml:space="preserve">
         <value>Description</value>
     </data>
+    <data name="Login" xml:space="preserve">
+        <value>Connexion</value>
+    </data>
+    <data name="EmailRequired" xml:space="preserve">
+        <value>L'adresse mail est requise</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Mot de passe</value>
+    </data>
+    <data name="PasswordRequired" xml:space="preserve">
+        <value>Le mot de passe est requis</value>
+    </data>
+    <data name="InvalidCredentials" xml:space="preserve">
+        <value>Identifiants invalides</value>
+    </data>
 </root>
