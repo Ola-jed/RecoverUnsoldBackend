@@ -1,0 +1,81 @@
+@page "/Settings"
+@using RecoverUnsoldAdmin.Extensions
+@using System.ComponentModel.DataAnnotations
+@inherits SettingsBase
+
+<PageTitle>@StringLocalizer["Account"]</PageTitle>
+
+<MudGrid Justify="Justify.Center" Class="mt-3">
+    @if (User == null) {
+        <div style="display: flex; justify-content: center; width: 100%; margin-top: 15%;">
+            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+        </div>
+    } else {
+        <MudItem xs="6" sm="6">
+            <MudText Typo="Typo.h6" Class="mb-5">@StringLocalizer["Account"]</MudText>
+            <MudCard>
+                <MudCardContent>
+                    <MudForm @bind-IsValid="IsValid" @bind-Errors="Errors">
+                        <div>@StringLocalizer["Username"]</div>
+                        <div style="display: flex; flex-flow: row wrap; justify-content: space-between;align-items: baseline;">
+                            <span>
+                                @if (EditingUsername) {
+                                    <MudTextField Margin="Margin.Dense" Variant="Variant.Text"
+                                                  InputType="InputType.Text"
+                                                  @bind-Value="AccountUpdateModel.Username" Required="true"/>
+                                } else {
+                                    <MudText Style="font-weight: bolder;margin-top: 1rem;">
+                                        @User.Name()
+                                    </MudText>
+                                }
+                            </span>
+
+                            <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="ToggleEditingUsername">
+                                @StringLocalizer[EditingUsername ? "Cancel" : "Edit"]
+                            </MudButton>
+                        </div>
+
+                        <div style="margin-top: 2rem;">@StringLocalizer["Email"]</div>
+                        <div style="display: flex; flex-flow: row wrap; justify-content: space-between;align-items: baseline;">
+                            <span>
+                                @if (EditingEmail) {
+                                    <MudTextField Margin="Margin.Dense" Variant="Variant.Text"
+                                                  InputType="InputType.Email"
+                                                  Validation="@(new EmailAddressAttribute {ErrorMessage = StringLocalizer["InvalidEmail"]})"
+                                                  @bind-Value="AccountUpdateModel.Email" Required="true"/>
+                                } else {
+                                    <MudText Style="font-weight: bolder;margin-top: 1rem;">
+                                        @User.Email()
+                                    </MudText>
+                                }
+                            </span>
+
+                            <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="ToggleEditingEmail">
+                                @StringLocalizer[EditingEmail ? "Cancel" : "Edit"]
+                            </MudButton>
+                        </div>
+
+                        @if (IsDirty) {
+                            <div style="margin-top: 2rem;display: flex;justify-content: end;">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto"
+                                           Disabled="Loading || !IsValid" OnClick="Submit">
+                                    @if (Loading) {
+                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Default"
+                                                             Indeterminate="true"/>
+                                    } else {
+                                        @StringLocalizer["Save"]
+                                    }
+                                </MudButton>
+                            </div>
+                        }
+                    </MudForm>
+                </MudCardContent>
+            </MudCard>
+            <div style="display: flex; justify-content: center;width: 100%;margin-top: 2rem">
+                <MudButton Variant="Variant.Filled" Color="Color.Error">
+                    @StringLocalizer["Logout"]
+                </MudButton>
+            </div>
+        </MudItem>
+    }
+</MudGrid>

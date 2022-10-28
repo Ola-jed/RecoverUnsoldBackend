@@ -203,4 +203,25 @@
     <data name="LogoutSuccessful" xml:space="preserve">
         <value>Déconnexion réussie</value>
     </data>
+    <data name="Account" xml:space="preserve">
+        <value>Mon compte</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Modifier</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Annuler</value>
+    </data>
+    <data name="UsernameRequired" xml:space="preserve">
+        <value>Le nom d'utilisateur est requis</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Sauvegarder</value>
+    </data>
+    <data name="AccountUpdatedSuccessfully" xml:space="preserve">
+        <value>Compte modifié avec succès</value>
+    </data>
+    <data name="InvalidEmail" xml:space="preserve">
+        <value>Adresse mail invalide</value>
+    </data>
 </root>

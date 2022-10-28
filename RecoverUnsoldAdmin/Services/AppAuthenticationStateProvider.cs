@@ -25,7 +25,8 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
     {
         var email = await _localStorageService.GetItemAsync<string>(StorageItemKeys.EmailKey);
         var username = await _localStorageService.GetItemAsync<string>(StorageItemKeys.UsernameKey);
-        if (email == null || username == null)
+        var id = await _localStorageService.GetItemAsync<string>(StorageItemKeys.IdKey);
+        if (email == null || username == null || id == null)
         {
             return new AuthenticationState(new ClaimsPrincipal());
         }
@@ -33,7 +34,8 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
         var identity = new ClaimsIdentity(new[]
         {
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Name, username)
+            new Claim(ClaimTypes.Name, username),
+            new Claim(CustomClaims.Id, id)
         }, authenticationType: AuthenticationType);
         return new AuthenticationState(new ClaimsPrincipal(identity));
     }
@@ -49,6 +51,7 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
         var user = BuildIdentity(authenticatedAdmin);
         await _localStorageService.SetItemAsync(StorageItemKeys.EmailKey, authenticatedAdmin.Email);
         await _localStorageService.SetItemAsync(StorageItemKeys.UsernameKey, authenticatedAdmin.Username);
+        await _localStorageService.SetItemAsync(StorageItemKeys.IdKey, authenticatedAdmin.Id);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         return true;
     }
@@ -65,14 +68,41 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
     }
 
-    private async Task<AdministratorAuthDetails?> ValidateCredentialsAndGetUser(AuthenticationModel authenticationModel)
+    public async Task UpdateAccount(AccountUpdateModel accountUpdateModel)
+    {
+        var id = Guid.Parse(await _localStorageService.GetItemAsync<string>(StorageItemKeys.IdKey));
+        var context = await _dbContextFactory.CreateDbContextAsync();
+        var admin = await context.Administrators
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+        if (admin == null)
+        {
+            return;
+        }
+        
+        admin.Email = accountUpdateModel.Email;
+        admin.Username = accountUpdateModel.Username;
+        context.Administrators.Update(admin);
+        await context.SaveChangesAsync();
+        await _localStorageService.SetItemAsync(StorageItemKeys.EmailKey, admin.Email);
+        await _localStorageService.SetItemAsync(StorageItemKeys.UsernameKey, admin.Username);
+        var identity = new ClaimsIdentity(new[]
+        {
+            new Claim(ClaimTypes.Email, admin.Email),
+            new Claim(ClaimTypes.Name, admin.Username),
+            new Claim(CustomClaims.Id, admin.Id.ToString())
+        }, authenticationType: AuthenticationType);
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
+    }
+
+    private async Task<AuthDetails?> ValidateCredentialsAndGetUser(AuthenticationModel authenticationModel)
     {
         var context = await _dbContextFactory.CreateDbContextAsync();
         var admin = await context
             .Administrators
             .AsNoTracking()
             .Where(x => x.Email == authenticationModel.Email)
-            .Select(x => new AdministratorAuthDetails(x.Email, x.Username, x.Password))
+            .Select(x => new AuthDetails(x.Id, x.Email, x.Username, x.Password))
             .FirstOrDefaultAsync();
         
         if (admin == null)
@@ -83,12 +113,13 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
         return BCrypt.Net.BCrypt.Verify(authenticationModel.Password, admin.Password) ? admin : null;
     }
 
-    private static ClaimsPrincipal BuildIdentity(AdministratorAuthDetails administrator)
+    private static ClaimsPrincipal BuildIdentity(AuthDetails administrator)
     {
         var identity = new ClaimsIdentity(new[]
         {
             new Claim(ClaimTypes.Email, administrator.Email),
-            new Claim(ClaimTypes.Name, administrator.Username)
+            new Claim(ClaimTypes.Name, administrator.Username),
+            new Claim(CustomClaims.Id, administrator.Id.ToString())
         }, authenticationType: AuthenticationType);
         return new ClaimsPrincipal(identity);
     }

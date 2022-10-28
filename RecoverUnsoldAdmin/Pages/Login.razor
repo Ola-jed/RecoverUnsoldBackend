@@ -15,7 +15,7 @@
                               Variant="Variant.Outlined" Margin="Margin.Dense"
                               @bind-Value="AuthenticationModel.Email"
                               RequiredError="@StringLocalizer["EmailRequired"]"
-                              Validation="@(new EmailAddressAttribute {ErrorMessage = StringLocalizer["EmailRequired"]})"/>
+                              Validation="@(new EmailAddressAttribute {ErrorMessage = StringLocalizer["InvalidEmail"]})"/>
                 <MudTextField T="string" Label="@StringLocalizer["Password"]"
                               Class="mt-5" Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
                               AdornmentIcon="@(PasswordVisible ? Icons.Filled.Visibility : Icons.Filled.VisibilityOff)"

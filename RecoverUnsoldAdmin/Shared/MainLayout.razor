@@ -1,4 +1,5 @@
 ﻿@using RecoverUnsoldAdmin.Services
+@using RecoverUnsoldAdmin.Extensions
 @inherits LayoutComponentBase
 @inject ThemeService ThemeService
 
@@ -23,16 +24,16 @@
 
                         <MudButton OnClick="AccountPopoverToggle">
                             <MudAvatar Size="Size.Medium" Style="margin-right: 0.5rem">
-                                @context.User.Identity.Name[0].ToString()
+                                @context.User.Name()[0].ToString()
                             </MudAvatar>
                         </MudButton>
                         <MudPopover Open="_accountPopoverOpen" AnchorOrigin="Origin.BottomCenter"
                                     TransformOrigin="Origin.TopRight">
                             <div class="d-flex flex-column" style="align-items: start;">
-                                <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenSettings">
+                                <MudButton StartIcon="@Icons.Material.Filled.Settings" OnClick="OpenSettings" Style="width: 100%;">
                                     @StringLocalizer["Settings"]
                                 </MudButton>
-                                <MudButton StartIcon="@Icons.Material.Filled.Logout" OnClick="Logout">
+                                <MudButton StartIcon="@Icons.Material.Filled.Logout" OnClick="Logout" Style="width: 100%;">
                                     @StringLocalizer["Logout"]
                                 </MudButton>
                             </div>
@@ -92,9 +93,12 @@
         StateHasChanged();
     }
 
-    protected void OpenSettings() { }
+    void OpenSettings() {
+        _accountPopoverOpen = false;
+        NavigationManager.NavigateTo("/Settings");
+    }
 
-    protected async Task Logout() {
+    async Task Logout() {
         await AuthenticationStateProvider.Logout();
         NavigationManager.NavigateTo("/Login");
         Snackbar.Clear();

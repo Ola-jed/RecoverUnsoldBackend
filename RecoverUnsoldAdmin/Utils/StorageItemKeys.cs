@@ -8,4 +8,5 @@ public static class StorageItemKeys
     public const string ThemeKey = "0";
     public const string EmailKey = "1";
     public const string UsernameKey = "2";
+    public const string IdKey = "3";
 }

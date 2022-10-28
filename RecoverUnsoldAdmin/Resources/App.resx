@@ -195,4 +195,25 @@
     <data name="LogoutSuccessful" xml:space="preserve">
         <value>Logout successful</value>
     </data>
+    <data name="Account" xml:space="preserve">
+        <value>My account</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="UsernameRequired" xml:space="preserve">
+        <value>The Username field is required</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="AccountUpdatedSuccessfully" xml:space="preserve">
+        <value>Account updated successfully</value>
+    </data>
+    <data name="InvalidEmail" xml:space="preserve">
+        <value>Invalid email address</value>
+    </data>
 </root>

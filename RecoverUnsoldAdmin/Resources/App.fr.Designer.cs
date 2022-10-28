@@ -404,5 +404,47 @@ namespace RecoverUnsoldAdmin.Resources {
                 return ResourceManager.GetString("LogoutSuccessful", resourceCulture);
             }
         }
+        
+        internal static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        internal static string UsernameRequired {
+            get {
+                return ResourceManager.GetString("UsernameRequired", resourceCulture);
+            }
+        }
+        
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        internal static string AccountUpdatedSuccessfully {
+            get {
+                return ResourceManager.GetString("AccountUpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        internal static string InvalidEmail {
+            get {
+                return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
     }
 }
