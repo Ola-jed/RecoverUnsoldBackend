@@ -3,8 +3,8 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["RecoverUnsoldApi/RecoverUnsoldApi.csproj", "RecoverUnsoldApi/"]
-RUN dotnet restore "RecoverUnsoldApi/RecoverUnsoldApi.csproj"
+COPY ["./RecoverUnsoldApi.csproj", "./"]
+RUN dotnet restore "./RecoverUnsoldApi.csproj"
 COPY . .
 WORKDIR "/src/RecoverUnsoldApi"
 RUN dotnet build "RecoverUnsoldApi.csproj" -c Release -o /app/build
