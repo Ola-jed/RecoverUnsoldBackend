@@ -21,6 +21,6 @@ jobs:
           Heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           Heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           dockerfile_directory: ./
-          dockerfile_name: Dockerfile
+          dockerfile_name: RecoverUnsoldApi.Dockerfile
           docker_options: "--no-cache"
           process_type: web
