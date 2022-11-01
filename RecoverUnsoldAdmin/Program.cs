@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using RecoverUnsoldAdmin.Extensions;
 using RecoverUnsoldAdmin.Services;
@@ -10,6 +11,7 @@ using RecoverUnsoldAdmin.Services.Distributors;
 using RecoverUnsoldAdmin.Services.Offers;
 using RecoverUnsoldAdmin.Services.Stats;
 using RecoverUnsoldAdmin.Utils;
+using RecoverUnsoldDomain.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -29,7 +31,15 @@ builder.Services.AddScoped<ICustomersService, CustomersService>();
 builder.Services.AddScoped<IOffersService, OffersService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 
+
 var app = builder.Build();
+
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+    await context.Database.MigrateAsync();
+}
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

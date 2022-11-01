@@ -1,7 +1,9 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldApi.Converters;
 using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -22,6 +24,13 @@ builder.Services.AddServices();
 builder.Services.ConfigureAuthentication(configuration);
 
 var app = builder.Build();
+
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+    await context.Database.MigrateAsync();
+}
+
 if (app.Environment.IsProduction())
 {
     var port = Environment.GetEnvironmentVariable("PORT");

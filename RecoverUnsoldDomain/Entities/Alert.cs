@@ -11,7 +11,7 @@ public class Alert : Entity
 
     [StringLength(50)]
     // If the type is distributor, store the id of the distributor here
-    public string? Trigger { get; set; } = null!;
+    public string? Trigger { get; set; }
 
     [ForeignKey(nameof(Customer))]
     public Guid CustomerId { get; set; }
