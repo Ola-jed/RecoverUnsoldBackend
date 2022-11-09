@@ -1,5 +1,6 @@
-﻿@using RecoverUnsoldAdmin.Services
-@using RecoverUnsoldAdmin.Extensions
+﻿@using RecoverUnsoldAdmin.Extensions
+@using RecoverUnsoldAdmin.Services
+@using System.Text
 @inherits LayoutComponentBase
 @inject ThemeService ThemeService
 
@@ -19,13 +20,12 @@
                         <MudToggleIconButton Toggled="ThemeService.IsDarkMode" ToggledChanged="ThemeService.ToggleDarkMode"
                                              Color="@Color.Primary" ToggledColor="@Color.Primary"
                                              ToggledIcon="@Icons.Filled.LightMode" ToggledTitle="@(StringLocalizer["LightTheme"])"
-                                             Icon="@Icons.Filled.DarkMode" Title="@(StringLocalizer["DarkTheme"])"/>
+                                             Icon="@Icons.Filled.DarkMode" Title="@( StringLocalizer["DarkTheme"])"/>
                         <CultureSwitcher/>
 
                         <MudButton OnClick="AccountPopoverToggle">
-                            <MudAvatar Size="Size.Medium" Style="margin-right: 0.5rem">
-                                @context.User.Name()[0].ToString()
-                            </MudAvatar>
+                            <MudAvatar Size="Size.Medium" Style="margin-right: 0.5rem"
+                                       Image="@($"http://gravatar.com/avatar/{Md5(@context.User.Email())}")" />
                         </MudButton>
                         <MudPopover Open="_accountPopoverOpen" AnchorOrigin="Origin.BottomCenter"
                                     TransformOrigin="Origin.TopRight">
@@ -86,6 +86,13 @@
 
     void AccountPopoverToggle() {
         _accountPopoverOpen = !_accountPopoverOpen;
+    }
+    
+    static string Md5(string input) {
+        using var md5 = System.Security.Cryptography.MD5.Create();
+        var inputBytes = Encoding.ASCII.GetBytes(input);
+        var hashBytes = md5.ComputeHash(inputBytes);
+        return Convert.ToHexString(hashBytes).ToLowerInvariant();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender) {

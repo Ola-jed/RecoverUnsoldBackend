@@ -31,15 +31,7 @@ builder.Services.AddScoped<ICustomersService, CustomersService>();
 builder.Services.AddScoped<IOffersService, OffersService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 
-
 var app = builder.Build();
-
-await using (var scope = app.Services.CreateAsyncScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-    await context.Database.MigrateAsync();
-}
-
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
