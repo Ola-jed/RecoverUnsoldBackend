@@ -36,7 +36,7 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
             new Claim(ClaimTypes.Email, email),
             new Claim(ClaimTypes.Name, username),
             new Claim(CustomClaims.Id, id)
-        }, authenticationType: AuthenticationType);
+        }, AuthenticationType);
         return new AuthenticationState(new ClaimsPrincipal(identity));
     }
 
@@ -58,7 +58,7 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
 
     public async Task Logout()
     {
-        await _localStorageService.RemoveItemsAsync(new []
+        await _localStorageService.RemoveItemsAsync(new[]
         {
             StorageItemKeys.EmailKey,
             StorageItemKeys.UsernameKey
@@ -72,26 +72,20 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
     {
         var id = Guid.Parse(await _localStorageService.GetItemAsync<string>(StorageItemKeys.IdKey));
         var context = await _dbContextFactory.CreateDbContextAsync();
-        var admin = await context.Administrators
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
-        if (admin == null)
-        {
-            return;
-        }
-        
-        admin.Email = accountUpdateModel.Email;
-        admin.Username = accountUpdateModel.Username;
-        context.Administrators.Update(admin);
-        await context.SaveChangesAsync();
-        await _localStorageService.SetItemAsync(StorageItemKeys.EmailKey, admin.Email);
-        await _localStorageService.SetItemAsync(StorageItemKeys.UsernameKey, admin.Username);
+        await context.Administrators
+            .Where(x => x.Id == id)
+            .ExecuteUpdateAsync(admin => admin.SetProperty(x => x.Email, accountUpdateModel.Username)
+                .SetProperty(x => x.Username, accountUpdateModel.Username)
+            );
+
+        await _localStorageService.SetItemAsync(StorageItemKeys.EmailKey, accountUpdateModel.Email);
+        await _localStorageService.SetItemAsync(StorageItemKeys.UsernameKey, accountUpdateModel.Username);
         var identity = new ClaimsIdentity(new[]
         {
-            new Claim(ClaimTypes.Email, admin.Email),
-            new Claim(ClaimTypes.Name, admin.Username),
-            new Claim(CustomClaims.Id, admin.Id.ToString())
-        }, authenticationType: AuthenticationType);
+            new Claim(ClaimTypes.Email, accountUpdateModel.Email),
+            new Claim(ClaimTypes.Name, accountUpdateModel.Username),
+            new Claim(CustomClaims.Id, id.ToString())
+        }, AuthenticationType);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
     }
 
@@ -104,7 +98,7 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
             .Where(x => x.Email == authenticationModel.Email)
             .Select(x => new AuthDetails(x.Id, x.Email, x.Username, x.Password))
             .FirstOrDefaultAsync();
-        
+
         if (admin == null)
         {
             return null;
@@ -120,7 +114,7 @@ public class AppAuthenticationStateProvider : AuthenticationStateProvider
             new Claim(ClaimTypes.Email, administrator.Email),
             new Claim(ClaimTypes.Name, administrator.Username),
             new Claim(CustomClaims.Id, administrator.Id.ToString())
-        }, authenticationType: AuthenticationType);
+        }, AuthenticationType);
         return new ClaimsPrincipal(identity);
     }
 }

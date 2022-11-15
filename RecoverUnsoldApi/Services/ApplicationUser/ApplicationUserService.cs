@@ -29,12 +29,16 @@ public class ApplicationUserService : IApplicationUserService
 
     public async Task<User?> FindByEmail(string email)
     {
-        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
+        return await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Email == email);
     }
 
     public async Task<User?> FindByUsername(string username)
     {
-        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Username == username);
+        return await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Username == username);
     }
 
     public async Task<User?> FindByEmailOrUsername(string emailOrUsername)
@@ -44,73 +48,61 @@ public class ApplicationUserService : IApplicationUserService
 
     public async Task<bool> IsEmailVerified(string email)
     {
-        return await _context.Users.AsNoTracking().AnyAsync(x => x.Email == email && x.EmailVerifiedAt != null);
+        return await _context.Users
+            .AsNoTracking()
+            .AnyAsync(x => x.Email == email && x.EmailVerifiedAt != null);
     }
 
     public async Task<bool> EmailExists(string email)
     {
-        return await _context.Users.AsNoTracking().AnyAsync(x => x.Email == email);
+        return await _context.Users
+            .AsNoTracking()
+            .AnyAsync(x => x.Email == email);
     }
 
     public async Task<bool> UsernameExists(string username)
     {
-        return await _context.Users.AsNoTracking().AnyAsync(x => x.Username == username);
+        return await _context.Users
+            .AsNoTracking()
+            .AnyAsync(x => x.Username == username);
     }
 
     public async Task UpdateCustomer(Guid userId, CustomerUpdateDto customerUpdateDto)
     {
-        var customer = await _context.Customers.FindAsync(userId);
-        if (customer == null)
-        {
-            return;
-        }
-
-        customer.Username = customerUpdateDto.Username;
-        customer.FirstName = customerUpdateDto.FirstName;
-        customer.LastName = customerUpdateDto.LastName;
-        _context.Customers.Update(customer);
-        await _context.SaveChangesAsync();
+        await _context.Customers
+            .Where(c => c.Id == userId)
+            .ExecuteUpdateAsync(
+                customer => customer.SetProperty(x => x.Username, customerUpdateDto.Username)
+                    .SetProperty(x => x.FirstName, customerUpdateDto.FirstName)
+                    .SetProperty(x => x.LastName, customerUpdateDto.LastName)
+            );
     }
 
     public async Task UpdateDistributor(Guid userId, DistributorUpdateDto distributorUpdateDto)
     {
-        var distributor = await _context.Distributors.FindAsync(userId);
-        if (distributor == null)
-        {
-            return;
-        }
-
-        distributor.Username = distributorUpdateDto.Username;
-        distributor.Phone = distributorUpdateDto.Phone;
-        distributor.TaxId = distributorUpdateDto.TaxId;
-        distributor.Rccm = distributorUpdateDto.Rccm;
-        distributor.WebsiteUrl = distributorUpdateDto.WebsiteUrl;
-        _context.Distributors.Update(distributor);
-        await _context.SaveChangesAsync();
+        await _context.Distributors
+            .Where(c => c.Id == userId)
+            .ExecuteUpdateAsync(
+                distributor => distributor.SetProperty(x => x.Username, distributorUpdateDto.Username)
+                    .SetProperty(x => x.Phone, distributorUpdateDto.Phone)
+                    .SetProperty(x => x.TaxId, distributorUpdateDto.TaxId)
+                    .SetProperty(x => x.Rccm, distributorUpdateDto.Rccm)
+                    .SetProperty(x => x.WebsiteUrl, distributorUpdateDto.WebsiteUrl)
+            );
     }
 
     public async Task UpdatePassword(Guid userId, string password)
     {
-        var user = await _context.Users.FindAsync(userId);
-        if (user == null)
-        {
-            return;
-        }
-
-        user.Password = BCrypt.Net.BCrypt.HashPassword(password);
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
+        var passwordHashed = BCrypt.Net.BCrypt.HashPassword(password);
+        await _context.Users
+            .Where(c => c.Id == userId)
+            .ExecuteUpdateAsync(user => user.SetProperty(x => x.Password, passwordHashed));
     }
 
     public async Task Delete(Guid userId)
     {
-        var user = await _context.Users.FindAsync(userId);
-        if (user == null)
-        {
-            return;
-        }
-
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
+        await _context.Users
+            .Where(x => x.Id == userId)
+            .ExecuteDeleteAsync();
     }
 }

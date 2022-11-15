@@ -30,14 +30,9 @@ public class ReviewsService : IReviewsService
 
     public async Task Delete(Guid id)
     {
-        var review = await _context.Reviews.FindAsync(id);
-        if (review == null)
-        {
-            return;
-        }
-
-        _context.Reviews.Remove(review);
-        await _context.SaveChangesAsync();
+        await _context.Reviews
+            .Where(r => r.Id == id)
+            .ExecuteDeleteAsync();
     }
 
     public async Task<Review> Publish(Guid userId, string comment)

@@ -122,31 +122,22 @@ public class OrdersService : IOrdersService
 
     public async Task Accept(Guid orderId)
     {
-        var order = await _context.Orders.FindAsync(orderId);
-        
-        if (order == null) return;
-        order.Status = Status.Approved;
-        _context.Orders.Update(order);
-        await _context.SaveChangesAsync();
+        await _context.Orders
+            .Where(o => o.Id == orderId)
+            .ExecuteUpdateAsync(order => order.SetProperty(x => x.Status, Status.Approved));
     }
 
     public async Task Reject(Guid orderId)
     {
-        var order = await _context.Orders.FindAsync(orderId);
-        
-        if (order == null) return;
-        order.Status = Status.Rejected;
-        _context.Orders.Update(order);
-        await _context.SaveChangesAsync();
+        await _context.Orders
+            .Where(o => o.Id == orderId)
+            .ExecuteUpdateAsync(order => order.SetProperty(x => x.Status, Status.Rejected));
     }
 
     public async Task Complete(Guid orderId)
     {
-        var order = await _context.Orders.FindAsync(orderId);
-        
-        if (order == null) return;
-        order.Status = Status.Completed;
-        _context.Orders.Update(order);
-        await _context.SaveChangesAsync();
+        await _context.Orders
+            .Where(o => o.Id == orderId)
+            .ExecuteUpdateAsync(order => order.SetProperty(x => x.Status, Status.Completed));
     }
 }

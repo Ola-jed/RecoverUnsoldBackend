@@ -16,13 +16,11 @@ public class ProductsService : IProductsService
 {
     private readonly DataContext _context;
     private readonly Cloudinary _cloudinary;
-    private readonly ILogger<ProductsService> _logger;
 
-    public ProductsService(DataContext context, Cloudinary cloudinary, ILogger<ProductsService> logger)
+    public ProductsService(DataContext context, Cloudinary cloudinary)
     {
         _context = context;
         _cloudinary = cloudinary;
-        _logger = logger;
     }
 
     public async Task<bool> IsOwner(Guid id, Guid distributorId)
@@ -85,7 +83,6 @@ public class ProductsService : IProductsService
         var imageModels = await Task.WhenAll(images.Select(async i =>
         {
             var uploadResult = (await i.UploadToCloudinary(_cloudinary))!;
-            _logger.LogDebug("Created Image for a product");
             return new Image
             {
                 PublicId = uploadResult.PublicId,
@@ -107,20 +104,13 @@ public class ProductsService : IProductsService
 
     public async Task Update(Guid id, Guid distributorId, ProductUpdateDto productUpdateDto)
     {
-        var product = await _context.Products
+        await _context.Products
             .Include(p => p.Offer)
             .Include(p => p.Images)
-            .FirstOrDefaultAsync(p => p.Id == id);
-        if (product == null || product.Offer?.DistributorId != distributorId)
-        {
-            _logger.LogDebug("Product {ProductId} not found for distributor {DistributorId}", id, distributorId);
-            return;
-        }
-
-        product.Name = productUpdateDto.Name;
-        product.Description = productUpdateDto.Description;
-        _context.Products.Update(product);
-        await _context.SaveChangesAsync();
+            .Where(p => p.Id == id && p.Offer!.DistributorId != distributorId)
+            .ExecuteUpdateAsync(product => product.SetProperty(x => x.Name, productUpdateDto.Name)
+                .SetProperty(x => x.Description, productUpdateDto.Description)
+            );
     }
 
     public async Task Delete(Guid id, Guid distributorId)
@@ -131,7 +121,6 @@ public class ProductsService : IProductsService
             .FirstOrDefaultAsync(p => p.Id == id);
         if (product == null || product.Offer?.DistributorId != distributorId)
         {
-            _logger.LogDebug("Product {ProductId} not found for distributor {DistributorId}", id, distributorId);
             return;
         }
 

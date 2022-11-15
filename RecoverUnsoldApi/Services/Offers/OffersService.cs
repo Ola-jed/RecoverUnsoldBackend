@@ -71,9 +71,7 @@ public class OffersService : IOffersService
             .Include(o => o.Location)
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
-            .Where(o => o.Location!.Coordinates.Distance(
-                referencePoint
-            ) <= distance * 1000)
+            .Where(o => o.Location!.Coordinates.Distance(referencePoint) <= distance * 1000)
             .Select(o => new OfferWithRelativeDistanceDto(
                 o.ToOfferReadDto(),
                 o.Location!.Coordinates.Distance(referencePoint)
@@ -118,30 +116,20 @@ public class OffersService : IOffersService
 
     public async Task Update(Guid id, Guid distributorId, OfferUpdateDto offerUpdateDto)
     {
-        var offer = await _context.Offers.FindAsync(id);
-        if (offer == null || offer.DistributorId != distributorId)
-        {
-            return;
-        }
-
-        offer.StartDate = offerUpdateDto.StartDate;
-        offer.Duration = offerUpdateDto.Duration;
-        offer.Beneficiaries = offerUpdateDto.Beneficiaries;
-        offer.Price = offerUpdateDto.Price;
-        offer.LocationId = offerUpdateDto.LocationId;
-        _context.Offers.Update(offer);
-        await _context.SaveChangesAsync();
+        await _context.Offers
+            .Where(o => o.Id == id && o.DistributorId == distributorId)
+            .ExecuteUpdateAsync(offer => offer.SetProperty(x => x.StartDate, offerUpdateDto.StartDate)
+                .SetProperty(x => x.Duration, offerUpdateDto.Duration)
+                .SetProperty(x => x.Beneficiaries, offerUpdateDto.Beneficiaries)
+                .SetProperty(x => x.Price, offerUpdateDto.Price)
+                .SetProperty(x => x.LocationId, offerUpdateDto.LocationId)
+            );
     }
 
     public async Task Delete(Guid id, Guid distributorId)
     {
-        var offer = await _context.Offers.FindAsync(id);
-        if (offer == null || offer.DistributorId != distributorId)
-        {
-            return;
-        }
-
-        _context.Offers.Remove(offer);
-        await _context.SaveChangesAsync();
+        await _context.Offers
+            .Where(o => o.Id == id && o.DistributorId == distributorId)
+            .ExecuteDeleteAsync();
     }
 }

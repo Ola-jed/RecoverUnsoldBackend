@@ -4,7 +4,7 @@ using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldApi.Services.FcmTokens;
 
-public class FcmTokensService: IFcmTokensService
+public class FcmTokensService : IFcmTokensService
 {
     private readonly DataContext _context;
 
@@ -12,7 +12,7 @@ public class FcmTokensService: IFcmTokensService
     {
         _context = context;
     }
-    
+
     public async Task Create(Guid userId, string value)
     {
         var sameTokenExists = await _context.FcmTokens.AnyAsync(x => x.Value == value);
@@ -20,7 +20,7 @@ public class FcmTokensService: IFcmTokensService
         {
             return;
         }
-        
+
         _context.FcmTokens.Add(new FcmToken
         {
             Value = value,
@@ -31,14 +31,15 @@ public class FcmTokensService: IFcmTokensService
 
     public async Task RemoveAllForUser(Guid userId)
     {
-        await _context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM \"FcmTokens\" WHERE \"UserId\" =  {userId}");
+        await _context.FcmTokens
+            .Where(t => t.UserId == userId)
+            .ExecuteDeleteAsync();
     }
 
     public async Task Remove(string value)
     {
-        var token = await _context.FcmTokens.FirstOrDefaultAsync(t => t.Value == value);
-        if(token == null) return;
-        _context.FcmTokens.Remove(token);
-        await _context.SaveChangesAsync();
+        await _context.FcmTokens
+            .Where(t => t.Value == value)
+            .ExecuteDeleteAsync();
     }
 }

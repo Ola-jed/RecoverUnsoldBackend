@@ -77,13 +77,8 @@ public class AlertsService : IAlertsService
 
     public async Task DeleteAlert(Guid alertId)
     {
-        var alert = await _context.Alerts.FindAsync(alertId);
-        if (alert == null)
-        {
-            return;
-        }
-
-        _context.Alerts.Remove(alert);
-        await _context.SaveChangesAsync();
+        await _context.Alerts
+            .Where(a => a.Id == alertId)
+            .ExecuteDeleteAsync();
     }
 }

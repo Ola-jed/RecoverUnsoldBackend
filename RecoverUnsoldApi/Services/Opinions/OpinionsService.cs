@@ -41,7 +41,6 @@ public class OpinionsService : IOpinionsService
         var opinion = await _context.Opinions
             .AsNoTracking()
             .FirstOrDefaultAsync(o => o.Id == id);
-
         return opinion?.ToOpinionReadDto();
     }
 
@@ -58,26 +57,15 @@ public class OpinionsService : IOpinionsService
 
     public async Task Update(Guid id, OpinionUpdateDto opinionUpdateDto)
     {
-        var opinion = await _context.Opinions.FindAsync(id);
-        if (opinion == null)
-        {
-            return;
-        }
-
-        opinion.Comment = opinionUpdateDto.Comment;
-        _context.Opinions.Update(opinion);
-        await _context.SaveChangesAsync();
+        await _context.Opinions
+            .Where(o => o.Id == id)
+            .ExecuteUpdateAsync(opinion => opinion.SetProperty(x => x.Comment, opinionUpdateDto.Comment));
     }
 
     public async Task Delete(Guid id)
     {
-        var opinion = await _context.Opinions.FindAsync(id);
-        if (opinion == null)
-        {
-            return;
-        }
-
-        _context.Opinions.Remove(opinion);
-        await _context.SaveChangesAsync();
+        await _context.Opinions
+            .Where(o => o.Id == id)
+            .ExecuteDeleteAsync();
     }
 }

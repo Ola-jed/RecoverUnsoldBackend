@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>76326FC9-E17B-4DC0-AA6B-AFE0847997C3</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+        <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
         <PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
         <PackageReference Include="BlazorGoogleMaps" Version="2.2.6" />
         <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />

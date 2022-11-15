@@ -53,9 +53,9 @@ public class UserVerificationService : IUserVerificationService
             return false;
         }
 
-        var user = await _context.Users.FindAsync(emailVerification.UserId);
-        user!.EmailVerifiedAt = DateTime.Now;
-        _context.Users.Update(user);
+        await _context.Users
+            .Where(c => c.Id == emailVerification.UserId)
+            .ExecuteUpdateAsync(user => user.SetProperty(x => x.EmailVerifiedAt, DateTime.Now));
         _context.EmailVerifications.Remove(emailVerification);
         await _context.SaveChangesAsync();
         return true;

@@ -110,13 +110,8 @@ public class LocationsService : ILocationsService
 
     public async Task Delete(Guid userId, Guid locationId)
     {
-        var location = await _context.Locations
-            .FirstOrDefaultAsync(x => x.Id == locationId && x.DistributorId == userId);
-
-        if (location != null)
-        {
-            _context.Locations.Remove(location);
-            await _context.SaveChangesAsync();
-        }
+        await _context.Locations
+            .Where(l => l.Id == locationId && l.DistributorId == userId)
+            .ExecuteDeleteAsync();
     }
 }
