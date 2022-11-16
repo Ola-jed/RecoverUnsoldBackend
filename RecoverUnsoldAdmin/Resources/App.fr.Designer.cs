@@ -446,5 +446,23 @@ namespace RecoverUnsoldAdmin.Resources {
                 return ResourceManager.GetString("InvalidEmail", resourceCulture);
             }
         }
+        
+        internal static string OnlinePaiement {
+            get {
+                return ResourceManager.GetString("OnlinePaiement", resourceCulture);
+            }
+        }
+        
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
     }
 }

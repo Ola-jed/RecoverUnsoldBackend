@@ -2,5 +2,6 @@
 
 namespace RecoverUnsoldApi.Dto;
 
-public record OfferCreateDto([Required] DateTime StartDate, [Required] ulong Duration, int? Beneficiaries,
-    [Required] decimal Price, [Required] Guid LocationId, IEnumerable<ProductCreateDto>? Products = null);
+public record OfferCreateDto([Required] DateTime StartDate, [Required] ulong Duration, [Required] bool OnlinePayment,
+    int? Beneficiaries, [Required] decimal Price, [Required] Guid LocationId,
+    IEnumerable<ProductCreateDto>? Products = null);

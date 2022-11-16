@@ -97,6 +97,7 @@ public class OffersService : IOffersService
         {
             StartDate = offerCreateDto.StartDate,
             Duration = offerCreateDto.Duration,
+            OnlinePayment = offerCreateDto.OnlinePayment,
             Beneficiaries = offerCreateDto.Beneficiaries,
             Price = offerCreateDto.Price,
             LocationId = offerCreateDto.LocationId,
@@ -120,6 +121,7 @@ public class OffersService : IOffersService
             .Where(o => o.Id == id && o.DistributorId == distributorId)
             .ExecuteUpdateAsync(offer => offer.SetProperty(x => x.StartDate, offerUpdateDto.StartDate)
                 .SetProperty(x => x.Duration, offerUpdateDto.Duration)
+                .SetProperty(x => x.OnlinePayment, offerUpdateDto.OnlinePayment)
                 .SetProperty(x => x.Beneficiaries, offerUpdateDto.Beneficiaries)
                 .SetProperty(x => x.Price, offerUpdateDto.Price)
                 .SetProperty(x => x.LocationId, offerUpdateDto.LocationId)

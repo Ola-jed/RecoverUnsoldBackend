@@ -16,6 +16,9 @@ public class Offer : Entity
     [Required]
     public decimal Price { get; set; }
 
+    [Required]
+    public bool OnlinePayment { get; set; }
+
     [ForeignKey(nameof(Distributor))]
     public Guid DistributorId { get; set; }
 

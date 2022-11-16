@@ -6,8 +6,10 @@ using NetTopologySuite.Geometries;
 
 namespace RecoverUnsoldDomain.Migrations
 {
+    /// <inheritdoc />
     public partial class Initial : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
@@ -164,6 +166,7 @@ namespace RecoverUnsoldDomain.Migrations
                     Duration = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
                     Beneficiaries = table.Column<int>(type: "integer", nullable: true),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    OnlinePayment = table.Column<bool>(type: "boolean", nullable: false),
                     DistributorId = table.Column<Guid>(type: "uuid", nullable: false),
                     LocationId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -437,6 +440,7 @@ namespace RecoverUnsoldDomain.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

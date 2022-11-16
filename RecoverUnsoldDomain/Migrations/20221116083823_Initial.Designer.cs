@@ -13,14 +13,15 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221026101947_Initial")]
+    [Migration("20221116083823_Initial")]
     partial class Initial
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "7.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
@@ -212,6 +213,9 @@ namespace RecoverUnsoldDomain.Migrations
 
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("OnlinePayment")
+                        .HasColumnType("boolean");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
@@ -430,6 +434,15 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Users");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("User");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Administrator", b =>
+                {
+                    b.HasBaseType("RecoverUnsoldDomain.Entities.User");
+
+                    b.HasDiscriminator().HasValue("Administrator");
                 });
 
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Customer", b =>

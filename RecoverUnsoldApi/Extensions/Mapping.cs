@@ -111,9 +111,9 @@ public static class Mapping
 
     public static OfferReadDto ToOfferReadDto(this Offer offer)
     {
-        return new OfferReadDto(offer.Id, offer.StartDate, offer.Duration, offer.Beneficiaries, offer.Price,
-            offer.CreatedAt, offer.DistributorId, offer.Location?.ToLocationReadDto(),
-            offer.Products.ToProductReadDto());
+        return new OfferReadDto(offer.Id, offer.StartDate, offer.Duration,offer.OnlinePayment,
+            offer.Beneficiaries, offer.Price, offer.CreatedAt, offer.DistributorId,
+            offer.Location?.ToLocationReadDto(), offer.Products.ToProductReadDto());
     }
 
     public static IQueryable<OfferReadDto> ToOfferReadDto(this IQueryable<Offer> offers)

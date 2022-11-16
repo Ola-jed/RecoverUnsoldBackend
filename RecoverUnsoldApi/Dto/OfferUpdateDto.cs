@@ -2,5 +2,5 @@
 
 namespace RecoverUnsoldApi.Dto;
 
-public record OfferUpdateDto([Required] DateTime StartDate, [Required] ulong Duration, int? Beneficiaries,
-    [Required] decimal Price, [Required] Guid LocationId);
+public record OfferUpdateDto([Required] DateTime StartDate, [Required] ulong Duration,[Required] bool OnlinePayment,
+    int? Beneficiaries, [Required] decimal Price, [Required] Guid LocationId);
