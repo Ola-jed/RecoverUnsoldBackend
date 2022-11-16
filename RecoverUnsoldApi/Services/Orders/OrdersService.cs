@@ -100,6 +100,7 @@ public class OrdersService : IOrdersService
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
             .Include(o => o.Offer)
+            .Include(o => o.Payment)
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
             .ApplyFilters(orderFilterDto)
             .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)

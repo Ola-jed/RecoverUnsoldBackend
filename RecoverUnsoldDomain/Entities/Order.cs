@@ -22,4 +22,5 @@ public class Order : Entity
     public Offer? Offer { get; set; }
 
     public ICollection<Opinion> Opinions { get; set; } = new HashSet<Opinion>();
+    public Payment? Payment { get; set; }
 }

@@ -13,7 +13,7 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221116083823_Initial")]
+    [Migration("20221116103915_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -327,6 +327,38 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("PasswordResets");
                 });
 
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.HasIndex("TransactionId")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
+                });
+
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -582,6 +614,17 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Navigation("Offer");
                 });
 
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Payment", b =>
+                {
+                    b.HasOne("RecoverUnsoldDomain.Entities.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("RecoverUnsoldDomain.Entities.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Product", b =>
                 {
                     b.HasOne("RecoverUnsoldDomain.Entities.Offer", "Offer")
@@ -617,6 +660,8 @@ namespace RecoverUnsoldDomain.Migrations
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Order", b =>
                 {
                     b.Navigation("Opinions");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Product", b =>

@@ -65,6 +65,7 @@ public class DataContext : DbContext
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Product> Images { get; set; } = null!;
     public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<Payment> Payments { get; set; } = null!;
     public DbSet<Opinion> Opinions { get; set; } = null!;
     public DbSet<Alert> Alerts { get; set; } = null!;
     public DbSet<FcmToken> FcmTokens { get; set; } = null!;
