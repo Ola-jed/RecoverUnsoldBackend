@@ -6,8 +6,7 @@ namespace RecoverUnsoldApi.Services.Distributors;
 
 public interface IDistributorsService
 {
-    Task<UrlPage<DistributorInformationDto>> GetDistributors(UrlPaginationParameter urlPaginationParameter,
-        string? name = null);
+    Task<Page<DistributorInformationDto>> GetDistributors(PaginationParameter paginationParameter, string? name = null);
     Task<IEnumerable<DistributorLabelReadDto>> GetDistributorsLabels();
     Task<DistributorInformationDto?> GetDistributor(Guid id);
 }

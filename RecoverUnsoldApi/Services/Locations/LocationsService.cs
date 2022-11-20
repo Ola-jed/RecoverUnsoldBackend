@@ -29,12 +29,12 @@ public class LocationsService : ILocationsService
         return await _context.Locations.AnyAsync(x => x.Id == locationId && x.DistributorId == userId);
     }
 
-    public async Task<UrlPage<LocationReadDto>> GetAll(Guid userId, UrlPaginationParameter urlPaginationParameter)
+    public async Task<Page<LocationReadDto>> GetAll(Guid userId, PaginationParameter paginationParameter)
     {
         return await Task.Run(() => _context.Locations
             .AsNoTracking()
             .Where(x => x.DistributorId == userId)
-            .UrlPaginate(urlPaginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
             .ToLocationReadDto()
         );
     }
@@ -47,13 +47,12 @@ public class LocationsService : ILocationsService
         return location?.ToLocationReadDto();
     }
 
-    public async Task<UrlPage<LocationReadDto>> FindByName(string search,
-        UrlPaginationParameter urlPaginationParameter)
+    public async Task<Page<LocationReadDto>> FindByName(string search, PaginationParameter paginationParameter)
     {
         return await Task.Run(() => _context.Locations
             .AsNoTracking()
             .Where(x => x.Name.Contains(search))
-            .UrlPaginate(urlPaginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, x => x.CreatedAt, PaginationOrder.Descending)
             .ToLocationReadDto()
         );
     }

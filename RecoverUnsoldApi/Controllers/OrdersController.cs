@@ -47,44 +47,35 @@ public class OrdersController : ControllerBase
 
     [Authorize(Roles = Roles.Customer)]
     [HttpGet("Customer")]
-    public async Task<UrlPage<OrderReadDto>> GetCustomerOrders([FromQuery] OrderFilterDto orderFilterDto)
+    public async Task<Page<OrderReadDto>> GetCustomerOrders([FromQuery] OrderFilterDto orderFilterDto)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            orderFilterDto.PerPage, orderFilterDto.Page, this.GetCleanUrl(),
-            nameof(orderFilterDto.Page), nameof(orderFilterDto.PerPage)
-        );
-        return await _ordersService.GetCustomerOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
+        var paginationParam = new PaginationParameter(orderFilterDto.PerPage, orderFilterDto.Page);
+        return await _ordersService.GetCustomerOrders(this.GetUserId(), paginationParam, orderFilterDto);
     }
 
     [Authorize(Roles = Roles.Distributor)]
     [HttpGet("Distributor")]
-    public async Task<UrlPage<OrderReadDto>> GetDistributorReceivedOrders([FromQuery] OrderFilterDto orderFilterDto)
+    public async Task<Page<OrderReadDto>> GetDistributorReceivedOrders([FromQuery] OrderFilterDto orderFilterDto)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            orderFilterDto.PerPage, orderFilterDto.Page, this.GetCleanUrl(),
-            nameof(orderFilterDto.Page), nameof(orderFilterDto.PerPage)
-        );
-        return await _ordersService.GetDistributorOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
+        var paginationParam = new PaginationParameter(orderFilterDto.PerPage, orderFilterDto.Page);
+        return await _ordersService.GetDistributorOrders(this.GetUserId(), paginationParam, orderFilterDto);
     }
 
     [Authorize(Roles = Roles.Distributor)]
     [HttpGet("/api/Offers/{id:guid}/Orders")]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<UrlPage<OrderReadDto>>> GetOfferOffers(Guid id,
+    public async Task<ActionResult<Page<OrderReadDto>>> GetOfferOffers(Guid id,
         [FromQuery] OrderFilterDto orderFilterDto)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            orderFilterDto.PerPage, orderFilterDto.Page, this.GetCleanUrl(),
-            nameof(orderFilterDto.Page), nameof(orderFilterDto.PerPage)
-        );
         var distributorId = this.GetUserId();
         var isOfferOwner = await _offersService.IsOwner(distributorId, id);
         if (!isOfferOwner)
         {
             return Forbid();
         }
-
-        return await _ordersService.GetOfferOrders(this.GetUserId(), urlPaginationParam, orderFilterDto);
+        
+        var paginationParam = new PaginationParameter(orderFilterDto.PerPage, orderFilterDto.Page);
+        return await _ordersService.GetOfferOrders(this.GetUserId(), paginationParam, orderFilterDto);
     }
 
     [Authorize(Roles = Roles.Customer)]

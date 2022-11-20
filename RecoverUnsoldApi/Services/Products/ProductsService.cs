@@ -32,37 +32,37 @@ public class ProductsService : IProductsService
             .AnyAsync(p => p.Offer != null && p.Offer.DistributorId == distributorId);
     }
 
-    public async Task<UrlPage<ProductReadDto>> GetOfferProducts(Guid offerId,
-        UrlPaginationParameter urlPaginationParameter)
+    public async Task<Page<ProductReadDto>> GetOfferProducts(Guid offerId,
+        PaginationParameter paginationParameter)
     {
         return await Task.Run(() => _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
             .Where(p => p.OfferId == offerId)
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
             .ToProductReadDto()
         );
     }
 
-    public async Task<UrlPage<ProductReadDto>> GetProducts(UrlPaginationParameter urlPaginationParameter)
+    public async Task<Page<ProductReadDto>> GetProducts(PaginationParameter paginationParameter)
     {
         return await Task.Run(() => _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
             .ToProductReadDto()
         );
     }
 
-    public async Task<UrlPage<ProductReadDto>> GetDistributorProducts(Guid distributorId,
-        UrlPaginationParameter urlPaginationParameter)
+    public async Task<Page<ProductReadDto>> GetDistributorProducts(Guid distributorId,
+        PaginationParameter paginationParameter)
     {
         return await Task.Run(() => _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
             .Include(p => p.Offer)
             .Where(p => p.Offer != null && p.Offer.DistributorId == distributorId)
-            .UrlPaginate(urlPaginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
             .ToProductReadDto()
         );
     }

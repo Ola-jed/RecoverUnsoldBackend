@@ -14,17 +14,14 @@ public static class Mapping
             location.CreatedAt);
     }
 
-    public static UrlPage<LocationReadDto> ToLocationReadDto(this UrlPage<Location> locations)
+    public static Page<LocationReadDto> ToLocationReadDto(this Page<Location> locations)
     {
-        return new UrlPage<LocationReadDto>(
+        return new Page<LocationReadDto>(
             locations.Items.Select(l => l.ToLocationReadDto()),
             locations.PageNumber,
             locations.PageSize,
             locations.HasNext,
-            locations.Total,
-            locations.BaseUrl,
-            locations.PreviousUrl,
-            locations.NextUrl
+            locations.Total
         );
     }
 
@@ -54,18 +51,15 @@ public static class Mapping
         return distributors.Select(d => d.ToDistributorInformationDto());
     }
 
-    public static UrlPage<DistributorInformationDto> ToDistributorInformationReadDto(
-        this UrlPage<Distributor> distributors)
+    public static Page<DistributorInformationDto> ToDistributorInformationReadDto(
+        this Page<Distributor> distributors)
     {
-        return new UrlPage<DistributorInformationDto>(
+        return new Page<DistributorInformationDto>(
             distributors.Items.Select(d => d.ToDistributorInformationDto()),
             distributors.PageNumber,
             distributors.PageSize,
             distributors.HasNext,
-            distributors.Total,
-            distributors.BaseUrl,
-            distributors.PreviousUrl,
-            distributors.NextUrl
+            distributors.Total
         );
     }
 
@@ -80,17 +74,14 @@ public static class Mapping
             product.Images.ToImageReadDto(), product.CreatedAt);
     }
 
-    public static UrlPage<ProductReadDto> ToProductReadDto(this UrlPage<Product> products)
+    public static Page<ProductReadDto> ToProductReadDto(this Page<Product> products)
     {
-        return new UrlPage<ProductReadDto>(
+        return new Page<ProductReadDto>(
             products.Items.Select(p => p.ToProductReadDto()),
             products.PageNumber,
             products.PageSize,
             products.HasNext,
-            products.Total,
-            products.BaseUrl,
-            products.PreviousUrl,
-            products.NextUrl
+            products.Total
         );
     }
 
@@ -121,17 +112,14 @@ public static class Mapping
         return offers.Select(o => o.ToOfferReadDto());
     }
 
-    public static UrlPage<OfferReadDto> ToOfferReadDto(this UrlPage<Offer> offers)
+    public static Page<OfferReadDto> ToOfferReadDto(this Page<Offer> offers)
     {
-        return new UrlPage<OfferReadDto>(
+        return new Page<OfferReadDto>(
             offers.Items.Select(o => o.ToOfferReadDto()),
             offers.PageNumber,
             offers.PageSize,
             offers.HasNext,
-            offers.Total,
-            offers.BaseUrl,
-            offers.PreviousUrl,
-            offers.NextUrl
+            offers.Total
         );
     }
 
@@ -146,17 +134,14 @@ public static class Mapping
         return orders.Select(o => o.ToOrderReadDto());
     }
 
-    public static UrlPage<OrderReadDto> ToOrderReadDto(this UrlPage<Order> orders)
+    public static Page<OrderReadDto> ToOrderReadDto(this Page<Order> orders)
     {
-        return new UrlPage<OrderReadDto>(
+        return new Page<OrderReadDto>(
             orders.Items.Select(o => o.ToOrderReadDto()),
             orders.PageNumber,
             orders.PageSize,
             orders.HasNext,
-            orders.Total,
-            orders.BaseUrl,
-            orders.PreviousUrl,
-            orders.NextUrl
+            orders.Total
         );
     }
 
@@ -170,17 +155,14 @@ public static class Mapping
         return opinions.Select(o => o.ToOpinionReadDto());
     }
 
-    public static UrlPage<OpinionReadDto> ToOpinionReadDto(this UrlPage<Opinion> opinions)
+    public static Page<OpinionReadDto> ToOpinionReadDto(this Page<Opinion> opinions)
     {
-        return new UrlPage<OpinionReadDto>(
+        return new Page<OpinionReadDto>(
             opinions.Items.Select(o => o.ToOpinionReadDto()),
             opinions.PageNumber,
             opinions.PageSize,
             opinions.HasNext,
-            opinions.Total,
-            opinions.BaseUrl,
-            opinions.PreviousUrl,
-            opinions.NextUrl
+            opinions.Total
         );
     }
 
@@ -197,17 +179,14 @@ public static class Mapping
                 : (review.User as Distributor)!.ToDistributorReadDto(), review.CreatedAt);
     }
 
-    public static UrlPage<ReviewReadDto> ToReviewReadDto(this UrlPage<Review> reviews)
+    public static Page<ReviewReadDto> ToReviewReadDto(this Page<Review> reviews)
     {
-        return new UrlPage<ReviewReadDto>(
+        return new Page<ReviewReadDto>(
             reviews.Items.Select(r => r.ToReviewReadDto()),
             reviews.PageNumber,
             reviews.PageSize,
             reviews.HasNext,
-            reviews.Total,
-            reviews.BaseUrl,
-            reviews.PreviousUrl,
-            reviews.NextUrl
+            reviews.Total
         );
     }
 }

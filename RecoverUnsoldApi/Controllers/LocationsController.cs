@@ -22,23 +22,19 @@ public class LocationsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<UrlPage<LocationReadDto>> GetAll([FromQuery] int page = 1, [FromQuery] int perPage = 10)
+    public async Task<Page<LocationReadDto>> GetAll([FromQuery] int page = 1, [FromQuery] int perPage = 10)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
-        );
-        return await _locationsService.GetAll(this.GetUserId(), urlPaginationParam);
+        var paginationParam = new PaginationParameter(perPage, page);
+        return await _locationsService.GetAll(this.GetUserId(), paginationParam);
     }
 
     [AllowAnonymous]
     [HttpGet("Distributors/{distributorId:guid}")]
-    public async Task<UrlPage<LocationReadDto>> GetDistributorLocations(Guid distributorId, [FromQuery] int page = 1,
+    public async Task<Page<LocationReadDto>> GetDistributorLocations(Guid distributorId, [FromQuery] int page = 1,
         [FromQuery] int perPage = 10)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
-        );
-        return await _locationsService.GetAll(distributorId, urlPaginationParam);
+        var paginationParam = new PaginationParameter(perPage, page);
+        return await _locationsService.GetAll(distributorId, paginationParam);
     }
 
     [AllowAnonymous]
@@ -53,13 +49,10 @@ public class LocationsController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("Search/{query}")]
-    public async Task<UrlPage<LocationReadDto>> Search(string query,
-        [FromQuery] int page = 1, [FromQuery] int perPage = 10)
+    public async Task<Page<LocationReadDto>> Search(string query, [FromQuery] int page = 1, [FromQuery] int perPage = 10)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
-        );
-        return await _locationsService.FindByName(query, urlPaginationParam);
+        var paginationParam = new PaginationParameter(perPage, page);
+        return await _locationsService.FindByName(query, paginationParam);
     }
 
     [HttpPost]

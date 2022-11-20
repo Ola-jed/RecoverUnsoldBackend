@@ -25,14 +25,11 @@ public class OpinionsController : ControllerBase
 
     [Authorize]
     [HttpGet("/api/Orders/{id:guid}/Opinions")]
-    public async Task<UrlPage<OpinionReadDto>> GetAll([FromRoute] Guid id, [FromQuery] int page = 1,
+    public async Task<Page<OpinionReadDto>> GetAll([FromRoute] Guid id, [FromQuery] int page = 1,
         [FromQuery] int perPage = 10)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
-        );
-
-        return await _opinionsService.Get(id, urlPaginationParam);
+        var paginationParam = new PaginationParameter(perPage, page);
+        return await _opinionsService.Get(id, paginationParam);
     }
 
     [Authorize]

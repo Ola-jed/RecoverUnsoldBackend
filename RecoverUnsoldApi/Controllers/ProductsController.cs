@@ -24,12 +24,10 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<UrlPage<ProductReadDto>> GetProducts([FromQuery] int page = 1, [FromQuery] int perPage = 10)
+    public async Task<Page<ProductReadDto>> GetProducts([FromQuery] int page = 1, [FromQuery] int perPage = 10)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
-        );
-        return await _productsService.GetProducts(urlPaginationParam);
+        var paginationParam = new PaginationParameter(perPage, page);
+        return await _productsService.GetProducts(paginationParam);
     }
 
     [HttpGet("{id:guid}", Name = nameof(GetProduct))]
@@ -42,23 +40,19 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("Distributors/{id:guid}")]
-    public async Task<UrlPage<ProductReadDto>> GetDistributorProducts(Guid id, [FromQuery] int page = 1,
+    public async Task<Page<ProductReadDto>> GetDistributorProducts(Guid id, [FromQuery] int page = 1,
         [FromQuery] int perPage = 10)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
-        );
-        return await _productsService.GetDistributorProducts(id, urlPaginationParam);
+        var paginationParam = new PaginationParameter(perPage, page);
+        return await _productsService.GetDistributorProducts(id, paginationParam);
     }
 
     [HttpGet("/api/Offers/{id:guid}/Products")]
-    public async Task<UrlPage<ProductReadDto>> GetOfferProducts(Guid id, [FromQuery] int page = 1,
+    public async Task<Page<ProductReadDto>> GetOfferProducts(Guid id, [FromQuery] int page = 1,
         [FromQuery] int perPage = 10)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            perPage, page, this.GetCleanUrl(), nameof(page), nameof(perPage)
-        );
-        return await _productsService.GetOfferProducts(id, urlPaginationParam);
+        var paginationParam = new PaginationParameter(perPage, page);
+        return await _productsService.GetOfferProducts(id, paginationParam);
     }
 
     [Authorize(Roles = Roles.Distributor)]

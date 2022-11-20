@@ -19,11 +19,11 @@ public class ReviewsService : IReviewsService
         _context = context;
     }
 
-    public async Task<UrlPage<ReviewReadDto>> ListReviews(UrlPaginationParameter urlPaginationParameter)
+    public async Task<Page<ReviewReadDto>> ListReviews(PaginationParameter paginationParameter)
     {
         return await Task.Run(() => _context.Reviews
             .AsNoTracking()
-            .UrlPaginate(urlPaginationParameter, r => r.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, r => r.CreatedAt, PaginationOrder.Descending)
             .ToReviewReadDto()
         );
     }

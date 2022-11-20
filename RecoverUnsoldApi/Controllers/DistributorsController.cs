@@ -2,7 +2,6 @@ using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.Distributors;
 
 namespace RecoverUnsoldApi.Controllers;
@@ -19,13 +18,10 @@ public class DistributorsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<UrlPage<DistributorInformationDto>> GetDistributors([FromQuery] DistributorFilterDto distributorFilterDto)
+    public async Task<Page<DistributorInformationDto>> GetDistributors([FromQuery] DistributorFilterDto distributorFilterDto)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            distributorFilterDto.PerPage, distributorFilterDto.Page,
-            this.GetCleanUrl(), nameof(distributorFilterDto.Page), nameof(distributorFilterDto.PerPage)
-        );
-        return await _distributorsService.GetDistributors(urlPaginationParam, distributorFilterDto.Name);
+        var paginationParam = new PaginationParameter(distributorFilterDto.PerPage, distributorFilterDto.Page);
+        return await _distributorsService.GetDistributors(paginationParam, distributorFilterDto.Name);
     }
 
     [HttpGet("Labels")]

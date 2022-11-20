@@ -7,7 +7,7 @@ namespace RecoverUnsoldApi.Services.Reviews;
 
 public interface IReviewsService
 {
-    Task<UrlPage<ReviewReadDto>> ListReviews(UrlPaginationParameter urlPaginationParameter);
+    Task<Page<ReviewReadDto>> ListReviews(PaginationParameter paginationParameter);
     Task<Review> Publish(Guid userId, string comment);
     Task Delete(Guid id);
 }

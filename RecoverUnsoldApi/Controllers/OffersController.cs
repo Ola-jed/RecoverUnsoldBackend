@@ -37,35 +37,29 @@ public class OffersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<UrlPage<OfferReadDto>> GetOffers([FromQuery] OfferFilterDto filterDto)
+    public async Task<Page<OfferReadDto>> GetOffers([FromQuery] OfferFilterDto filterDto)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            filterDto.PerPage, filterDto.Page, this.GetCleanUrl(), nameof(filterDto.Page), nameof(filterDto.PerPage)
-        );
-        return await _offersService.GetOffers(urlPaginationParam, filterDto);
+        var paginationParam = new PaginationParameter(filterDto.PerPage, filterDto.Page);
+        return await _offersService.GetOffers(paginationParam, filterDto);
     }
 
     [HttpGet("Distributors/{id:guid}")]
-    public async Task<UrlPage<OfferReadDto>> GetDistributorOffers(Guid id, [FromQuery] OfferFilterDto filterDto)
+    public async Task<Page<OfferReadDto>> GetDistributorOffers(Guid id, [FromQuery] OfferFilterDto filterDto)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            filterDto.PerPage, filterDto.Page, this.GetCleanUrl(), nameof(filterDto.Page), nameof(filterDto.PerPage)
-        );
-        return await _offersService.GetDistributorOffers(id, urlPaginationParam, filterDto);
+        var paginationParam = new PaginationParameter(filterDto.PerPage, filterDto.Page);
+        return await _offersService.GetDistributorOffers(id, paginationParam, filterDto);
     }
 
     [HttpGet("CloseToLocation")]
-    public async Task<UrlPage<OfferWithRelativeDistanceDto>> GetOffersCloseTo(
+    public async Task<Page<OfferWithRelativeDistanceDto>> GetOffersCloseTo(
         [FromQuery] OfferDistanceFilterDto distanceFilterDto)
     {
-        var urlPaginationParam = new UrlPaginationParameter(
-            distanceFilterDto.PerPage, distanceFilterDto.Page, this.GetCleanUrl(),
-            nameof(distanceFilterDto.Page), nameof(distanceFilterDto.PerPage)
-        );
+        var paginationParam = new PaginationParameter(distanceFilterDto.PerPage, distanceFilterDto.Page);
         return await _offersService.GetOffersCloseTo(
             distanceFilterDto.ToLatLong(),
-            urlPaginationParam,
-            distanceFilterDto.Distance);
+            paginationParam,
+            distanceFilterDto.Distance
+        );
     }
 
     [HttpPost]

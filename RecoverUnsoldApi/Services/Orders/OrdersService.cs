@@ -62,8 +62,8 @@ public class OrdersService : IOrdersService
         return order?.ToOrderReadDto();
     }
 
-    public async Task<UrlPage<OrderReadDto>> GetCustomerOrders(Guid customerId,
-        UrlPaginationParameter urlPaginationParameter, OrderFilterDto orderFilterDto)
+    public async Task<Page<OrderReadDto>> GetCustomerOrders(Guid customerId, PaginationParameter paginationParameter,
+        OrderFilterDto orderFilterDto)
     {
         return await Task.Run(() => _context.Orders
             .AsNoTracking()
@@ -72,12 +72,12 @@ public class OrdersService : IOrdersService
             .Include(o => o.Opinions)
             .Where(o => o.CustomerId == customerId)
             .ApplyFilters(orderFilterDto)
-            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
             .ToOrderReadDto()
         );
     }
 
-    public async Task<UrlPage<OrderReadDto>> GetOfferOrders(Guid offerId, UrlPaginationParameter urlPaginationParameter,
+    public async Task<Page<OrderReadDto>> GetOfferOrders(Guid offerId, PaginationParameter paginationParameter,
         OrderFilterDto orderFilterDto)
     {
         return await Task.Run(() => _context.Orders
@@ -87,13 +87,13 @@ public class OrdersService : IOrdersService
             .Include(o => o.Opinions)
             .Where(o => o.OfferId == offerId)
             .ApplyFilters(orderFilterDto)
-            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
             .ToOrderReadDto()
         );
     }
 
-    public async Task<UrlPage<OrderReadDto>> GetDistributorOrders(Guid distributorId,
-        UrlPaginationParameter urlPaginationParameter, OrderFilterDto orderFilterDto)
+    public async Task<Page<OrderReadDto>> GetDistributorOrders(Guid distributorId,
+        PaginationParameter paginationParameter, OrderFilterDto orderFilterDto)
     {
         return await Task.Run(() => _context.Orders
             .AsNoTracking()
@@ -103,7 +103,7 @@ public class OrdersService : IOrdersService
             .Include(o => o.Payment)
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
             .ApplyFilters(orderFilterDto)
-            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
             .ToOrderReadDto()
         );
     }

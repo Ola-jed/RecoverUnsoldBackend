@@ -9,11 +9,9 @@ public interface IOffersService
 {
     Task<bool> IsOwner(Guid distributorId, Guid id);
     Task<bool> Exists(Guid id);
-    Task<UrlPage<OfferReadDto>> GetOffers(UrlPaginationParameter urlPaginationParameter, OfferFilterDto offerFilterDto);
-    Task<UrlPage<OfferReadDto>> GetDistributorOffers(Guid distributorId, UrlPaginationParameter urlPaginationParameter,
-        OfferFilterDto offerFilterDto);
-    Task<UrlPage<OfferWithRelativeDistanceDto>> GetOffersCloseTo(LatLong latLong,
-        UrlPaginationParameter urlPaginationParameter, double distance);
+    Task<Page<OfferReadDto>> GetOffers(PaginationParameter paginationParameter, OfferFilterDto offerFilterDto);
+    Task<Page<OfferReadDto>> GetDistributorOffers(Guid distributorId, PaginationParameter paginationParameter, OfferFilterDto offerFilterDto);
+    Task<Page<OfferWithRelativeDistanceDto>> GetOffersCloseTo(LatLong latLong, PaginationParameter paginationParameter, double distance);
     Task<OfferReadDto?> GetOffer(Guid id);
     Task<OfferReadDto> Create(Guid distributorId, OfferCreateDto offerCreateDto);
     Task Update(Guid id, Guid distributorId, OfferUpdateDto offerUpdateDto);

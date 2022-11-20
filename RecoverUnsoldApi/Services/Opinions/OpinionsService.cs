@@ -26,12 +26,12 @@ public class OpinionsService : IOpinionsService
             .AnyAsync(o => o.Order != null && o.Id == opinionId && o.Order.CustomerId == userId);
     }
 
-    public async Task<UrlPage<OpinionReadDto>> Get(Guid orderId, UrlPaginationParameter urlPaginationParameter)
+    public async Task<Page<OpinionReadDto>> Get(Guid orderId, PaginationParameter paginationParameter)
     {
         return await Task.Run(() => _context.Opinions
             .AsNoTracking()
             .Where(o => o.OrderId == orderId)
-            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
             .ToOpinionReadDto()
         );
     }

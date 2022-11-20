@@ -18,8 +18,7 @@ public class DistributorsService: IDistributorsService
         _context = context;
     }
 
-    public async Task<UrlPage<DistributorInformationDto>> GetDistributors(UrlPaginationParameter urlPaginationParameter,
-        string? name = null)
+    public async Task<Page<DistributorInformationDto>> GetDistributors(PaginationParameter paginationParameter, string? name = null)
     {
         var distributorsSource = _context
             .Distributors
@@ -30,7 +29,7 @@ public class DistributorsService: IDistributorsService
         }
 
         return await Task.Run(() => distributorsSource
-            .UrlPaginate(urlPaginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
             .ToDistributorInformationReadDto()
         );
     }
