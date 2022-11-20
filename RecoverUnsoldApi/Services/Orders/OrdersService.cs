@@ -35,7 +35,7 @@ public class OrdersService : IOrdersService
     {
         return await _context.Orders
             .Include(o => o.Offer)
-            .AnyAsync(o => o.Offer != null && o.Offer.DistributorId == distributorId);
+            .AnyAsync(o => o.Offer != null && o.Id == orderId && o.Offer.DistributorId == distributorId);
     }
 
     public async Task<bool> IsRelativeToCustomer(Guid orderId, Guid customerId)
