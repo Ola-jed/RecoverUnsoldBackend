@@ -49,10 +49,15 @@ public class AuthService : IAuthService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<JwtSecurityToken?> Login(LoginDto loginDto)
+    public async Task<(JwtSecurityToken, UserDataDto)?> Login(LoginDto loginDto)
     {
         var user = await ValidateCredentials(loginDto);
-        return user == null ? null : GenerateJwt(user);
+        return user switch
+        {
+            null              => null,
+            Customer customer => (GenerateJwt(customer), UserDataDto.FromCustomer(customer)),
+            _                 => (GenerateJwt(user), UserDataDto.FromDistributor((user as Distributor)!))
+        };
     }
 
     public async Task<User?> ValidateCredentials(LoginDto loginDto)

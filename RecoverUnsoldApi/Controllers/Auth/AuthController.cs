@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Services.ApplicationUser;
@@ -42,10 +41,10 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<TokenDto>> Login(LoginDto loginDto)
+    public async Task<ActionResult<AuthenticationResultDto>> Login(LoginDto loginDto)
     {
-        var token = await _authService.Login(loginDto);
-        if (token == null)
+        var authData = await _authService.Login(loginDto);
+        if (authData == null)
         {
             return Unauthorized();
         }
@@ -56,8 +55,9 @@ public class AuthController : ControllerBase
             return Forbid();
         }
 
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-        var role = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-        return new TokenDto(tokenString, role, token.ValidTo);
+        var jwt = authData.Value.Item1;
+        var userData = authData.Value.Item2;
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
+        return new AuthenticationResultDto(tokenString, userData, jwt.ValidTo);
     }
 }
