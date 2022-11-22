@@ -73,11 +73,12 @@ public class OffersService : IOffersService
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .Where(o => o.Location!.Coordinates.Distance(referencePoint) <= distance * 1000)
-            .Select(o => new OfferWithRelativeDistanceDto(
+            .AsSplitQuery()
+            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
+            .Map(o => new OfferWithRelativeDistanceDto(
                 o.ToOfferReadDto(),
                 o.Location!.Coordinates.Distance(referencePoint)
             ))
-            .Paginate(paginationParameter, o => o.Offer.CreatedAt, PaginationOrder.Descending)
         );
     }
 
@@ -107,12 +108,10 @@ public class OffersService : IOffersService
 
         var offerEntityEntry = _context.Offers.Add(offer);
         await _context.SaveChangesAsync();
-
         var products = await Task.WhenAll((offerCreateDto.Products ?? Enumerable.Empty<ProductCreateDto>())
             .Select(async productCreateDto =>
                 await _productsService.Create(offerEntityEntry.Entity.Id, productCreateDto))
         );
-
         return offerEntityEntry.Entity.ToOfferReadDto() with { Products = products };
     }
 
