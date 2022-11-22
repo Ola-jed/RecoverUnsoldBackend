@@ -73,7 +73,6 @@ public class OffersService : IOffersService
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .Where(o => o.Location!.Coordinates.Distance(referencePoint) <= distance * 1000)
-            .AsSplitQuery()
             .Select(o => new OfferWithRelativeDistanceDto(
                 o.ToOfferReadDto(),
                 o.Location!.Coordinates.Distance(referencePoint)
