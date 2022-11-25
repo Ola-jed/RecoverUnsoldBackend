@@ -77,7 +77,7 @@ public class OffersService : IOffersService
             .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
             .Map(o => new OfferWithRelativeDistanceDto(
                 o.ToOfferReadDto(),
-                o.Location!.Coordinates.Distance(referencePoint) / 1000
+                o.Location!.Coordinates.Distance(referencePoint) * 100
             ))
         );
     }

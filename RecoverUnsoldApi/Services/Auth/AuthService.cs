@@ -89,7 +89,7 @@ public class AuthService : IAuthService
             _           => throw new InvalidOperationException()
         };
         
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
         var jwtToken = new JwtSecurityToken(
             expires: DateTime.Now.AddDays(30),
             claims: new Claim[]
