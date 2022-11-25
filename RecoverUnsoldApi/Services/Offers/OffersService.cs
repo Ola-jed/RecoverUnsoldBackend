@@ -64,7 +64,7 @@ public class OffersService : IOffersService
     }
 
     public async Task<Page<OfferWithRelativeDistanceDto>> GetOffersCloseTo(LatLong latLong,
-        PaginationParameter paginationParameter, double distance)
+        PaginationParameter paginationParameter, double distance /* In kilometers */)
     {
         var referencePoint = new Point(latLong.Longitude, latLong.Latitude);
         return await Task.Run(() => _context.Offers
@@ -77,7 +77,7 @@ public class OffersService : IOffersService
             .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
             .Map(o => new OfferWithRelativeDistanceDto(
                 o.ToOfferReadDto(),
-                o.Location!.Coordinates.Distance(referencePoint) * 1000
+                o.Location!.Coordinates.Distance(referencePoint) / 1000
             ))
         );
     }
