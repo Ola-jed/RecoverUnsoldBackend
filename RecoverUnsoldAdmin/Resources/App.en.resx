@@ -224,13 +224,13 @@
     <data name="InvalidEmail" xml:space="preserve">
         <value>Invalid email address</value>
     </data>
-    <data name="OnlinePaiement" xml:space="preserve">
-        <value>Online paiement</value>
-    </data>
     <data name="Yes" xml:space="preserve">
         <value>Yes</value>
     </data>
     <data name="No" xml:space="preserve">
         <value>No</value>
+    </data>
+    <data name="OnlinePayment" xml:space="preserve">
+        <value>Online payment</value>
     </data>
 </root>

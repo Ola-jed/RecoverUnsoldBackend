@@ -216,8 +216,8 @@
     <data name="InvalidEmail" xml:space="preserve">
         <value>Invalid email address</value>
     </data>
-    <data name="OnlinePaiement" xml:space="preserve">
-        <value>Online paiement</value>
+    <data name="OnlinePayment" xml:space="preserve">
+        <value>Online payment</value>
     </data>
     <data name="Yes" xml:space="preserve">
         <value>Yes</value>

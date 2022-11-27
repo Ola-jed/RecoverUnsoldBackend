@@ -447,12 +447,6 @@ namespace RecoverUnsoldAdmin.Resources {
             }
         }
         
-        internal static string OnlinePaiement {
-            get {
-                return ResourceManager.GetString("OnlinePaiement", resourceCulture);
-            }
-        }
-        
         internal static string Yes {
             get {
                 return ResourceManager.GetString("Yes", resourceCulture);
@@ -462,6 +456,12 @@ namespace RecoverUnsoldAdmin.Resources {
         internal static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        internal static string OnlinePayment {
+            get {
+                return ResourceManager.GetString("OnlinePayment", resourceCulture);
             }
         }
     }
