@@ -7,26 +7,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
-using RecoverUnsoldDomain.Config;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Infrastructure;
 using RecoverUnsoldApi.Services.Alerts;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldApi.Services.Distributors;
 using RecoverUnsoldApi.Services.FcmTokens;
 using RecoverUnsoldApi.Services.ForgotPassword;
+using RecoverUnsoldApi.Services.Home;
 using RecoverUnsoldApi.Services.Locations;
 using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Notification;
-using RecoverUnsoldApi.Services.Offers;
-using RecoverUnsoldApi.Services.Orders;
-using RecoverUnsoldApi.Services.Products;
-using RecoverUnsoldApi.Services.Distributors;
-using RecoverUnsoldApi.Services.Home;
 using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
+using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Opinions;
+using RecoverUnsoldApi.Services.Orders;
+using RecoverUnsoldApi.Services.Payments;
+using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.Reviews;
 using RecoverUnsoldApi.Services.UserVerification;
+using RecoverUnsoldDomain.Config;
+using RecoverUnsoldDomain.Data;
 
 namespace RecoverUnsoldApi.Extensions;
 
@@ -166,5 +167,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IAlertsService, AlertsService>();
         serviceCollection.AddScoped<IOpinionsService, OpinionsService>();
         serviceCollection.AddScoped<IHomeService, HomeService>();
+        serviceCollection.AddScoped<IPaymentsService, PaymentsService>();
     }
 }

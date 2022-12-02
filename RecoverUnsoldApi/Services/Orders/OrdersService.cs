@@ -121,6 +121,11 @@ public class OrdersService : IOrdersService
         return entityEntry.Entity.ToOrderReadDto();
     }
 
+    public async Task<bool> MatchStatuses(Guid orderId, params Status[] statuses)
+    {
+        return await _context.Orders.AnyAsync(o => o.Id == orderId && statuses.Contains(o.Status));
+    }
+
     public async Task Accept(Guid orderId)
     {
         await _context.Orders
