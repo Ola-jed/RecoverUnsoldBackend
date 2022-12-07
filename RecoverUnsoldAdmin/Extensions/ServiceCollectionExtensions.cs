@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using RecoverUnsoldAdmin.Config;
+using RecoverUnsoldDomain.Config;
 using RecoverUnsoldDomain.Data;
 
 namespace RecoverUnsoldAdmin.Extensions;

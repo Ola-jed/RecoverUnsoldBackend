@@ -1,4 +1,4 @@
-namespace RecoverUnsoldAdmin.Config;
+namespace RecoverUnsoldDomain.Config;
 
 public class MapsConfig
 {
