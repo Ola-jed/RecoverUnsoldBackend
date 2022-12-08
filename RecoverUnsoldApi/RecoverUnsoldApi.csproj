@@ -33,5 +33,7 @@
     <ItemGroup>
         <_ContentIncludedByDefault Remove="wwwroot\swagger-themes\theme-material.css" />
         <EmbeddedResource Include="wwwroot\swagger-index.html" />
+        <None Remove="Resource\cacert.pem" />
+        <EmbeddedResource Include="Resource\cacert.pem" />
     </ItemGroup>
 </Project>

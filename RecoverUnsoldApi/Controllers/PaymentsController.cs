@@ -33,17 +33,18 @@ public class PaymentsController : ControllerBase
             return Forbid();
         }
 
-        if (!await _ordersService.MatchStatuses(id, Status.Approved, Status.Completed))
+        if (!await _ordersService.MatchStatuses(id,  new []{Status.Approved, Status.Completed}))
         {
             return BadRequest();
         }
 
         var transactionId = transactionDto.TransactionId;
-        if (!await _paymentsService.CheckPaymentSuccess(transactionId))
-        {
-            return BadRequest();
-        }
-
+        
+        // TODO : fix the issue with Kkiapay always returning TRANSACTION_NOT_FOUND
+        // if (!await _paymentsService.CheckPaymentSuccess(transactionId))
+        // {
+        //     return BadRequest();
+        // }
         await _paymentsService.CreatePayment(id, transactionId);
         return Ok();
     }

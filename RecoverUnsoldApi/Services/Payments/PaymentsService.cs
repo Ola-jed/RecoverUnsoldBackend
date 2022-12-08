@@ -36,6 +36,6 @@ public class PaymentsService: IPaymentsService
             return false;
         }
         var kkiapayResponse = await JsonSerializer.DeserializeAsync<KkiapayResponseDto>(await response.Content.ReadAsStreamAsync());
-        return kkiapayResponse?.Status?.ToLowerInvariant() == "success";
+        return kkiapayResponse?.Status.ToLowerInvariant() == "success";
     }
 }

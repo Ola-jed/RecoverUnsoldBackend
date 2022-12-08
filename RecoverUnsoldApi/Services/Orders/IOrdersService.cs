@@ -23,7 +23,7 @@ public interface IOrdersService
         OrderFilterDto orderFilterDto);
 
     Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId);
-    Task<bool> MatchStatuses(Guid orderId, params Status[] statuses);
+    Task<bool> MatchStatuses(Guid orderId, Status[] statuses);
     Task Accept(Guid orderId);
     Task Reject(Guid orderId);
     Task Complete(Guid orderId);

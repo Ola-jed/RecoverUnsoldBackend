@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json.Serialization;
 using RecoverUnsoldApi.Converters;
 using RecoverUnsoldApi.Extensions;
@@ -23,6 +24,14 @@ builder.Services.AddHttpClient("Kkiapay", httpClient =>
     httpClient.DefaultRequestHeaders.Add("X-API-KEY", configuration["KkiapayPublicKey"]);
     httpClient.DefaultRequestHeaders.Add("X-PRIVATE-KEY", configuration["KkiapayPrivateKey"]);
     httpClient.DefaultRequestHeaders.Add("X-SECRET-KEY", configuration["KkiapaySecret"]);
+}).ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler();
+    var certStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("RecoverUnsoldApi.Resource.cacert.pem")!;
+    var cert = X509Certificate2.CreateFromPem(new StreamReader(certStream).ReadToEnd());
+    handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+    handler.ClientCertificates.Add(cert);
+    return handler;
 });
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureCloudinary(configuration);
@@ -42,7 +51,8 @@ var currentAssembly = Assembly.GetAssembly(typeof(Program))!;
 app.UseSwaggerUI(c =>
 {
     c.DocumentTitle = "RecoverUnsold Api";
-    c.IndexStream = () => currentAssembly.GetManifestResourceStream($"{currentAssembly.GetName().Name}.wwwroot.swagger-index.html");
+    c.IndexStream = () =>
+        currentAssembly.GetManifestResourceStream($"{currentAssembly.GetName().Name}.wwwroot.swagger-index.html");
     c.InjectStylesheet("/swagger-theme-material.css");
 });
 app.UseAuthentication();
