@@ -125,9 +125,9 @@ public static class Mapping
 
     public static OrderReadDto ToOrderReadDto(this Order order)
     {
-        return new OrderReadDto(order.Id, order.WithdrawalDate, order.Customer?.ToCustomerReadDto(), order.Payment,
-            order.OfferId, order.Offer?.ToOfferReadDto(), order.Status, order.Opinions.ToOpinionReadDto(),
-            order.CreatedAt);
+        return new OrderReadDto(order.Id, order.WithdrawalDate, order.Customer?.ToCustomerReadDto(),
+            order.Payment?.ToPaymentDto(), order.OfferId, order.Offer?.ToOfferReadDto(), order.Status,
+            order.Opinions.ToOpinionReadDto(), order.CreatedAt);
     }
 
     public static IQueryable<OrderReadDto> ToOrderReadDto(this IQueryable<Order> orders)
@@ -189,5 +189,10 @@ public static class Mapping
             reviews.HasNext,
             reviews.Total
         );
+    }
+
+    public static PaymentDto ToPaymentDto(this Payment payment)
+    {
+        return new PaymentDto(payment.TransactionId, payment.OrderId, payment.CreatedAt);
     }
 }
