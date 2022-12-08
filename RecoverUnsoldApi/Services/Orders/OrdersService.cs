@@ -56,6 +56,7 @@ public class OrdersService : IOrdersService
             .AsNoTracking()
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
+            .Include(o => o.Payment)
             .Include(o => o.Offer)
             .ThenInclude(o => o!.Location)
             .FirstOrDefaultAsync(o => o.Id == id);
