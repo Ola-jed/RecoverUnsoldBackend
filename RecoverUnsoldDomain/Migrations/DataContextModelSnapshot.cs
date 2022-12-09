@@ -339,6 +339,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("PaidBack")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("TransactionId")
                         .IsRequired()
                         .HasColumnType("text");
