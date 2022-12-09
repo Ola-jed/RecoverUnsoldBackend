@@ -11,7 +11,6 @@ public class BackgroundWorkerQueue
     {
         await _signal.WaitAsync(cancellationToken);
         _workItems.TryDequeue(out var workItem);
-
         return workItem!;
     }
 
@@ -21,7 +20,6 @@ public class BackgroundWorkerQueue
         {
             throw new ArgumentNullException(nameof(workItem));
         }
-
         _workItems.Enqueue(workItem);
         _signal.Release();
     }

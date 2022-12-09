@@ -28,7 +28,6 @@ public class ForgotPasswordService : IForgotPasswordService
             UserId = user.Id,
             Token = token
         });
-
         await _context.SaveChangesAsync();
         return token;
     }
@@ -49,9 +48,10 @@ public class ForgotPasswordService : IForgotPasswordService
             return false;
         }
 
-        var user = await _context.Users.FindAsync(passwordReset.UserId);
-        user!.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
-        _context.Users.Update(user);
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+        await _context.Users
+            .Where(u => u.Id == passwordReset.UserId)
+            .ExecuteUpdateAsync(user => user.SetProperty(x => x.Password, hashedPassword));
         _context.PasswordResets.Remove(passwordReset);
         await _context.SaveChangesAsync();
         return true;

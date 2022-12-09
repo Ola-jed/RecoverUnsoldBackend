@@ -72,7 +72,7 @@ public class HomeService : IHomeService
         foreach (var dateTime in Enumerable.Range(0, 1 + periodEnd.Subtract(periodStart).Days)
                      .Select(offset => periodStart.AddDays(offset).Date))
         {
-            if (!ordersPerDay.Keys.Contains(dateTime))
+            if (!ordersPerDay.ContainsKey(dateTime))
             {
                 ordersPerDay.Add(dateTime, 0);
             }

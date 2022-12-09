@@ -5,8 +5,7 @@ namespace RecoverUnsoldApi.Validation;
 
 public class UniqueUsernameAttribute : ValidationAttribute
 {
-    protected override ValidationResult? IsValid(object? value,
-        ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var context = validationContext.GetService<DataContext>()!;
         return context.Users.Any(x => x.Username == value!.ToString())

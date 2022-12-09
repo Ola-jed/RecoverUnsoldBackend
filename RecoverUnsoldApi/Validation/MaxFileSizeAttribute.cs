@@ -13,8 +13,7 @@ public class MaxFileSizeAttribute : ValidationAttribute
         Nullable = nullable;
     }
 
-    protected override ValidationResult? IsValid(object? value,
-        ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         switch (value)
         {

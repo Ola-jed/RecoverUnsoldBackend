@@ -13,7 +13,7 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221209083244_Initial")]
+    [Migration("20221209110657_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

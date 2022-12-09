@@ -40,8 +40,7 @@ public class OrdersService : IOrdersService
 
     public async Task<bool> IsRelativeToCustomer(Guid orderId, Guid customerId)
     {
-        return await _context.Orders
-            .AnyAsync(o => o.Id == orderId && o.CustomerId == customerId);
+        return await _context.Orders.AnyAsync(o => o.Id == orderId && o.CustomerId == customerId);
     }
 
     public async Task<bool> IsOrderRequestInDateInterval(Guid offerId, DateTime dateTime)
