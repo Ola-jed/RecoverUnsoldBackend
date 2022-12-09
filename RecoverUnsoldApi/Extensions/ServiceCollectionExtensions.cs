@@ -86,8 +86,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.Configure<MailConfig>(cfg);
     }
 
-    public static void ConfigureAppOwner(this IServiceCollection serviceCollection,
-        IConfiguration configuration)
+    public static void ConfigureAppOwner(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var cfg = configuration.GetSection("AppOwner");
         cfg["Name"] = configuration["AppOwnerName"];
@@ -95,8 +94,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.Configure<AppOwner>(cfg);
     }
 
-    public static void ConfigureCloudinary(this IServiceCollection serviceCollection,
-        IConfiguration configuration)
+    public static void ConfigureCloudinary(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var account = new Account(
             configuration["CloudinaryCloud"],

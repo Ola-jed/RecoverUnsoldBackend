@@ -31,8 +31,8 @@ public class AlertsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateAlert(AlertCreateDto alertCreateDto)
     {
-        if ((alertCreateDto.AlertType == AlertType.AnyOfferPublished && alertCreateDto.DistributorId != null) ||
-            (alertCreateDto.AlertType == AlertType.DistributorOfferPublished && alertCreateDto.DistributorId == null))
+        if (alertCreateDto is { AlertType: AlertType.AnyOfferPublished, DistributorId: { } } or
+            { AlertType: AlertType.DistributorOfferPublished, DistributorId: null })
         {
             return BadRequest();
         }
@@ -46,7 +46,6 @@ public class AlertsController : ControllerBase
         {
             await _alertsService.CreateForDistributorOffers(customerId, (Guid)alertCreateDto.DistributorId);
         }
-
         return NoContent();
     }
 

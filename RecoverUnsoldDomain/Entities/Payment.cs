@@ -13,6 +13,7 @@ public class Payment: Entity
     [ForeignKey(nameof(Order))]
     public Guid OrderId { get; set; }
 
+    [Required]
     public bool PaidBack { get; set; } = false;
 
     public Order? Order { get; set; }

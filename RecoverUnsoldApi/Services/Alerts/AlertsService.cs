@@ -33,8 +33,7 @@ public class AlertsService : IAlertsService
 
     public async Task CreateForDistributorOffers(Guid customerId, Guid distributorId)
     {
-        if (await _context.Alerts.AnyAsync(
-                a => a.CustomerId == customerId && a.Trigger == distributorId.ToString()))
+        if (await _context.Alerts.AnyAsync(a => a.CustomerId == customerId && a.Trigger == distributorId.ToString()))
         {
             return;
         }

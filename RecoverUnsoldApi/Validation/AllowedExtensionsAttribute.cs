@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 
 namespace RecoverUnsoldApi.Validation;
 
@@ -42,6 +41,6 @@ public class AllowedExtensionsAttribute : ValidationAttribute
 
     private string GetErrorMessage()
     {
-        return $"This extension is not allowed, allowed extensions are : {string.Join(",", Extensions)}";
+        return $"This file extension is not allowed, allowed extensions are : {string.Join(",", Extensions)}";
     }
 }

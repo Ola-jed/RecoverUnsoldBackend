@@ -106,13 +106,12 @@ public class OffersService : IOffersService
             DistributorId = distributorId
         };
 
-        var offerEntityEntry = _context.Offers.Add(offer);
+        var entityEntry = _context.Offers.Add(offer);
         await _context.SaveChangesAsync();
         var products = await Task.WhenAll((offerCreateDto.Products ?? Enumerable.Empty<ProductCreateDto>())
-            .Select(async productCreateDto =>
-                await _productsService.Create(offerEntityEntry.Entity.Id, productCreateDto))
+            .Select(async productCreateDto => await _productsService.Create(entityEntry.Entity.Id, productCreateDto))
         );
-        return offerEntityEntry.Entity.ToOfferReadDto() with { Products = products };
+        return entityEntry.Entity.ToOfferReadDto() with { Products = products };
     }
 
     public async Task Update(Guid id, Guid distributorId, OfferUpdateDto offerUpdateDto)
