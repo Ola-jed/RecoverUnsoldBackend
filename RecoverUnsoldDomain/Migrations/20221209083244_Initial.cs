@@ -268,6 +268,7 @@ namespace RecoverUnsoldDomain.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TransactionId = table.Column<string>(type: "text", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PaidBack = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },

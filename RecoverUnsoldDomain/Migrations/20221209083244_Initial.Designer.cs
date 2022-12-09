@@ -13,7 +13,7 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221116103915_Initial")]
+    [Migration("20221209083244_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -341,6 +341,9 @@ namespace RecoverUnsoldDomain.Migrations
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("PaidBack")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("TransactionId")
                         .IsRequired()
