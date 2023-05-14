@@ -15,18 +15,11 @@ public class FcmTokensService : IFcmTokensService
 
     public async Task Create(Guid userId, string value)
     {
-        var sameTokenExists = await _context.FcmTokens.AnyAsync(x => x.Value == value);
-        if (sameTokenExists)
-        {
-            return;
-        }
+        var id = Guid.NewGuid();
+        var now = DateTime.Now;
 
-        _context.FcmTokens.Add(new FcmToken
-        {
-            Value = value,
-            UserId = userId
-        });
-        await _context.SaveChangesAsync();
+        await _context.Database.ExecuteSqlInterpolatedAsync(
+            $@"INSERT INTO ""FcmTokens"" (""Id"", ""Value"", ""UserId"", ""CreatedAt"") VALUES ({id}, {value}, {userId}, {now}) ON CONFLICT(""Value"") DO NOTHING");
     }
 
     public async Task RemoveAllForUser(Guid userId)
