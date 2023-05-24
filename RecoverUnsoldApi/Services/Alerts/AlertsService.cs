@@ -49,6 +49,12 @@ public class AlertsService : IAlertsService
 
     public async Task<IEnumerable<AlertReadDto>> GetAlerts(Guid customerId)
     {
+        var results = from a in _context.Alerts
+            join d in _context.Distributors on a.Trigger equals d.Id into grouping
+            from p in grouping.DefaultIfEmpty()
+            select new { a, d };
+        
+        
         var alerts = await _context.Alerts
             .AsNoTracking()
             .Where(a => a.CustomerId == customerId)
