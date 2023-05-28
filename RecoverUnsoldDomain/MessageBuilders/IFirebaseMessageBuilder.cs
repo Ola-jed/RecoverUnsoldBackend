@@ -1,6 +1,6 @@
 using RecoverUnsoldDomain.Queue;
 
-namespace RecoverUnsoldDomain.MessageBuilders.Firebase;
+namespace RecoverUnsoldDomain.MessageBuilders;
 
 public interface IFirebaseMessageBuilder
 {

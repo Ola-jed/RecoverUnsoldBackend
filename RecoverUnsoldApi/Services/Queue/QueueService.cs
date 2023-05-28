@@ -23,11 +23,27 @@ public class QueueService: IQueueService
         Queue(mailMessage, QueueConstants.MailQueue, priority, QueueConstants.MaxPriority);
     }
 
+    public void QueueMails(IEnumerable<MailMessage> mailMessages, byte priority)
+    {
+        foreach (var mailMessage in mailMessages)
+        {
+            QueueMail(mailMessage, priority);
+        }
+    }
+
     public void QueueFirebaseMessage(FirebaseMessage firebaseMessage, byte priority)
     {
         Queue(firebaseMessage, QueueConstants.FirebaseQueue, priority, QueueConstants.MaxPriority);
     }
-    
+
+    public void QueueFirebaseMessages(IEnumerable<FirebaseMessage> firebaseMessages, byte priority)
+    {
+        foreach (var firebaseMessage in firebaseMessages)
+        {
+            QueueFirebaseMessage(firebaseMessage, priority);
+        }
+    }
+
     private void Queue<T>(T value, string queueName, byte priority, byte maxPriority)
     {
         _logger.LogInformation("Queuing on {} with priority {}", queueName, priority);

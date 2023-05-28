@@ -1,6 +1,6 @@
 using RecoverUnsoldDomain.Queue;
 
-namespace RecoverUnsoldDomain.MessageBuilders.Mail;
+namespace RecoverUnsoldDomain.MessageBuilders;
 
 public interface IMailMessageBuilder
 {
