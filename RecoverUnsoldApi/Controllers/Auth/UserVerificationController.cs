@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Services.ApplicationUser;
-using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Mail.Mailable;
+using RecoverUnsoldApi.Services.Queue;
 using RecoverUnsoldApi.Services.UserVerification;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 
@@ -13,14 +14,14 @@ public class UserVerificationController : ControllerBase
 {
     private readonly IUserVerificationService _userVerificationService;
     private readonly IApplicationUserService _applicationUserService;
-    private readonly IMailService _mailService;
+    private readonly IQueueService _queueService;
 
     public UserVerificationController(IUserVerificationService userVerificationService,
-        IApplicationUserService applicationUserService, IMailService mailService)
+        IApplicationUserService applicationUserService, IQueueService queueService)
     {
         _userVerificationService = userVerificationService;
         _applicationUserService = applicationUserService;
-        _mailService = mailService;
+        _queueService = queueService;
     }
 
     [HttpPost("Start")]
@@ -43,7 +44,7 @@ public class UserVerificationController : ControllerBase
 
         var token = await _userVerificationService.GenerateUserVerificationToken(user);
         var userVerificationMail = new UserVerificationMail(user.Username, token, user.Email);
-        await _mailService.SendEmailAsync(userVerificationMail);
+        _queueService.QueueMail(userVerificationMail.BuildMailMessage(), QueueConstants.PriorityMedium);
         return Ok();
     }
 

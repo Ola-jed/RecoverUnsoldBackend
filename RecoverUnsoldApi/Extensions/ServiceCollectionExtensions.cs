@@ -16,7 +16,6 @@ using RecoverUnsoldApi.Services.FcmTokens;
 using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Home;
 using RecoverUnsoldApi.Services.Locations;
-using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Notification;
 using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 using RecoverUnsoldApi.Services.Offers;
@@ -86,7 +85,7 @@ public static class ServiceCollectionExtensions
         cfg["MailPassword"] = configuration["MailPassword"];
         serviceCollection.Configure<MailConfig>(cfg);
     }
-    
+
     public static void ConfigureRabbitmq(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
@@ -161,7 +160,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddHostedService<LongRunningService>();
         serviceCollection.AddSingleton<BackgroundWorkerQueue>();
         serviceCollection.AddSingleton<IQueueService, QueueService>();
-        serviceCollection.AddSingleton<IMailService, MailService>();
         serviceCollection.AddSingleton<INotificationService, NotificationService>();
         serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<IAuthService, AuthService>();

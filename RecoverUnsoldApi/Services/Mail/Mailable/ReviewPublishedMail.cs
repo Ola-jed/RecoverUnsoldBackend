@@ -1,16 +1,17 @@
-using MimeKit;
-using RecoverUnsoldDomain.Config;
 using RecoverUnsoldApi.Services.Mail.Templates;
+using RecoverUnsoldDomain.Config;
+using RecoverUnsoldDomain.MessageBuilders;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Services.Mail.Mailable;
 
-public class ReviewPublishedMail: IMailable
+public class ReviewPublishedMail : IMailMessageBuilder
 {
     private readonly AppOwner _appOwner;
     private readonly string _username;
     private readonly string _emailAddress;
     private readonly string _message;
-    
+
     public ReviewPublishedMail(AppOwner appOwner, string username, string emailAddress, string message)
     {
         _appOwner = appOwner;
@@ -18,39 +19,23 @@ public class ReviewPublishedMail: IMailable
         _emailAddress = emailAddress;
         _message = message;
     }
-    
-    public MimeMessage Build()
+
+    public MailMessage BuildMailMessage()
     {
-        var email = new MimeMessage
+        return new MailMessage
         {
             Subject = "RecoverUnsold : Nouveau message",
-            To = { MailboxAddress.Parse(_appOwner.Email) }
+            Destination = _appOwner.Email,
+            HtmlBody = ReviewPublishedMailTemplate.Html
+                .Replace("{name}", _appOwner.Name)
+                .Replace("{username}", _username)
+                .Replace("{emailAddress}", _emailAddress)
+                .Replace("{message}", _message),
+            TextBody = ReviewPublishedMailTemplate.Text
+                .Replace("{name}", _appOwner.Name)
+                .Replace("{username}", _username)
+                .Replace("{emailAddress}", _emailAddress)
+                .Replace("{message}", _message)
         };
-        var builder = new BodyBuilder
-        {
-            HtmlBody = GetHtmlBody(),
-            TextBody = GetPlainTextBody()
-        };
-        email.Body = builder.ToMessageBody();
-        email.ReplyTo.Add(InternetAddress.Parse(_emailAddress));
-        return email;
-    }
-
-    private string GetHtmlBody()
-    {
-        return ReviewPublishedMailTemplate.Html
-            .Replace("{name}", _appOwner.Name)
-            .Replace("{username}", _username)
-            .Replace("{emailAddress}", _emailAddress)
-            .Replace("{message}", _message);
-    }
-
-    private string GetPlainTextBody()
-    {
-        return ReviewPublishedMailTemplate.Text
-            .Replace("{name}", _appOwner.Name)
-            .Replace("{username}", _username)
-            .Replace("{emailAddress}", _emailAddress)
-            .Replace("{message}", _message);
     }
 }

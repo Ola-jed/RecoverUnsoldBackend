@@ -1,9 +1,10 @@
-using MimeKit;
 using RecoverUnsoldApi.Services.Mail.Templates;
+using RecoverUnsoldDomain.MessageBuilders;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Services.Mail.Mailable;
 
-public class OrderMadeMail : IMailable
+public class OrderMadeMail : IMailMessageBuilder
 {
     private readonly DateTime _publishDate;
     private readonly string _name;
@@ -16,33 +17,18 @@ public class OrderMadeMail : IMailable
         _name = name;
     }
 
-    public MimeMessage Build()
+    public MailMessage BuildMailMessage()
     {
-        var email = new MimeMessage
+        return new MailMessage
         {
             Subject = "RecoverUnsold : Commande passée",
-            To = { MailboxAddress.Parse(_destinationEmail) }
+            Destination = _destinationEmail,
+            HtmlBody = OrderMadeMailTemplate.Html
+                .Replace("{name}", _name)
+                .Replace("{publishDate}", _publishDate.ToShortDateString()),
+            TextBody = OrderMadeMailTemplate.Text
+                .Replace("{name}", _name)
+                .Replace("{publishDate}", _publishDate.ToShortDateString())
         };
-        var builder = new BodyBuilder
-        {
-            HtmlBody = GetHtmlBody(),
-            TextBody = GetPlainTextBody()
-        };
-        email.Body = builder.ToMessageBody();
-        return email;
-    }
-
-    private string GetHtmlBody()
-    {
-        return OrderMadeMailTemplate.Html
-            .Replace("{name}", _name)
-            .Replace("{publishDate}", _publishDate.ToShortDateString());
-    }
-
-    private string GetPlainTextBody()
-    {
-        return OrderMadeMailTemplate.Text
-            .Replace("{name}", _name)
-            .Replace("{publishDate}", _publishDate.ToShortDateString());
     }
 }

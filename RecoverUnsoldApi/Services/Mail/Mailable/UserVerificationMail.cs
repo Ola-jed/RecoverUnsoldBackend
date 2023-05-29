@@ -1,9 +1,10 @@
-using MimeKit;
 using RecoverUnsoldApi.Services.Mail.Templates;
+using RecoverUnsoldDomain.MessageBuilders;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Services.Mail.Mailable;
 
-public class UserVerificationMail : IMailable
+public class UserVerificationMail : IMailMessageBuilder
 {
     private readonly string _name;
     private readonly string _token;
@@ -16,33 +17,18 @@ public class UserVerificationMail : IMailable
         _destinationEmail = destinationEmail;
     }
 
-    public MimeMessage Build()
+    public MailMessage BuildMailMessage()
     {
-        var email = new MimeMessage
+        return new MailMessage
         {
             Subject = "RecoverUnsold : Vérification de compte",
-            To = { MailboxAddress.Parse(_destinationEmail) }
+            Destination = _destinationEmail,
+            HtmlBody = UserVerificationMailTemplate.Html
+                .Replace("{token}", _token)
+                .Replace("{name}", _name),
+            TextBody = UserVerificationMailTemplate.Text
+                .Replace("{token}", _token)
+                .Replace("{name}", _name)
         };
-        var builder = new BodyBuilder
-        {
-            HtmlBody = GetHtmlBody(),
-            TextBody = GetPlainTextBody()
-        };
-        email.Body = builder.ToMessageBody();
-        return email;
-    }
-
-    private string GetHtmlBody()
-    {
-        return UserVerificationMailTemplate.Html
-            .Replace("{token}", _token)
-            .Replace("{name}", _name);
-    }
-
-    private string GetPlainTextBody()
-    {
-        return UserVerificationMailTemplate.Text
-            .Replace("{token}", _token)
-            .Replace("{name}", _name);
     }
 }

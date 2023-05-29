@@ -1,42 +1,28 @@
-using MimeKit;
 using RecoverUnsoldApi.Services.Mail.Templates;
+using RecoverUnsoldDomain.MessageBuilders;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Services.Mail.Mailable;
 
-public class OfferValidatedMail: IMailable
+public class OfferValidatedMail : IMailMessageBuilder
 {
     private readonly string _name;
     private readonly string _destinationEmail;
-    
+
     public OfferValidatedMail(string name, string destinationEmail)
     {
         _destinationEmail = destinationEmail;
         _name = name;
     }
 
-    public MimeMessage Build()
+    public MailMessage BuildMailMessage()
     {
-        var email = new MimeMessage
+        return new MailMessage
         {
-            Subject = "RecoverUnsold : Commande passée",
-            To = { MailboxAddress.Parse(_destinationEmail) }
+            Subject = "RecoverUnsold : Commande validée",
+            Destination = _destinationEmail,
+            HtmlBody = OfferValidatedMailTemplate.Html.Replace("{name}", _name),
+            TextBody = OfferValidatedMailTemplate.Text.Replace("{name}", _name)
         };
-        var builder = new BodyBuilder
-        {
-            HtmlBody = GetHtmlBody(),
-            TextBody = GetPlainTextBody()
-        };
-        email.Body = builder.ToMessageBody();
-        return email;
-    }
-
-    private string GetHtmlBody()
-    {
-        return OfferValidatedMailTemplate.Html.Replace("{name}",_name);
-    }
-
-    private string GetPlainTextBody()
-    {
-        return OfferValidatedMailTemplate.Text.Replace("{name}",_name);
     }
 }

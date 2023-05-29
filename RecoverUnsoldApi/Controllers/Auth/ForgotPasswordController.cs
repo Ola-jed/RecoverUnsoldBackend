@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.ForgotPassword;
-using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Mail.Mailable;
+using RecoverUnsoldApi.Services.Queue;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 
@@ -13,14 +14,14 @@ public class ForgotPasswordController : ControllerBase
 {
     private readonly IForgotPasswordService _forgotPasswordService;
     private readonly IApplicationUserService _applicationUserService;
-    private readonly IMailService _mailService;
+    private readonly IQueueService _queueService;
 
     public ForgotPasswordController(IForgotPasswordService forgotPasswordService,
-        IApplicationUserService applicationUserService, IMailService mailService)
+        IApplicationUserService applicationUserService, IQueueService queueService)
     {
         _forgotPasswordService = forgotPasswordService;
         _applicationUserService = applicationUserService;
-        _mailService = mailService;
+        _queueService = queueService;
     }
 
     [HttpPost("Start")]
@@ -36,7 +37,7 @@ public class ForgotPasswordController : ControllerBase
 
         var token = await _forgotPasswordService.CreateResetPasswordToken(user);
         var forgotPasswordMail = new ForgotPasswordMail(user.Username, token, user.Email);
-        await _mailService.SendEmailAsync(forgotPasswordMail);
+        _queueService.QueueMail(forgotPasswordMail.BuildMailMessage(), QueueConstants.PriorityHigh);
         return Ok();
     }
 

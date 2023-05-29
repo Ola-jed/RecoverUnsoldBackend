@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldApi.Infrastructure;
-using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Mail.Mailable;
 using RecoverUnsoldApi.Services.Notification.NotificationMessage;
+using RecoverUnsoldApi.Services.Queue;
 using RecoverUnsoldDomain.Data;
 using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldDomain.Entities.Enums;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 
@@ -27,7 +28,7 @@ public class OfferPublishedNotificationService : IOfferPublishedNotificationServ
         {
             using var scope = _serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-            var mailService = scope.ServiceProvider.GetRequiredService<IMailService>();
+            var queueService = scope.ServiceProvider.GetRequiredService<IQueueService>();
             var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
             var offer = await context.Offers.AsNoTracking().FirstOrDefaultAsync(cancellationToken);
 
@@ -48,15 +49,13 @@ public class OfferPublishedNotificationService : IOfferPublishedNotificationServ
                 .Cast<User>()
                 .ToArray();
 
+            var mailMessages = usersToNotify.Select(u =>
+                new OfferPublishedMail(offer.Price, offer.StartDate, u.Email).BuildMailMessage());
+            queueService.QueueMails(mailMessages, QueueConstants.PriorityMedium);
+
+
             if (usersToNotify.Length > 0)
             {
-                var offerPublishedMail = new OfferPublishedMail(
-                    offer.Price,
-                    offer.StartDate,
-                    usersToNotify.Select(c => c!.Email)
-                );
-                await mailService.SendEmailAsync(offerPublishedMail);
-
                 var offerPublishedNotificationMessage =
                     new OfferPublishedNotificationMessage(offer.Price, offer.StartDate);
                 await notificationService.Send(offerPublishedNotificationMessage, usersToNotify);

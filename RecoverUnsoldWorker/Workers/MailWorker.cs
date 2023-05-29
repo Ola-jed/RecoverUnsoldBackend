@@ -20,7 +20,8 @@ public class MailWorker : BackgroundService
     private IModel? _channel;
     private IConnection? _connection;
 
-    public MailWorker(ILogger<MailWorker> logger, IOptions<RabbitmqConfig> rabbitmqOptions, IOptions<MailConfig> mailOptions)
+    public MailWorker(ILogger<MailWorker> logger, IOptions<RabbitmqConfig> rabbitmqOptions,
+        IOptions<MailConfig> mailOptions)
     {
         _logger = logger;
         _mailConfig = mailOptions.Value;
@@ -46,10 +47,10 @@ public class MailWorker : BackgroundService
             false,
             new Dictionary<string, object> { { "x-max-priority", QueueConstants.MaxPriority } }
         );
-        
+
         return base.StartAsync(cancellationToken);
     }
-    
+
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var mailConsumer = new AsyncEventingBasicConsumer(_channel);
@@ -75,7 +76,7 @@ public class MailWorker : BackgroundService
             }
             catch (Exception e)
             {
-                _logger.LogError(default, e,"{Message}", e.Message);
+                _logger.LogError(default, e, "{Message}", e.Message);
             }
         };
 
@@ -92,6 +93,8 @@ public class MailWorker : BackgroundService
 
     private async Task SendMail(MailMessage mailMessage)
     {
+        // TODO : Handle pdf attachments
+        // We will use IronPDF https://ironpdf.com/
         var email = new MimeMessage();
         email.Subject = mailMessage.Subject;
         email.To.Add(InternetAddress.Parse(mailMessage.Destination));
