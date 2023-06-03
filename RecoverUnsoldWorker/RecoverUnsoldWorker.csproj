@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="IronPdf" Version="2023.6.10"/>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
         <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
         <PackageReference Include="MailKit" Version="3.4.1" />

@@ -11,13 +11,13 @@ using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldWorker.Workers;
 
-public class FirebaseWorker: BackgroundService
+public class FirebaseWorker : BackgroundService
 {
     private readonly ILogger<FirebaseWorker> _logger;
     private readonly RabbitmqConfig _rabbitmqConfig;
     private IModel? _channel;
     private IConnection? _connection;
-    
+
     public FirebaseWorker(ILogger<FirebaseWorker> logger, IOptions<RabbitmqConfig> rabbitmqOptions)
     {
         _logger = logger;
@@ -44,14 +44,14 @@ public class FirebaseWorker: BackgroundService
             false,
             new Dictionary<string, object> { { "x-max-priority", QueueConstants.MaxPriority } }
         );
-        
+
         return base.StartAsync(cancellationToken);
     }
-    
+
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var mailConsumer = new AsyncEventingBasicConsumer(_channel);
-        mailConsumer.Received += async (_, ea) =>
+        var firebaseConsumer = new AsyncEventingBasicConsumer(_channel);
+        firebaseConsumer.Received += async (_, ea) =>
         {
             _logger.LogInformation("Got firebase message");
             var message = Encoding.UTF8.GetString(ea.Body.ToArray());
@@ -73,11 +73,11 @@ public class FirebaseWorker: BackgroundService
             }
             catch (Exception e)
             {
-                _logger.LogError(default, e,"{Message}", e.Message);
+                _logger.LogError(default, e, "{Message}", e.Message);
             }
         };
 
-        _channel.BasicConsume(QueueConstants.MailQueue, false, mailConsumer);
+        _channel.BasicConsume(QueueConstants.MailQueue, false, firebaseConsumer);
         return Task.CompletedTask;
     }
 
@@ -105,7 +105,7 @@ public class FirebaseWorker: BackgroundService
         {
             return;
         }
-        
+
         try
         {
             var result = await FirebaseMessaging.DefaultInstance.SendAllAsync(fcmMessages);
