@@ -93,23 +93,35 @@ public class MailWorker : BackgroundService
 
     private async Task SendMail(MailMessage mailMessage)
     {
-        // TODO : Handle pdf attachments
-        // We will use IronPDF https://ironpdf.com/
-        var email = new MimeMessage();
-        email.Subject = mailMessage.Subject;
-        email.To.Add(InternetAddress.Parse(mailMessage.Destination));
-        var builder = new BodyBuilder
-        {
-            HtmlBody = mailMessage.HtmlBody,
-            TextBody = mailMessage.TextBody
-        };
-        email.Body = builder.ToMessageBody();
-        email.Sender = MailboxAddress.Parse(_mailConfig.MailUser);
-        email.From.Add(MailboxAddress.Parse(_mailConfig.MailUser));
+        var email = BuildMimeMessage(mailMessage);
         using var smtp = new SmtpClient();
         await smtp.ConnectAsync(_mailConfig.Host, _mailConfig.Port, SecureSocketOptions.StartTls);
         await smtp.AuthenticateAsync(_mailConfig.MailUser, _mailConfig.MailPassword);
         await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
+    }
+
+    private MimeMessage BuildMimeMessage(MailMessage mailMessage)
+    {
+        var email = new MimeMessage();
+        email.Subject = mailMessage.Subject;
+        email.To.Add(InternetAddress.Parse(mailMessage.Destination));
+        email.Sender = MailboxAddress.Parse(_mailConfig.MailUser);
+        email.From.Add(MailboxAddress.Parse(_mailConfig.MailUser));
+        var builder = new BodyBuilder
+        {
+            HtmlBody = mailMessage.HtmlBody,
+            TextBody = mailMessage.TextBody
+        };
+
+        if (mailMessage.PdfAttachment != null)
+        {
+            var renderer = new ChromePdfRenderer();
+            var pdf = renderer.RenderHtmlAsPdf(mailMessage.PdfAttachment.HtmlContent);
+            builder.Attachments.Add(mailMessage.PdfAttachment.FileName, pdf.BinaryData);
+        }
+
+        email.Body = builder.ToMessageBody();
+        return email;
     }
 }
