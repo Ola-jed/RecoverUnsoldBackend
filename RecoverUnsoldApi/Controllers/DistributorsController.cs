@@ -18,7 +18,8 @@ public class DistributorsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<Page<DistributorInformationDto>> GetDistributors([FromQuery] DistributorFilterDto distributorFilterDto)
+    public async Task<Page<DistributorInformationDto>> GetDistributors(
+        [FromQuery] DistributorFilterDto distributorFilterDto)
     {
         var paginationParam = new PaginationParameter(distributorFilterDto.PerPage, distributorFilterDto.Page);
         return await _distributorsService.GetDistributors(paginationParam, distributorFilterDto.Name);
@@ -29,7 +30,7 @@ public class DistributorsController : ControllerBase
     {
         return await _distributorsService.GetDistributorsLabels();
     }
-    
+
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

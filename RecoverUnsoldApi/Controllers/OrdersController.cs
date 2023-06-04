@@ -7,12 +7,10 @@ using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
 using RecoverUnsoldApi.Services.Mail.Mailable;
-using RecoverUnsoldApi.Services.Notification;
 using RecoverUnsoldApi.Services.Notification.NotificationMessage;
 using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Queue;
-using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Controllers;
 
@@ -20,20 +18,18 @@ namespace RecoverUnsoldApi.Controllers;
 [Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
-    private readonly IOrdersService _ordersService;
-    private readonly IOffersService _offersService;
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IOffersService _offersService;
+    private readonly IOrdersService _ordersService;
     private readonly IQueueService _queueService;
-    private readonly INotificationService _notificationService;
 
     public OrdersController(IOrdersService ordersService, IApplicationUserService applicationUserService,
-        IQueueService queueService, IOffersService offersService, INotificationService notificationService)
+        IQueueService queueService, IOffersService offersService)
     {
         _ordersService = ordersService;
         _applicationUserService = applicationUserService;
         _queueService = queueService;
         _offersService = offersService;
-        _notificationService = notificationService;
     }
 
     [Authorize]
@@ -70,10 +66,7 @@ public class OrdersController : ControllerBase
     {
         var distributorId = this.GetUserId();
         var isOfferOwner = await _offersService.IsOwner(distributorId, id);
-        if (!isOfferOwner)
-        {
-            return Forbid();
-        }
+        if (!isOfferOwner) return Forbid();
 
         var paginationParam = new PaginationParameter(orderFilterDto.PerPage, orderFilterDto.Page);
         return await _ordersService.GetOfferOrders(this.GetUserId(), paginationParam, orderFilterDto);
@@ -87,20 +80,11 @@ public class OrdersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<OrderReadDto>> MakeOrder(Guid id, OrderCreateDto orderCreateDto)
     {
-        if (!await _offersService.Exists(id))
-        {
-            return NotFound();
-        }
+        if (!await _offersService.Exists(id)) return NotFound();
 
-        if (!await _ordersService.IsOrderRequestValid(id))
-        {
-            return Forbid();
-        }
+        if (!await _ordersService.IsOrderRequestValid(id)) return Forbid();
 
-        if (!await _ordersService.IsOrderRequestInDateInterval(id, orderCreateDto.WithdrawalDate))
-        {
-            return BadRequest();
-        }
+        if (!await _ordersService.IsOrderRequestInDateInterval(id, orderCreateDto.WithdrawalDate)) return BadRequest();
 
         var customer = (await _applicationUserService.FindByIdWithFcmTokens(this.GetUserId()))!;
         var orderDto = await _ordersService.CreateOrder(orderCreateDto, customer.Id, id);
@@ -110,10 +94,15 @@ public class OrdersController : ControllerBase
         var offerPublishDate = order.Offer!.CreatedAt;
         var offerValidatedMail = new OfferValidatedMail(customer.Username, customer.Email);
         var orderMadeMail = new OrderMadeMail(offerPublishDate, distributor.Username, distributor.Email);
-        _queueService.QueueMail(offerValidatedMail.BuildMailMessage(), QueueConstants.PriorityMedium);
-        _queueService.QueueMail(orderMadeMail.BuildMailMessage(), QueueConstants.PriorityMedium);
-        await _notificationService.Send(new OfferValidatedNotificationMessage(), customer);
-        await _notificationService.Send(new OrderMadeNotificationMessage(offerPublishDate), distributor);
+        _queueService.QueueMail(offerValidatedMail.BuildMailMessage());
+        _queueService.QueueMail(orderMadeMail.BuildMailMessage());
+
+        var customerTokens = customer.FcmTokens.Select(t => t.Value).ToList();
+        _queueService.QueueFirebaseMessage(new OfferValidatedNotificationMessage(customerTokens)
+            .BuildFirebaseMessage());
+        var distributorTokens = distributor.FcmTokens.Select(t => t.Value).ToList();
+        _queueService.QueueFirebaseMessage(new OrderMadeNotificationMessage(offerPublishDate, distributorTokens)
+            .BuildFirebaseMessage());
         return CreatedAtRoute(nameof(GetOrder), new { id = order.Id }, order);
     }
 
@@ -125,16 +114,10 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult> AcceptOrder(Guid id)
     {
         var order = await _ordersService.GetOrder(id);
-        if (order == null)
-        {
-            return NotFound();
-        }
+        if (order == null) return NotFound();
 
         var isOwner = await _ordersService.IsRelativeToDistributor(id, this.GetUserId());
-        if (!isOwner)
-        {
-            return Forbid();
-        }
+        if (!isOwner) return Forbid();
 
         var relatedOffer = order.Offer!;
         var customer = order.Customer!;
@@ -142,10 +125,11 @@ public class OrdersController : ControllerBase
         await _ordersService.Accept(id);
         var orderAcceptedMail = new OrderAcceptedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
             relatedOffer.CreatedAt, order.WithdrawalDate, customer.Email);
-        _queueService.QueueMail(orderAcceptedMail.BuildMailMessage(), QueueConstants.PriorityMedium);
-        await _notificationService.Send(
-            new OrderAcceptedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt),
-            customerEntity
+        _queueService.QueueMail(orderAcceptedMail.BuildMailMessage());
+        var customerTokens = customerEntity.FcmTokens.Select(t => t.Value).ToList();
+        _queueService.QueueFirebaseMessage(
+            new OrderAcceptedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt,
+                customerTokens).BuildFirebaseMessage()
         );
         return NoContent();
     }
@@ -158,16 +142,10 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult> RejectOrder(Guid id)
     {
         var order = await _ordersService.GetOrder(id);
-        if (order == null)
-        {
-            return NotFound();
-        }
+        if (order == null) return NotFound();
 
         var isOwner = await _ordersService.IsRelativeToDistributor(id, this.GetUserId());
-        if (!isOwner)
-        {
-            return Forbid();
-        }
+        if (!isOwner) return Forbid();
 
         var relatedOffer = order.Offer!;
         var customer = order.Customer!;
@@ -175,10 +153,11 @@ public class OrdersController : ControllerBase
         await _ordersService.Reject(id);
         var orderRejectedMail = new OrderRejectedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
             relatedOffer.CreatedAt, customer.Email);
-        _queueService.QueueMail(orderRejectedMail.BuildMailMessage(), QueueConstants.PriorityMedium);
-        await _notificationService.Send(
-            new OrderRejectedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt),
-            customerEntity
+        _queueService.QueueMail(orderRejectedMail.BuildMailMessage());
+        var customerTokens = customerEntity.FcmTokens.Select(t => t.Value).ToList();
+        _queueService.QueueFirebaseMessage(
+            new OrderRejectedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt,
+                customerTokens).BuildFirebaseMessage()
         );
         return NoContent();
     }
@@ -191,27 +170,23 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult> CompleteOrder(Guid id)
     {
         var order = await _ordersService.GetOrder(id);
-        if (order == null)
-        {
-            return NotFound();
-        }
+        if (order == null) return NotFound();
 
         var isOwner = await _ordersService.IsRelativeToDistributor(id, this.GetUserId());
-        if (!isOwner)
-        {
-            return Forbid();
-        }
+        if (!isOwner) return Forbid();
 
         var relatedOffer = order.Offer!;
         var customer = order.Customer!;
         var customerEntity = (await _applicationUserService.FindByIdWithFcmTokens(customer.Id))!;
+
         await _ordersService.Complete(id);
         var orderCompletedMail = new OrderCompletedMail(customer.Username, order.CreatedAt, relatedOffer.Price,
             relatedOffer.CreatedAt, customer.Email);
-        _queueService.QueueMail(orderCompletedMail.BuildMailMessage(), QueueConstants.PriorityMedium);
-        await _notificationService.Send(
-            new OrderCompletedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt),
-            customerEntity
+        _queueService.QueueMail(orderCompletedMail.BuildMailMessage());
+        var customerTokens = customerEntity.FcmTokens.Select(t => t.Value).ToList();
+        _queueService.QueueFirebaseMessage(
+            new OrderCompletedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt,
+                customerTokens).BuildFirebaseMessage()
         );
         return NoContent();
     }

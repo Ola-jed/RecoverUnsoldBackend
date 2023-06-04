@@ -12,8 +12,8 @@ namespace RecoverUnsoldApi.Controllers.Auth;
 [Route("api/[controller]")]
 public class ForgotPasswordController : ControllerBase
 {
-    private readonly IForgotPasswordService _forgotPasswordService;
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IForgotPasswordService _forgotPasswordService;
     private readonly IQueueService _queueService;
 
     public ForgotPasswordController(IForgotPasswordService forgotPasswordService,
@@ -30,10 +30,7 @@ public class ForgotPasswordController : ControllerBase
     public async Task<ActionResult> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
     {
         var user = await _applicationUserService.FindByEmail(forgotPasswordDto.Email);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
 
         var token = await _forgotPasswordService.CreateResetPasswordToken(user);
         var forgotPasswordMail = new ForgotPasswordMail(user.Username, token, user.Email);

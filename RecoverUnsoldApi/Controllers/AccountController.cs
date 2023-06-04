@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldApi.Controllers;
 
@@ -28,16 +28,13 @@ public class AccountController : ControllerBase
     public async Task<ActionResult<UserReadDto>> GetAccount()
     {
         var user = await _applicationUserService.FindById(this.GetUserId());
-        if (user == null)
-        {
-            return Unauthorized();
-        }
+        if (user == null) return Unauthorized();
 
         return user switch
         {
-            Customer customer       => Ok(customer.ToCustomerReadDto()),
+            Customer customer => Ok(customer.ToCustomerReadDto()),
             Distributor distributor => Ok(distributor.ToDistributorReadDto()),
-            _                       => Unauthorized()
+            _ => Unauthorized()
         };
     }
 
@@ -69,10 +66,7 @@ public class AccountController : ControllerBase
         var userId = this.GetUserId();
         var user = (await _applicationUserService.FindById(userId))!;
         var hasValidCredentials = await _authService.AreCredentialsValid(user.Email, passwordUpdateDto.OldPassword);
-        if (!hasValidCredentials)
-        {
-            return Unauthorized();
-        }
+        if (!hasValidCredentials) return Unauthorized();
 
         await _applicationUserService.UpdatePassword(userId, passwordUpdateDto.NewPassword);
         return NoContent();

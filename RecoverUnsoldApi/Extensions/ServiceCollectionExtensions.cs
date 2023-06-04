@@ -16,7 +16,6 @@ using RecoverUnsoldApi.Services.FcmTokens;
 using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Home;
 using RecoverUnsoldApi.Services.Locations;
-using RecoverUnsoldApi.Services.Notification;
 using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Opinions;
@@ -160,7 +159,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddHostedService<LongRunningService>();
         serviceCollection.AddSingleton<BackgroundWorkerQueue>();
         serviceCollection.AddSingleton<IQueueService, QueueService>();
-        serviceCollection.AddSingleton<INotificationService, NotificationService>();
         serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<IAuthService, AuthService>();
         serviceCollection.AddScoped<IApplicationUserService, ApplicationUserService>();

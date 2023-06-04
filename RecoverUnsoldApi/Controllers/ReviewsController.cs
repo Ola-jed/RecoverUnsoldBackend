@@ -18,8 +18,8 @@ namespace RecoverUnsoldApi.Controllers;
 public class ReviewsController : ControllerBase
 {
     private readonly AppOwner _appOwner;
-    private readonly IReviewsService _reviewsService;
     private readonly IQueueService _queueService;
+    private readonly IReviewsService _reviewsService;
     private readonly IApplicationUserService _userService;
 
     public ReviewsController(IOptions<AppOwner> options, IReviewsService reviewsService, IQueueService queueService,

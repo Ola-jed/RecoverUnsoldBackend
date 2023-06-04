@@ -15,10 +15,10 @@ namespace RecoverUnsoldApi.Controllers;
 [Route("api/[controller]")]
 public class OffersController : ControllerBase
 {
-    private readonly IOffersService _offersService;
     private readonly ILocationsService _locationsService;
     private readonly IOfferPublishedNotificationService _offerPublishedNotificationService;
-    
+    private readonly IOffersService _offersService;
+
     public OffersController(IOffersService offersService, ILocationsService locationsService,
         IOfferPublishedNotificationService offerPublishedNotificationService)
     {
@@ -73,10 +73,7 @@ public class OffersController : ControllerBase
             distributorId,
             offerCreateDto.LocationId
         );
-        if (!isLocationOwnedByCurrentDistributor)
-        {
-            return BadRequest();
-        }
+        if (!isLocationOwnedByCurrentDistributor) return BadRequest();
         var offer = await _offersService.Create(distributorId, offerCreateDto);
         _offerPublishedNotificationService.Process(offer.Id);
         return CreatedAtRoute(nameof(GetOffer), new { id = offer.Id }, offer);
@@ -90,10 +87,7 @@ public class OffersController : ControllerBase
     {
         var distributorId = this.GetUserId();
         var isOwner = await _offersService.IsOwner(distributorId, id);
-        if (!isOwner)
-        {
-            return NotFound();
-        }
+        if (!isOwner) return NotFound();
 
         await _offersService.Update(id, distributorId, offerUpdateDto);
         return NoContent();
@@ -107,10 +101,7 @@ public class OffersController : ControllerBase
     {
         var distributorId = this.GetUserId();
         var isOwner = await _offersService.IsOwner(distributorId, id);
-        if (!isOwner)
-        {
-            return NotFound();
-        }
+        if (!isOwner) return NotFound();
 
         await _offersService.Delete(id, distributorId);
         return NoContent();

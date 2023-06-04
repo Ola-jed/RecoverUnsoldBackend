@@ -41,7 +41,7 @@ public class OpinionsController : ControllerBase
         var opinion = await _opinionsService.Get(id);
         return opinion == null ? NotFound() : Ok(opinion);
     }
-    
+
     [Authorize(Roles = Roles.Customer)]
     [HttpPost("/api/Orders/{id:guid}/Opinions")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -49,15 +49,12 @@ public class OpinionsController : ControllerBase
     public async Task<ActionResult<OpinionReadDto>> Create(Guid id, OpinionCreateDto opinionCreateDto)
     {
         var isOpinionRequestValid = await _ordersService.IsRelativeToCustomer(id, this.GetUserId());
-        if (!isOpinionRequestValid)
-        {
-            return Forbid();
-        }
+        if (!isOpinionRequestValid) return Forbid();
 
         var opinion = await _opinionsService.Publish(opinionCreateDto, id);
         return CreatedAtRoute(nameof(GetOpinion), new { id = opinion.Id }, opinion);
     }
-    
+
     [Authorize(Roles = Roles.Customer)]
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -65,15 +62,12 @@ public class OpinionsController : ControllerBase
     public async Task<ActionResult> Update(Guid id, OpinionUpdateDto opinionUpdateDto)
     {
         var isAuthor = await _opinionsService.IsUserAuthor(this.GetUserId(), id);
-        if (!isAuthor)
-        {
-            return Forbid();
-        }
-        
+        if (!isAuthor) return Forbid();
+
         await _opinionsService.Update(id, opinionUpdateDto);
         return NoContent();
     }
-    
+
     [Authorize(Roles = Roles.Customer)]
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -81,11 +75,8 @@ public class OpinionsController : ControllerBase
     public async Task<ActionResult> Delete(Guid id)
     {
         var isAuthor = await _opinionsService.IsUserAuthor(this.GetUserId(), id);
-        if (!isAuthor)
-        {
-            return Forbid();
-        }
-        
+        if (!isAuthor) return Forbid();
+
         await _opinionsService.Delete(id);
         return NoContent();
     }
