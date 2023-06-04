@@ -13,9 +13,7 @@ public class AllowedExtensionsAttribute : ValidationAttribute
         Extensions = extensions.Split(",");
     }
 
-    protected override ValidationResult? IsValid(
-        object? value,
-        ValidationContext validationContext)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         switch (value)
         {

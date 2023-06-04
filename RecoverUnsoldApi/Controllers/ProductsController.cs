@@ -14,8 +14,8 @@ namespace RecoverUnsoldApi.Controllers;
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
-    private readonly IProductsService _productsService;
     private readonly IOffersService _offersService;
+    private readonly IProductsService _productsService;
 
     public ProductsController(IProductsService productsService, IOffersService offersService)
     {
@@ -63,10 +63,7 @@ public class ProductsController : ControllerBase
     {
         var distributorId = this.GetUserId();
         var offerOwnedByCurrentUser = await _offersService.IsOwner(distributorId, id);
-        if (!offerOwnedByCurrentUser)
-        {
-            return Forbid();
-        }
+        if (!offerOwnedByCurrentUser) return Forbid();
 
         var product = await _productsService.Create(id, productCreateDto);
         return CreatedAtRoute(nameof(GetProduct), new { id = product.Id }, product);
@@ -80,10 +77,7 @@ public class ProductsController : ControllerBase
     {
         var distributorId = this.GetUserId();
         var isProductOwner = await _productsService.IsOwner(id, distributorId);
-        if (!isProductOwner)
-        {
-            return NotFound();
-        }
+        if (!isProductOwner) return NotFound();
 
         await _productsService.Update(id, distributorId, productUpdateDto);
         return NoContent();
@@ -97,10 +91,7 @@ public class ProductsController : ControllerBase
     {
         var distributorId = this.GetUserId();
         var isProductOwner = await _productsService.IsOwner(id, distributorId);
-        if (!isProductOwner)
-        {
-            return NotFound();
-        }
+        if (!isProductOwner) return NotFound();
 
         await _productsService.Delete(id, distributorId);
         return NoContent();

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Entities.Enums;
 using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.Alerts;
 using RecoverUnsoldApi.Services.Auth;
+using RecoverUnsoldDomain.Entities.Enums;
 
 namespace RecoverUnsoldApi.Controllers;
 
@@ -31,21 +31,15 @@ public class AlertsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateAlert(AlertCreateDto alertCreateDto)
     {
-        if (alertCreateDto is { AlertType: AlertType.AnyOfferPublished, DistributorId: { } } or
+        if (alertCreateDto is { AlertType: AlertType.AnyOfferPublished, DistributorId: not null } or
             { AlertType: AlertType.DistributorOfferPublished, DistributorId: null })
-        {
             return BadRequest();
-        }
 
         var customerId = this.GetUserId();
         if (alertCreateDto.DistributorId == null)
-        {
             await _alertsService.CreateAlertForAllOffers(customerId);
-        }
         else
-        {
             await _alertsService.CreateForDistributorOffers(customerId, (Guid)alertCreateDto.DistributorId);
-        }
         return NoContent();
     }
 
@@ -56,10 +50,7 @@ public class AlertsController : ControllerBase
     {
         var customerId = this.GetUserId();
         var isOwner = await _alertsService.IsOwnedByUser(alertId, customerId);
-        if (!isOwner)
-        {
-            return NotFound();
-        }
+        if (!isOwner) return NotFound();
 
         await _alertsService.DeleteAlert(alertId);
         return NoContent();

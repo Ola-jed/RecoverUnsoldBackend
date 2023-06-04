@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>76326FC9-E17B-4DC0-AA6B-AFE0847997C3</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="IronPdf" Version="2023.6.10"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+        <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
+        <PackageReference Include="MailKit" Version="3.4.1" />
+        <PackageReference Include="MimeKit" Version="3.4.1" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RecoverUnsoldDomain\RecoverUnsoldDomain.csproj" />
+    </ItemGroup>
+</Project>

@@ -10,8 +10,8 @@ namespace RecoverUnsoldApi.Controllers.Auth;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
     private readonly IApplicationUserService _applicationUserService;
+    private readonly IAuthService _authService;
 
     public AuthController(IAuthService authService, IApplicationUserService applicationUserService)
     {
@@ -44,16 +44,10 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<AuthenticationResultDto>> Login(LoginDto loginDto)
     {
         var authData = await _authService.Login(loginDto);
-        if (authData == null)
-        {
-            return Unauthorized();
-        }
+        if (authData == null) return Unauthorized();
 
         var isVerified = await _applicationUserService.IsEmailVerified(loginDto.Email);
-        if (!isVerified)
-        {
-            return Forbid();
-        }
+        if (!isVerified) return Forbid();
 
         var jwt = authData.Value.Item1;
         var userData = authData.Value.Item2;

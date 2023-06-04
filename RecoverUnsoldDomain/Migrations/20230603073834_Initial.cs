@@ -336,6 +336,12 @@ namespace RecoverUnsoldDomain.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FcmTokens_Value",
+                table: "FcmTokens",
+                column: "Value",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Image_CreatedAt",
                 table: "Image",
                 column: "CreatedAt");

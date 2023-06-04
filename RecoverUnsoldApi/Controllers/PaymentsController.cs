@@ -28,18 +28,12 @@ public class PaymentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> MakePayment(Guid id, TransactionDto transactionDto)
     {
-        if (!await _ordersService.IsRelativeToCustomer(id, this.GetUserId()))
-        {
-            return Forbid();
-        }
+        if (!await _ordersService.IsRelativeToCustomer(id, this.GetUserId())) return Forbid();
 
-        if (!await _ordersService.MatchStatuses(id,  new []{Status.Approved, Status.Completed}))
-        {
-            return BadRequest();
-        }
+        if (!await _ordersService.MatchStatuses(id, new[] { Status.Approved, Status.Completed })) return BadRequest();
 
         var transactionId = transactionDto.TransactionId;
-        
+
         // TODO : fix the issue with Kkiapay always returning TRANSACTION_NOT_FOUND
         // if (!await _paymentsService.CheckPaymentSuccess(transactionId))
         // {

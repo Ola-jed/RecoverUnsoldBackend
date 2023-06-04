@@ -16,14 +16,13 @@ using RecoverUnsoldApi.Services.FcmTokens;
 using RecoverUnsoldApi.Services.ForgotPassword;
 using RecoverUnsoldApi.Services.Home;
 using RecoverUnsoldApi.Services.Locations;
-using RecoverUnsoldApi.Services.Mail;
-using RecoverUnsoldApi.Services.Notification;
 using RecoverUnsoldApi.Services.Notification.OfferPublishedNotification;
 using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Opinions;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Payments;
 using RecoverUnsoldApi.Services.Products;
+using RecoverUnsoldApi.Services.Queue;
 using RecoverUnsoldApi.Services.Reviews;
 using RecoverUnsoldApi.Services.UserVerification;
 using RecoverUnsoldDomain.Config;
@@ -84,6 +83,17 @@ public static class ServiceCollectionExtensions
         cfg["MailDisplayName"] = configuration["MailDisplayName"];
         cfg["MailPassword"] = configuration["MailPassword"];
         serviceCollection.Configure<MailConfig>(cfg);
+    }
+
+    public static void ConfigureRabbitmq(this IServiceCollection serviceCollection,
+        IConfiguration configuration)
+    {
+        var cfg = configuration.GetSection("Rabbitmq");
+        cfg["HostName"] = configuration["RabbitmqHostName"] ?? "localhost";
+        cfg["UserName"] = configuration["RabbitmqUserName"] ?? "guest";
+        cfg["Port"] = configuration["RabbitmqPort"] ?? "5672";
+        cfg["Password"] = configuration["RabbitmqPassword"] ?? "guest";
+        serviceCollection.Configure<RabbitmqConfig>(cfg);
     }
 
     public static void ConfigureAppOwner(this IServiceCollection serviceCollection, IConfiguration configuration)
@@ -148,8 +158,7 @@ public static class ServiceCollectionExtensions
     {
         serviceCollection.AddHostedService<LongRunningService>();
         serviceCollection.AddSingleton<BackgroundWorkerQueue>();
-        serviceCollection.AddSingleton<IMailService, MailService>();
-        serviceCollection.AddSingleton<INotificationService, NotificationService>();
+        serviceCollection.AddSingleton<IQueueService, QueueService>();
         serviceCollection.AddSingleton<IOfferPublishedNotificationService, OfferPublishedNotificationService>();
         serviceCollection.AddScoped<IAuthService, AuthService>();
         serviceCollection.AddScoped<IApplicationUserService, ApplicationUserService>();

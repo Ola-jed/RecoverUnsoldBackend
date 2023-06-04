@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using RecoverUnsoldApi.Infrastructure;
-using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Mail.Mailable;
 using RecoverUnsoldApi.Services.Notification.NotificationMessage;
+using RecoverUnsoldApi.Services.Queue;
 using RecoverUnsoldDomain.Data;
 using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldDomain.Entities.Enums;
@@ -27,8 +27,7 @@ public class OfferPublishedNotificationService : IOfferPublishedNotificationServ
         {
             using var scope = _serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();
-            var mailService = scope.ServiceProvider.GetRequiredService<IMailService>();
-            var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+            var queueService = scope.ServiceProvider.GetRequiredService<IQueueService>();
             var offer = await context.Offers.AsNoTracking().FirstOrDefaultAsync(cancellationToken);
 
             if (offer == null)
@@ -48,18 +47,18 @@ public class OfferPublishedNotificationService : IOfferPublishedNotificationServ
                 .Cast<User>()
                 .ToArray();
 
+            var mailMessages = usersToNotify.Select(u =>
+                new OfferPublishedMail(offer.Price, offer.StartDate, u.Email).BuildMailMessage());
+            queueService.QueueMails(mailMessages);
+
+
             if (usersToNotify.Length > 0)
             {
-                var offerPublishedMail = new OfferPublishedMail(
-                    offer.Price,
-                    offer.StartDate,
-                    usersToNotify.Select(c => c!.Email)
-                );
-                await mailService.SendEmailAsync(offerPublishedMail);
-
+                var fcmTokens = usersToNotify.SelectMany(u => u.FcmTokens)
+                    .Select(f => f.Value);
                 var offerPublishedNotificationMessage =
-                    new OfferPublishedNotificationMessage(offer.Price, offer.StartDate);
-                await notificationService.Send(offerPublishedNotificationMessage, usersToNotify);
+                    new OfferPublishedNotificationMessage(offer.Price, offer.StartDate, fcmTokens.ToList());
+                queueService.QueueFirebaseMessage(offerPublishedNotificationMessage.BuildFirebaseMessage());
             }
         });
     }

@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Services.ApplicationUser;
-using RecoverUnsoldApi.Services.Mail;
 using RecoverUnsoldApi.Services.Mail.Mailable;
+using RecoverUnsoldApi.Services.Queue;
 using RecoverUnsoldApi.Services.UserVerification;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 
@@ -11,16 +12,16 @@ namespace RecoverUnsoldApi.Controllers.Auth;
 [Route("api/[controller]")]
 public class UserVerificationController : ControllerBase
 {
-    private readonly IUserVerificationService _userVerificationService;
     private readonly IApplicationUserService _applicationUserService;
-    private readonly IMailService _mailService;
+    private readonly IQueueService _queueService;
+    private readonly IUserVerificationService _userVerificationService;
 
     public UserVerificationController(IUserVerificationService userVerificationService,
-        IApplicationUserService applicationUserService, IMailService mailService)
+        IApplicationUserService applicationUserService, IQueueService queueService)
     {
         _userVerificationService = userVerificationService;
         _applicationUserService = applicationUserService;
-        _mailService = mailService;
+        _queueService = queueService;
     }
 
     [HttpPost("Start")]
@@ -30,20 +31,14 @@ public class UserVerificationController : ControllerBase
     public async Task<ActionResult> StartUserVerificationProcess(UserVerificationStartDto userVerificationStartDto)
     {
         var user = await _applicationUserService.FindByEmail(userVerificationStartDto.Email);
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
 
         var isAlreadyVerified = await _userVerificationService.IsEmailConfirmed(userVerificationStartDto.Email);
-        if (isAlreadyVerified)
-        {
-            return BadRequest();
-        }
+        if (isAlreadyVerified) return BadRequest();
 
         var token = await _userVerificationService.GenerateUserVerificationToken(user);
         var userVerificationMail = new UserVerificationMail(user.Username, token, user.Email);
-        await _mailService.SendEmailAsync(userVerificationMail);
+        _queueService.QueueMail(userVerificationMail.BuildMailMessage(), QueueConstants.PriorityHigh);
         return Ok();
     }
 

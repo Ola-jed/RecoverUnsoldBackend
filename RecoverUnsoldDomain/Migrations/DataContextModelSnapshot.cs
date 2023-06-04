@@ -111,6 +111,9 @@ namespace RecoverUnsoldDomain.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("Value")
+                        .IsUnique();
+
                     b.ToTable("FcmTokens");
                 });
 

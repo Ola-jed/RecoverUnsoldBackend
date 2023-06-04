@@ -49,7 +49,8 @@ public class LocationsController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("Search/{query}")]
-    public async Task<Page<LocationReadDto>> Search(string query, [FromQuery] int page = 1, [FromQuery] int perPage = 10)
+    public async Task<Page<LocationReadDto>> Search(string query, [FromQuery] int page = 1,
+        [FromQuery] int perPage = 10)
     {
         var paginationParam = new PaginationParameter(perPage, page);
         return await _locationsService.FindByName(query, paginationParam);
@@ -71,10 +72,7 @@ public class LocationsController : ControllerBase
     {
         var userId = this.GetUserId();
         var isOwned = await _locationsService.IsOwner(userId, id);
-        if (!isOwned)
-        {
-            return NotFound();
-        }
+        if (!isOwned) return NotFound();
 
         await _locationsService.Update(userId, id, locationUpdateDto);
         return NoContent();
@@ -87,10 +85,7 @@ public class LocationsController : ControllerBase
     {
         var userId = this.GetUserId();
         var isOwned = await _locationsService.IsOwner(userId, id);
-        if (!isOwned)
-        {
-            return NotFound();
-        }
+        if (!isOwned) return NotFound();
 
         await _locationsService.Delete(userId, id);
         return NoContent();

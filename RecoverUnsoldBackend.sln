@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecoverUnsoldDomain", "Reco
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecoverUnsoldAdmin", "RecoverUnsoldAdmin\RecoverUnsoldAdmin.csproj", "{94F7B151-DC01-4C93-839A-CA4DAF6DFDF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecoverUnsoldWorker", "RecoverUnsoldWorker\RecoverUnsoldWorker.csproj", "{3FA94F79-D084-4420-A29B-98B051DD7A29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{94F7B151-DC01-4C93-839A-CA4DAF6DFDF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94F7B151-DC01-4C93-839A-CA4DAF6DFDF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94F7B151-DC01-4C93-839A-CA4DAF6DFDF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FA94F79-D084-4420-A29B-98B051DD7A29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FA94F79-D084-4420-A29B-98B051DD7A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FA94F79-D084-4420-A29B-98B051DD7A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FA94F79-D084-4420-A29B-98B051DD7A29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

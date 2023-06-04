@@ -9,10 +9,10 @@ namespace RecoverUnsoldApi.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class FcmTokensController: ControllerBase
+public class FcmTokensController : ControllerBase
 {
     private readonly IFcmTokensService _fcmTokensService;
-    
+
     public FcmTokensController(IFcmTokensService fcmTokensService)
     {
         _fcmTokensService = fcmTokensService;

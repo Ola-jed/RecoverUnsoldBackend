@@ -1,10 +1,11 @@
 using System.Globalization;
-using MimeKit;
 using RecoverUnsoldApi.Services.Mail.Templates;
+using RecoverUnsoldDomain.MessageBuilders;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Services.Mail.Mailable;
 
-public class OrderCompletedMail : IMailable
+public class OrderCompletedMail : IMailMessageBuilder
 {
     private readonly string _name;
     private readonly DateTime _orderDate;
@@ -22,37 +23,22 @@ public class OrderCompletedMail : IMailable
         _destinationEmail = destinationEmail;
     }
 
-    public MimeMessage Build()
+    public MailMessage BuildMailMessage()
     {
-        var email = new MimeMessage
+        return new MailMessage
         {
             Subject = "RecoverUnsold : Commande finalisée",
-            To = { MailboxAddress.Parse(_destinationEmail) }
+            Destination = _destinationEmail,
+            HtmlBody = OrderCompletedMailTemplate.Html
+                .Replace("{name}", _name)
+                .Replace("{orderDate}", _orderDate.ToShortDateString())
+                .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
+                .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString()),
+            TextBody = OrderCompletedMailTemplate.Text
+                .Replace("{name}", _name)
+                .Replace("{orderDate}", _orderDate.ToShortDateString())
+                .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
+                .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString())
         };
-        var builder = new BodyBuilder
-        {
-            HtmlBody = GetHtmlBody(),
-            TextBody = GetPlainTextBody()
-        };
-        email.Body = builder.ToMessageBody();
-        return email;
-    }
-
-    private string GetHtmlBody()
-    {
-        return OrderCompletedMailTemplate.Html
-            .Replace("{name}", _name)
-            .Replace("{orderDate}", _orderDate.ToShortDateString())
-            .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
-            .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString());
-    }
-
-    private string GetPlainTextBody()
-    {
-        return OrderCompletedMailTemplate.Text
-            .Replace("{name}", _name)
-            .Replace("{orderDate}", _orderDate.ToShortDateString())
-            .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
-            .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString());
     }
 }

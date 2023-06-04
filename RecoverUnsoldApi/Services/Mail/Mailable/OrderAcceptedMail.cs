@@ -1,10 +1,11 @@
 using System.Globalization;
-using MimeKit;
 using RecoverUnsoldApi.Services.Mail.Templates;
+using RecoverUnsoldDomain.MessageBuilders;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Services.Mail.Mailable;
 
-public class OrderAcceptedMail : IMailable
+public class OrderAcceptedMail : IMailMessageBuilder
 {
     private readonly string _name;
     private readonly DateTime _orderDate;
@@ -24,39 +25,24 @@ public class OrderAcceptedMail : IMailable
         _destinationEmail = destinationEmail;
     }
 
-    public MimeMessage Build()
+    public MailMessage BuildMailMessage()
     {
-        var email = new MimeMessage
+        return new MailMessage
         {
             Subject = "RecoverUnsold : Commande acceptée",
-            To = { MailboxAddress.Parse(_destinationEmail) }
+            Destination = _destinationEmail,
+            HtmlBody = OrderAcceptedMailTemplate.Html
+                .Replace("{name}", _name)
+                .Replace("{orderDate}", _orderDate.ToShortDateString())
+                .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
+                .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString())
+                .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString()),
+            TextBody = OrderAcceptedMailTemplate.Text
+                .Replace("{name}", _name)
+                .Replace("{orderDate}", _orderDate.ToShortDateString())
+                .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
+                .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString())
+                .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString())
         };
-        var builder = new BodyBuilder
-        {
-            HtmlBody = GetHtmlBody(),
-            TextBody = GetPlainTextBody()
-        };
-        email.Body = builder.ToMessageBody();
-        return email;
-    }
-
-    private string GetHtmlBody()
-    {
-        return OrderAcceptedMailTemplate.Html
-            .Replace("{name}", _name)
-            .Replace("{orderDate}", _orderDate.ToShortDateString())
-            .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
-            .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString())
-            .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString());
-    }
-
-    private string GetPlainTextBody()
-    {
-        return OrderAcceptedMailTemplate.Text
-            .Replace("{name}", _name)
-            .Replace("{orderDate}", _orderDate.ToShortDateString())
-            .Replace("{offerAmount}", _offerAmount.ToString(CultureInfo.InvariantCulture))
-            .Replace("{offerPublishDate}", _offerPublishDate.ToShortDateString())
-            .Replace("{withdrawalDate}", _withdrawalDate.ToShortDateString());
     }
 }

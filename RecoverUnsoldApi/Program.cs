@@ -16,6 +16,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureMail(configuration);
+builder.Services.ConfigureRabbitmq(configuration);
 builder.Services.ConfigureAppOwner(configuration);
 builder.Services.AddHttpClient("Kkiapay", httpClient =>
 {

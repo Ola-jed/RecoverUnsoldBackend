@@ -13,7 +13,7 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221209110657_Initial")]
+    [Migration("20230603073834_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -113,6 +113,9 @@ namespace RecoverUnsoldDomain.Migrations
                     b.HasIndex("CreatedAt");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("Value")
+                        .IsUnique();
 
                     b.ToTable("FcmTokens");
                 });

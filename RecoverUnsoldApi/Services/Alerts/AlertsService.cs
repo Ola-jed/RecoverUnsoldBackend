@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
 using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldDomain.Entities.Enums;
-using RecoverUnsoldApi.Extensions;
 
 namespace RecoverUnsoldApi.Services.Alerts;
 
@@ -18,11 +18,9 @@ public class AlertsService : IAlertsService
 
     public async Task CreateAlertForAllOffers(Guid customerId)
     {
-        if (await _context.Alerts.AnyAsync(a => a.CustomerId == customerId && a.AlertType == AlertType.AnyOfferPublished))
-        {
-            return;
-        }
-        
+        if (await _context.Alerts.AnyAsync(
+                a => a.CustomerId == customerId && a.AlertType == AlertType.AnyOfferPublished)) return;
+
         _context.Alerts.Add(new Alert
         {
             AlertType = AlertType.AnyOfferPublished,
@@ -34,10 +32,8 @@ public class AlertsService : IAlertsService
     public async Task CreateForDistributorOffers(Guid customerId, Guid distributorId)
     {
         if (await _context.Alerts.AnyAsync(a => a.CustomerId == customerId && a.Trigger == distributorId.ToString()))
-        {
             return;
-        }
-        
+
         _context.Alerts.Add(new Alert
         {
             AlertType = AlertType.DistributorOfferPublished,
@@ -49,24 +45,12 @@ public class AlertsService : IAlertsService
 
     public async Task<IEnumerable<AlertReadDto>> GetAlerts(Guid customerId)
     {
-        var alerts = await _context.Alerts
-            .AsNoTracking()
-            .Where(a => a.CustomerId == customerId)
-            .ToListAsync();
-
-        var distributors = alerts.Where(a => a.Trigger != null)
-            .AsEnumerable()
-            .Select(a => Guid.Parse(a.Trigger!))
-            .Distinct()
-            .Select(id => _context.Distributors.Find(id)?.ToDistributorInformationDto())
-            .Where(d => d != null);
-
-        return alerts.Select(a => new AlertReadDto
-        (
-            a.Id,
-            a.AlertType,
-            a.Trigger == null ? null : distributors.First(d => d!.Id == Guid.Parse(a.Trigger))
-        ));
+        return _context.Alerts
+            .GroupJoin<Alert, Distributor, string, AlertReadDto>(_context.Distributors,
+                alert => alert.Trigger, distributor => distributor.Id.ToString(),
+                (alert, distributors) => new AlertReadDto(alert.Id, alert.AlertType,
+                    distributors.FirstOrDefault().ToDistributorInformationDto())
+            );
     }
 
     public async Task<bool> IsOwnedByUser(Guid alertId, Guid customerId)
