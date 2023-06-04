@@ -60,7 +60,7 @@ public class MailWorker : BackgroundService
             var message = Encoding.UTF8.GetString(ea.Body.ToArray());
             try
             {
-                _logger.LogInformation("Processing a mail message : {Message}", message);
+                _logger.LogInformation("Processing a mail message");
                 var mailMessage = JsonSerializer.Deserialize<MailMessage>(message);
                 await SendMail(mailMessage!);
                 _channel?.BasicAck(ea.DeliveryTag, false);

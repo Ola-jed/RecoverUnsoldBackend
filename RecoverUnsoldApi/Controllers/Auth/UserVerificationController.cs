@@ -4,6 +4,7 @@ using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Mail.Mailable;
 using RecoverUnsoldApi.Services.Queue;
 using RecoverUnsoldApi.Services.UserVerification;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Controllers.Auth;
 
@@ -37,7 +38,7 @@ public class UserVerificationController : ControllerBase
 
         var token = await _userVerificationService.GenerateUserVerificationToken(user);
         var userVerificationMail = new UserVerificationMail(user.Username, token, user.Email);
-        _queueService.QueueMail(userVerificationMail.BuildMailMessage());
+        _queueService.QueueMail(userVerificationMail.BuildMailMessage(), QueueConstants.PriorityHigh);
         return Ok();
     }
 

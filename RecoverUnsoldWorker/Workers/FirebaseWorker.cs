@@ -57,7 +57,7 @@ public class FirebaseWorker : BackgroundService
             var message = Encoding.UTF8.GetString(ea.Body.ToArray());
             try
             {
-                _logger.LogInformation("Processing a firebase message : {Message}", message);
+                _logger.LogInformation("Processing a firebase message");
                 var firebaseMessage = JsonSerializer.Deserialize<FirebaseMessage>(message);
                 await SendNotification(firebaseMessage!);
                 _channel?.BasicAck(ea.DeliveryTag, false);
