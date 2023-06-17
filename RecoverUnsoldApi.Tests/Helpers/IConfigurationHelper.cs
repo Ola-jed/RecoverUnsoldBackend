@@ -4,15 +4,11 @@ namespace RecoverUnsoldApi.Tests.Helpers;
 
 public class ConfigurationHelper
 {
-    private Dictionary<string, string> _dictionary = new();
-
-    public ConfigurationHelper()
-    {
-    }
+    private readonly List<KeyValuePair<string, string?>> _dictionary = new();
 
     public ConfigurationHelper With(string key, string value)
     {
-        _dictionary.Add(key, value);
+        _dictionary.Add(new KeyValuePair<string, string?>(key, value));
         return this;
     }
 
