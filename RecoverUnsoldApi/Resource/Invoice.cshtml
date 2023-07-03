@@ -107,13 +107,13 @@
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="@Model.CompanyLogoUrl" style="width:100%; max-width:300px;">
+                            RecoverUnsold
                         </td>
 
                         <td>
-                            Invoice #: @Model.InvoiceNumber<br>
-                            Created: @Model.CreatedDate.ToLongDateString()<br>
-                            Due: @Model.Amount
+                            Facture # : @Model.InvoiceNumber<br>
+                            Commande passée le : @Model.CreatedDate<br>
+                            Montant : @Model.Amount
                         </td>
                     </tr>
                 </table>
@@ -141,39 +141,20 @@
 
         <tr class="heading">
             <td>
-                Payment Method
+                Produit
             </td>
-
             <td>
-                @Model.PaymentMethod.Name #
+                Description
             </td>
         </tr>
-
-        <tr class="details">
-            <td>
-                @Model.PaymentMethod.Name
-            </td>
-
-            <td>
-                @Model.PaymentMethod.ReferenceNumber
-            </td>
-        </tr>
-        <tr class="heading">
-            <td>
-                Item
-            </td>
-            <td>
-                Price
-            </td>
-        </tr>
-        @foreach (var item in Model.Items)
+        @foreach (var item in Model.Products)
         {
             <tr class="item">
                 <td>
-                    @item.ItemName
+                    @item.Name
                 </td>
                 <td>
-                    @item.TotalPrice
+                    @item.Description
                 </td>
             </tr>
         }
@@ -182,7 +163,7 @@
             <td></td>
 
             <td>
-                Total: $@Model.Price.ToString("0.##")
+                Total: @Model.Amount
             </td>
         </tr>
     </table>

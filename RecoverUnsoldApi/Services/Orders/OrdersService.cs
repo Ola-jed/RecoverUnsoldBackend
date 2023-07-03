@@ -3,11 +3,12 @@ using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldApi.Services.Mail.Mailable;
+using RecoverUnsoldDomain.Data;
 using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldDomain.Entities.Enums;
-using RecoverUnsoldApi.Extensions;
 
 namespace RecoverUnsoldApi.Services.Orders;
 
@@ -145,5 +146,25 @@ public class OrdersService : IOrdersService
         await _context.Orders
             .Where(o => o.Id == orderId)
             .ExecuteUpdateAsync(order => order.SetProperty(x => x.Status, Status.Completed));
+    }
+
+    public async Task<InvoiceMail?> GetInvoiceMail(Guid orderId, Guid userId)
+    {
+        var order = await _context.Orders
+            .AsNoTracking()
+            .Where(o => o.CustomerId == userId)
+            .Include(o => o.Customer)
+            .Include(o => o.Offer)
+            .ThenInclude(o => o!.Location)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+
+        if (order == null)
+        {
+            return null;
+        }
+
+        var invoiceMail = new InvoiceMail(order, order.Customer!.Email, order.Customer!.Username);
+        await invoiceMail.GenerateHtml();
+        return invoiceMail;
     }
 }

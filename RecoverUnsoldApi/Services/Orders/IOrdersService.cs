@@ -1,6 +1,7 @@
 ﻿using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Services.Mail.Mailable;
 using RecoverUnsoldDomain.Entities.Enums;
 
 namespace RecoverUnsoldApi.Services.Orders;
@@ -27,4 +28,5 @@ public interface IOrdersService
     Task Accept(Guid orderId);
     Task Reject(Guid orderId);
     Task Complete(Guid orderId);
+    Task<InvoiceMail?> GetInvoiceMail(Guid orderId, Guid userId);
 }
