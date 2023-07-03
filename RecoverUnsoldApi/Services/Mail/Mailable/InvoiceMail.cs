@@ -49,10 +49,11 @@ public class InvoiceMail : IMailMessageBuilder
         };
 
         var engine = new RazorLightEngineBuilder()
-            .UseEmbeddedResourcesProject(typeof(InvoiceMail).Assembly)
+            .EnableDebugMode()
+            .UseEmbeddedResourcesProject(typeof(Program).Assembly, "RecoverUnsoldApi.Resource")
             .UseMemoryCachingProvider()
             .Build();
-        _html = await engine.CompileRenderAsync("Resource.Invoice", model);
+        _html = await engine.CompileRenderAsync("Invoice", model);
     }
 
     public MailMessage BuildMailMessage()
