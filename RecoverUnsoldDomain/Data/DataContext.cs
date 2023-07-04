@@ -15,6 +15,13 @@ public class DataContext : DbContext
         modelBuilder.Entity<Location>()
             .Property(l => l.Coordinates)
             .HasColumnType("geography (point)");
+        modelBuilder.HasSequence<int>("OrderNumbers")
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        modelBuilder.Entity<Order>()
+            .Property(o => o.Number)
+            .HasDefaultValueSql("nextval('\"OrderNumbers\"')");
         modelBuilder.HasPostgresExtension("postgis");
         base.OnModelCreating(modelBuilder);
     }

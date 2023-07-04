@@ -22,7 +22,7 @@ public class InvoiceMail : IMailMessageBuilder
 
     public async Task GenerateHtml()
     {
-        var invoiceNumber = _order.Id.ToString().Replace("-", "");
+        var invoiceNumber = _order.Number.ToString();
         var createdDate = _order.CreatedAt.ToShortDateString();
         var model = new
         {

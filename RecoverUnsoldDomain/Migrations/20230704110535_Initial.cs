@@ -15,6 +15,9 @@ namespace RecoverUnsoldDomain.Migrations
             migrationBuilder.AlterDatabase()
                 .Annotation("Npgsql:PostgresExtension:postgis", ",,");
 
+            migrationBuilder.CreateSequence<int>(
+                name: "OrderNumbers");
+
             migrationBuilder.CreateTable(
                 name: "EmailVerifications",
                 columns: table => new
@@ -196,6 +199,7 @@ namespace RecoverUnsoldDomain.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     WithdrawalDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    Number = table.Column<int>(type: "integer", nullable: false, defaultValueSql: "nextval('\"OrderNumbers\"')"),
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     OfferId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -526,6 +530,9 @@ namespace RecoverUnsoldDomain.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropSequence(
+                name: "OrderNumbers");
         }
     }
 }

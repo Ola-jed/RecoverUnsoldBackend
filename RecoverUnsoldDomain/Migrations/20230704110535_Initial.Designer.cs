@@ -13,7 +13,7 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230603073834_Initial")]
+    [Migration("20230704110535_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -26,6 +26,8 @@ namespace RecoverUnsoldDomain.Migrations
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.HasSequence<int>("OrderNumbers");
 
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Alert", b =>
                 {
@@ -279,6 +281,11 @@ namespace RecoverUnsoldDomain.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Number")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('\"OrderNumbers\"')");
 
                     b.Property<Guid>("OfferId")
                         .HasColumnType("uuid");
