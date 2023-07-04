@@ -8,16 +8,15 @@ public class Order : Entity
 {
     public DateTime WithdrawalDate { get; set; }
 
-    [Required]
-    public Status Status { get; set; } = Status.Pending;
+    [Required] public Status Status { get; set; } = Status.Pending;
 
-    [ForeignKey(nameof(Customer))]
-    public Guid CustomerId { get; set; }
+    public int Number { get; set; }
+
+    [ForeignKey(nameof(Customer))] public Guid CustomerId { get; set; }
 
     public Customer? Customer { get; set; }
 
-    [ForeignKey(nameof(Offer))]
-    public Guid OfferId { get; set; }
+    [ForeignKey(nameof(Offer))] public Guid OfferId { get; set; }
 
     public Offer? Offer { get; set; }
 

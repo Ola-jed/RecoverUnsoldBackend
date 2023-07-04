@@ -7,6 +7,11 @@ using RecoverUnsoldApi.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
+builder.WebHost.UseSentry(o =>
+{
+    o.Dsn = configuration["SentryDsn"];
+    o.TracesSampleRate = 1.0;
+});
 builder.Services.ConfigurePgsql(configuration);
 builder.Services.ConfigureFirebase(configuration);
 builder.Services.AddControllers().AddJsonOptions(x =>

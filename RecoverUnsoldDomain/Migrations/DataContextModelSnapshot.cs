@@ -24,6 +24,8 @@ namespace RecoverUnsoldDomain.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.HasSequence<int>("OrderNumbers");
+
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Alert", b =>
                 {
                     b.Property<Guid>("Id")
@@ -276,6 +278,11 @@ namespace RecoverUnsoldDomain.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Number")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValueSql("nextval('\"OrderNumbers\"')");
 
                     b.Property<Guid>("OfferId")
                         .HasColumnType("uuid");

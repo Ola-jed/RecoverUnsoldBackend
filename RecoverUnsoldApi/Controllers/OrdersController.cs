@@ -11,6 +11,7 @@ using RecoverUnsoldApi.Services.Notification.NotificationMessage;
 using RecoverUnsoldApi.Services.Offers;
 using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Queue;
+using RecoverUnsoldDomain.Queue;
 
 namespace RecoverUnsoldApi.Controllers;
 
@@ -188,6 +189,19 @@ public class OrdersController : ControllerBase
             new OrderCompletedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt,
                 customerTokens).BuildFirebaseMessage()
         );
+        return NoContent();
+    }
+
+    [Authorize(Roles = Roles.Customer)]
+    [HttpPost("{id:guid}/Invoice")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> SendInvoice(Guid id)
+    {
+        var invoiceMail = await _ordersService.GetInvoiceMail(id, this.GetUserId());
+
+        if (invoiceMail == null) return NotFound();
+        _queueService.QueueMail(invoiceMail.BuildMailMessage(), QueueConstants.PriorityHigh);
         return NoContent();
     }
 }

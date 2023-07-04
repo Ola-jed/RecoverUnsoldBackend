@@ -5,24 +5,27 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>76326FC9-E17B-4DC0-AA6B-AFE0847997C3</UserSecretsId>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CloudinaryDotNet" Version="1.20.0" />
-        <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
-        <PackageReference Include="MailKit" Version="3.4.1" />
-        <PackageReference Include="MimeKit" Version="3.4.1" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-        <PackageReference Include="FluentPaginator.Lib" Version="2.3.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0" />
+        <PackageReference Include="CloudinaryDotNet" Version="1.20.0"/>
+        <PackageReference Include="FirebaseAdmin" Version="2.3.0"/>
+        <PackageReference Include="MailKit" Version="3.4.1"/>
+        <PackageReference Include="MimeKit" Version="3.4.1"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.0"/>
+        <PackageReference Include="RazorLight" Version="2.3.1"/>
+        <PackageReference Include="Sentry.AspNetCore" Version="3.33.1"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
+        <PackageReference Include="FluentPaginator.Lib" Version="2.3.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
-        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.24.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.24.0"/>
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.24.0" />
         <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
     </ItemGroup>
@@ -32,9 +35,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="wwwroot\swagger-themes\theme-material.css" />
-        <EmbeddedResource Include="wwwroot\swagger-index.html" />
-        <None Remove="Resource\cacert.pem" />
-        <EmbeddedResource Include="Resource\cacert.pem" />
+        <_ContentIncludedByDefault Remove="wwwroot\swagger-themes\theme-material.css"/>
+        <EmbeddedResource Include="wwwroot\swagger-index.html"/>
+        <None Remove="Resource\cacert.pem"/>
+        <EmbeddedResource Include="Resource\cacert.pem"/>
+        <Content Remove="Resource\Invoice.cshtml"/>
+        <EmbeddedResource Include="Resource\Invoice.cshtml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
 </Project>
