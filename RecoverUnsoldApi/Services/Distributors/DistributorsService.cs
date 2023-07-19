@@ -23,15 +23,14 @@ public class DistributorsService: IDistributorsService
         var distributorsSource = _context
             .Distributors
             .AsNoTracking();
-        if(name != null && name.Trim() != string.Empty)
+            if(name != null && name.Trim() != string.Empty)
         {
             distributorsSource = distributorsSource.Where(d => EF.Functions.Like(d.Username, $"%{name}%"));
         }
 
-        return await Task.Run(() => distributorsSource
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .ToDistributorInformationReadDto()
-        );
+        var page = await distributorsSource
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        return page.ToDistributorInformationReadDto();
     }
 
     public async Task<IEnumerable<DistributorLabelReadDto>> GetDistributorsLabels()

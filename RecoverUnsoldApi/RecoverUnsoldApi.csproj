@@ -18,7 +18,7 @@
         <PackageReference Include="Sentry.AspNetCore" Version="3.33.1"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-        <PackageReference Include="FluentPaginator.Lib" Version="2.3.0"/>
+        <PackageReference Include="FluentPaginator.Lib" Version="5.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
             <PrivateAssets>all</PrivateAssets>
@@ -26,8 +26,8 @@
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0"/>
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.24.0"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.24.0" />
-        <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.24.0"/>
+        <PackageReference Include="RabbitMQ.Client" Version="6.5.0"/>
     </ItemGroup>
 
     <ItemGroup>

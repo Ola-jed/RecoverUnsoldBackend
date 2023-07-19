@@ -35,36 +35,36 @@ public class ProductsService : IProductsService
     public async Task<Page<ProductReadDto>> GetOfferProducts(Guid offerId,
         PaginationParameter paginationParameter)
     {
-        return await Task.Run(() => _context.Products
+        var page = await _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
             .Where(p => p.OfferId == offerId)
-            .Paginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
-            .ToProductReadDto()
-        );
+            .AsyncPaginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToProductReadDto();
     }
 
     public async Task<Page<ProductReadDto>> GetProducts(PaginationParameter paginationParameter)
     {
-        return await Task.Run(() => _context.Products
+        var page = await _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
-            .Paginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
-            .ToProductReadDto()
-        );
+            .AsyncPaginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending);
+
+        return page.ToProductReadDto();
     }
 
     public async Task<Page<ProductReadDto>> GetDistributorProducts(Guid distributorId,
         PaginationParameter paginationParameter)
     {
-        return await Task.Run(() => _context.Products
+        var page = await _context.Products
             .AsNoTracking()
             .Include(p => p.Images)
             .Include(p => p.Offer)
             .Where(p => p.Offer != null && p.Offer.DistributorId == distributorId)
-            .Paginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending)
-            .ToProductReadDto()
-        );
+            .AsyncPaginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending);
+            
+        return page.ToProductReadDto();
     }
 
     public async Task<ProductReadDto?> GetProduct(Guid id)
@@ -74,6 +74,7 @@ public class ProductsService : IProductsService
             .Include(p => p.Images)
             .Include(p => p.Offer)
             .FirstOrDefaultAsync(p => p.Id == id);
+        
         return product?.ToProductReadDto();
     }
 

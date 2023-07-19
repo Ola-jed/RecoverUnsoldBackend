@@ -66,37 +66,37 @@ public class OrdersService : IOrdersService
     public async Task<Page<OrderReadDto>> GetCustomerOrders(Guid customerId, PaginationParameter paginationParameter,
         OrderFilterDto orderFilterDto)
     {
-        return await Task.Run(() => _context.Orders
+        var page = await _context.Orders
             .AsNoTracking()
             .Include(o => o.Offer)
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
             .Where(o => o.CustomerId == customerId)
             .ApplyFilters(orderFilterDto)
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .ToOrderReadDto()
-        );
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToOrderReadDto();
     }
 
     public async Task<Page<OrderReadDto>> GetOfferOrders(Guid offerId, PaginationParameter paginationParameter,
         OrderFilterDto orderFilterDto)
     {
-        return await Task.Run(() => _context.Orders
+        var page = await _context.Orders
             .AsNoTracking()
             .Include(o => o.Offer)
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
             .Where(o => o.OfferId == offerId)
             .ApplyFilters(orderFilterDto)
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .ToOrderReadDto()
-        );
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToOrderReadDto();
     }
 
     public async Task<Page<OrderReadDto>> GetDistributorOrders(Guid distributorId,
         PaginationParameter paginationParameter, OrderFilterDto orderFilterDto)
     {
-        return await Task.Run(() => _context.Orders
+        var page = await _context.Orders
             .AsNoTracking()
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
@@ -104,9 +104,9 @@ public class OrdersService : IOrdersService
             .Include(o => o.Payment)
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
             .ApplyFilters(orderFilterDto)
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .ToOrderReadDto()
-        );
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToOrderReadDto();
     }
 
     public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId)

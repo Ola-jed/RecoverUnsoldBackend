@@ -21,11 +21,11 @@ public class ReviewsService : IReviewsService
 
     public async Task<Page<ReviewReadDto>> ListReviews(PaginationParameter paginationParameter)
     {
-        return await Task.Run(() => _context.Reviews
+        var page = await _context.Reviews
             .AsNoTracking()
-            .Paginate(paginationParameter, r => r.CreatedAt, PaginationOrder.Descending)
-            .ToReviewReadDto()
-        );
+            .AsyncPaginate(paginationParameter, r => r.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToReviewReadDto();
     }
 
     public async Task Delete(Guid id)

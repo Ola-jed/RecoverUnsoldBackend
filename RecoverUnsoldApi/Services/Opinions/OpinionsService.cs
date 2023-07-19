@@ -28,12 +28,12 @@ public class OpinionsService : IOpinionsService
 
     public async Task<Page<OpinionReadDto>> Get(Guid orderId, PaginationParameter paginationParameter)
     {
-        return await Task.Run(() => _context.Opinions
+        var page = await _context.Opinions
             .AsNoTracking()
             .Where(o => o.OrderId == orderId)
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .ToOpinionReadDto()
-        );
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToOpinionReadDto();
     }
 
     public async Task<OpinionReadDto?> Get(Guid id)

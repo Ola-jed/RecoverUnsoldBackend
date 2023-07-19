@@ -13,14 +13,12 @@ builder.WebHost.UseSentry(o =>
     o.TracesSampleRate = 1.0;
 });
 builder.Services.ConfigurePgsql(configuration);
-builder.Services.ConfigureFirebase(configuration);
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     x.JsonSerializerOptions.Converters.Add(new JsonDictionaryConverter<DateTime, int>());
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.ConfigureMail(configuration);
 builder.Services.ConfigureRabbitmq(configuration);
 builder.Services.ConfigureAppOwner(configuration);
 builder.Services.AddHttpClient("Kkiapay", httpClient =>

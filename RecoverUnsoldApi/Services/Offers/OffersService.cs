@@ -35,22 +35,22 @@ public class OffersService : IOffersService
 
     public async Task<Page<OfferReadDto>> GetOffers(PaginationParameter paginationParameter, OfferFilterDto offerFilterDto)
     {
-        return await Task.Run(() => _context.Offers
+        var page = await _context.Offers
             .AsNoTracking()
             .Include(o => o.Location)
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .ApplyFilters(offerFilterDto)
             .AsSplitQuery()
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .ToOfferReadDto()
-        );
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToOfferReadDto();
     }
 
     public async Task<Page<OfferReadDto>> GetDistributorOffers(Guid distributorId,
         PaginationParameter paginationParameter, OfferFilterDto offerFilterDto)
     {
-        return await Task.Run(() => _context.Offers
+        var page = await _context.Offers
             .AsNoTracking()
             .Include(o => o.Location)
             .Include(o => o.Products)
@@ -58,28 +58,28 @@ public class OffersService : IOffersService
             .Where(o => o.DistributorId == distributorId)
             .ApplyFilters(offerFilterDto)
             .AsSplitQuery()
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .ToOfferReadDto()
-        );
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        
+        return page.ToOfferReadDto();
     }
 
     public async Task<Page<OfferWithRelativeDistanceDto>> GetOffersCloseTo(LatLong latLong,
         PaginationParameter paginationParameter, double distance /* In kilometers */)
     {
         var referencePoint = new Point(latLong.Longitude, latLong.Latitude);
-        return await Task.Run(() => _context.Offers
+        var page = await _context.Offers
             .AsNoTracking()
             .Include(o => o.Location)
             .Include(o => o.Products)
             .ThenInclude(p => p.Images)
             .Where(o => o.Location!.Coordinates.Distance(referencePoint) <= distance * 1000)
             .AsSplitQuery()
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending)
-            .Map(o => new OfferWithRelativeDistanceDto(
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+        
+        return page.Map<Offer, OfferWithRelativeDistanceDto>(o => new OfferWithRelativeDistanceDto(
                 o.ToOfferReadDto(),
                 o.Location!.Coordinates.Distance(referencePoint) * 100
-            ))
-        );
+            ));
     }
 
     public async Task<OfferReadDto?> GetOffer(Guid id)
