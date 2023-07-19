@@ -11,14 +11,14 @@
             <MudText Typo="Typo.h6" Class="mb-5">@StringLocalizer["Login"]</MudText>
             <MudForm @ref="Form" @bind-IsValid="@Success">
                 <MudTextField T="string" Label="@StringLocalizer["Email"]" Required="true"
-                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Filled.Email"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email"
                               Variant="Variant.Outlined" Margin="Margin.Dense"
                               @bind-Value="AuthenticationModel.Email"
                               RequiredError="@StringLocalizer["EmailRequired"]"
-                              Validation="@(new EmailAddressAttribute {ErrorMessage = StringLocalizer["InvalidEmail"]})"/>
+                              Validation="@(new EmailAddressAttribute { ErrorMessage = StringLocalizer["InvalidEmail"] })"/>
                 <MudTextField T="string" Label="@StringLocalizer["Password"]"
                               Class="mt-5" Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
-                              AdornmentIcon="@(PasswordVisible ? Icons.Filled.Visibility : Icons.Filled.VisibilityOff)"
+                              AdornmentIcon="@(PasswordVisible ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff)"
                               OnAdornmentClick="@(() => PasswordVisible = !PasswordVisible)"
                               @bind-Value="AuthenticationModel.Password" Required="true"
                               InputType="@(PasswordVisible ? InputType.Text : InputType.Password)"
@@ -26,19 +26,23 @@
                 <div class="d-flex align-end justify-space-between mt-5">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!Success || Loading)"
                                Class="ml-auto" OnClick="Submit">
-                        @if (Loading) {
+                        @if (Loading)
+                        {
                             <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Default"
-                                                 Indeterminate="true" />
-                        } else {
+                                                 Indeterminate="true"/>
+                        }
+                        else
+                        {
                             @StringLocalizer["Login"]
                         }
                     </MudButton>
                 </div>
             </MudForm>
-            @if (LoginFailed) {
+            @if (LoginFailed)
+            {
                 <MudText Typo="Typo.subtitle1" Color="Color.Error">
                     @StringLocalizer["InvalidCredentials"]
-                </MudText>   
+                </MudText>
             }
         </MudPaper>
     </MudItem>

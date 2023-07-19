@@ -1,7 +1,7 @@
 @page "/Offers"
-@using System.Globalization
-@using RecoverUnsoldAdmin.Utils
 @using RecoverUnsoldDomain.Entities
+@using RecoverUnsoldAdmin.Utils
+@using System.Globalization
 @inherits OffersBase
 
 <PageTitle>@StringLocalizer["Offers"]</PageTitle>
@@ -11,10 +11,11 @@
           ServerData="@(new Func<TableState, Task<TableData<Offer>>>(ServerData))">
     <ToolBarContent>
         <MudText Typo="Typo.h6" Class="mr-2">@StringLocalizer["Offers"]</MudText>
-        <MudToggleIconButton @bind-Toggled="ShowFilter" Icon="@Icons.Filled.FilterAltOff" Title="Show filters"
-                             ToggledIcon="@Icons.Filled.FilterAlt" ToggledTitle="Hide filters" Class="mr-2"/>
+        <MudToggleIconButton @bind-Toggled="ShowFilter" Icon="@Icons.Material.Filled.FilterAltOff" Title="Show filters"
+                             ToggledIcon="@Icons.Material.Filled.FilterAlt" ToggledTitle="Hide filters" Class="mr-2"/>
         <MudSpacer/>
-        @if (ShowFilter) {
+        @if (ShowFilter)
+        {
             <div style="display: flex; align-items: baseline;">
                 <MudDatePicker Label="@StringLocalizer["MinDate"]" @bind-Date="Filter.MinDate" MaxDate="Filter.MaxDate"
                                Class="ml-4 mr-2" Clearable="true"/>
@@ -29,8 +30,8 @@
                                  Max="Filter.MaxPrice ?? 1000000" Class="mx-2" Clearable="true"/>
                 <MudNumericField @bind-Value="Filter.MaxPrice" Label="@StringLocalizer["MaxPrice"]" Min="Filter.MinPrice ?? 0"
                                  Max="1000000" Class="mx-2" Clearable="true"/>
-                <MudIconButton Icon="@Icons.Filled.Search" OnClick="@(_ => OnSearch())" Color="Color.Primary"/>
-                <MudIconButton Icon="@Icons.Filled.Clear" OnClick="@(_ => ResetFilters())" Color="Color.Warning"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Search" OnClick="@(_ => OnSearch())" Color="Color.Primary"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Clear" OnClick="@(_ => ResetFilters())" Color="Color.Warning"/>
             </div>
         }
     </ToolBarContent>

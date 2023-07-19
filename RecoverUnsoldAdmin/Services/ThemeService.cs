@@ -12,7 +12,7 @@ public class ThemeService
 
     private static readonly MudTheme DarkTheme = new()
     {
-        Palette = new Palette
+        Palette = new PaletteDark
         {
             AppbarBackground = "#08283A",
             AppbarText = "#FAFAFA",
@@ -38,7 +38,7 @@ public class ThemeService
 
     private static readonly MudTheme LightTheme = new()
     {
-        Palette = new Palette
+        Palette = new PaletteLight
         {
             AppbarBackground = "#05141D",
             AppbarText = "#FAFAFA",

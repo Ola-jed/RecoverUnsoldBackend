@@ -4,7 +4,8 @@
 
 <PageTitle>@StringLocalizer["Dashboard"]</PageTitle>
 
-@if (Loading) {
+@if (Loading)
+{
     <div style="display: flex; flex-flow: row wrap; justify-content: space-between; margin: 1rem">
         <MudSkeleton Style="width: 23%;margin-right: 1rem;height: 120px" SkeletonType="SkeletonType.Rectangle"/>
         <MudSkeleton Style="width: 23%;margin-right: 1rem;height: 120px" SkeletonType="SkeletonType.Rectangle"/>
@@ -23,28 +24,31 @@
     <div style="display: flex;flex-direction: row;justify-content: center;margin-top: 4rem;">
         <MudSkeleton Style="width: 50%;height: 200px" SkeletonType="SkeletonType.Rectangle"/>
     </div>
-} else {
+}
+else
+{
     <div style="display: flex; flex-flow: row wrap; justify-content: space-between; margin: 1rem">
-        <StatCard Icon="@Icons.Filled.People" Title="@StringLocalizer["Customers"]"
+        <StatCard Icon="@Icons.Material.Filled.People" Title="@StringLocalizer["Customers"]"
                   Value="@Stats?.CustomersCount.ToString()"/>
-        <StatCard Icon="@Icons.Filled.Person" Title="@StringLocalizer["Distributors"]"
+        <StatCard Icon="@Icons.Material.Filled.Person" Title="@StringLocalizer["Distributors"]"
                   Value="@Stats?.DistributorsCount.ToString()"/>
-        <StatCard Icon="@Icons.Filled.ShoppingBag" Title="@StringLocalizer["Offers"]"
+        <StatCard Icon="@Icons.Material.Filled.ShoppingBag" Title="@StringLocalizer["Offers"]"
                   Value="@Stats?.OffersCount.ToString()"/>
-        <StatCard Icon="@Icons.Filled.ShoppingCart" Title="@StringLocalizer["Orders"]"
+        <StatCard Icon="@Icons.Material.Filled.ShoppingCart" Title="@StringLocalizer["Orders"]"
                   Value="@Stats?.OrdersCount.ToString()"/>
     </div>
 
     <div style="display: flex; flex-flow: row wrap; justify-content: space-between; margin: 1rem">
-        <StatCard Icon="@Icons.Filled.ShoppingCart" Title="@StringLocalizer["FinalizedOrders"]"
+        <StatCard Icon="@Icons.Material.Filled.ShoppingCart" Title="@StringLocalizer["FinalizedOrders"]"
                   Value="@Stats?.FinalizedOrdersCount.ToString()"/>
-        <StatCard Icon="@Icons.Filled.ShoppingCartCheckout" Title="@StringLocalizer["TotalSales"]"
+        <StatCard Icon="@Icons.Material.Filled.ShoppingCartCheckout" Title="@StringLocalizer["TotalSales"]"
                   Value="@Stats?.TotalSales.ToString(CultureInfo.CurrentCulture)"/>
         <div style="width: 23%;margin-right: 1rem;"></div>
         <div style="width: 23%;margin-right: 1rem;"></div>
     </div>
 
-    @if (Series.Count > 0) {
+    @if (Series.Count > 0)
+    {
         <MudChart ChartType="ChartType.Line" ChartSeries="Series" XAxisLabels="Labels" Width="100%"
                   Height="300px" ChartOptions="Options"/>
     }

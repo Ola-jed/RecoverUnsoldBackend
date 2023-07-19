@@ -5,18 +5,24 @@
 
 <PageTitle>@StringLocalizer["OfferDetails"]</PageTitle>
 
-@if (Loading) {
+@if (Loading)
+{
     <div style="display:flex; justify-content: center; align-items: center;">
         <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;margin-top: 40vh;" Indeterminate="true"/>
     </div>
-} else {
-    @if (Offer == null) {
+}
+else
+{
+    @if (Offer == null)
+    {
         <div style="display:flex; justify-content: center; align-items: center;">
             <MudText Typo="Typo.h5" Class="mud-text-secondary" Style="margin-top: 40vh;">
                 @StringLocalizer["OfferNotFound"]
             </MudText>
         </div>
-    } else {
+    }
+    else
+    {
         <div style="margin-top: 1rem; margin-left: 1rem; margin-bottom: 0.5rem">
             <MudText Typo="Typo.h5" Class="mud-text-secondary">
                 @StringLocalizer["OfferDetails"]
@@ -26,36 +32,36 @@
         <MudGrid Class="m-2" Style="margin: 10px;width: 95%">
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
-                    <MudIcon Icon="@Icons.Filled.Payments" Class="mr-2"/>
+                    <MudIcon Icon="@Icons.Material.Filled.Payments" Class="mr-2"/>
                     @StringLocalizer["TotalAmount"] : @Offer.Price.ToString(CultureInfo.CurrentCulture) XOF
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
-                    <MudIcon Icon="@Icons.Filled.Payments" Class="mr-2"/>
+                    <MudIcon Icon="@Icons.Material.Filled.Payments" Class="mr-2"/>
                     @StringLocalizer["Beneficiaries"] : @(Offer.Beneficiaries.ToString() ?? "N/A")
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
-                    <MudIcon Icon="@Icons.Filled.Event" Class="mr-2"/>
+                    <MudIcon Icon="@Icons.Material.Filled.Event" Class="mr-2"/>
                     @StringLocalizer["StartDate"] : @Offer.StartDate.ToString(CultureInfo.CurrentCulture)
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
-                    <MudIcon Icon="@Icons.Filled.EventBusy" Class="mr-2"/>
+                    <MudIcon Icon="@Icons.Material.Filled.EventBusy" Class="mr-2"/>
                     @StringLocalizer["EndDate"] : @Offer.StartDate.AddSeconds(Offer.Duration).ToString(CultureInfo.CurrentCulture)
                 </MudPaper>
             </MudItem>
-            
+
             <MudItem xs="3">
                 <MudPaper Class="d-flex align-center justify-center mud-width-full py-6">
-                    <MudIcon Icon="@Icons.Filled.CreditCard" Class="mr-2"/>
-                    @StringLocalizer["OnlinePayment"] : @StringLocalizer[@Offer.OnlinePayment ? "Yes" : "No" ]
+                    <MudIcon Icon="@Icons.Material.Filled.CreditCard" Class="mr-2"/>
+                    @StringLocalizer["OnlinePayment"] : @StringLocalizer[@Offer.OnlinePayment ? "Yes" : "No"]
                 </MudPaper>
             </MudItem>
         </MudGrid>
@@ -72,7 +78,8 @@
             <MudText Typo="Typo.h5">@StringLocalizer["Products"]</MudText>
         </div>
 
-        @if (Offer.Products.Count == 0) {
+        @if (Offer.Products.Count == 0)
+        {
             <div style="display: flex;width: 100%;justify-content: center;margin-bottom: 4rem">
                 <MudText Typo="Typo.h6">
                     @StringLocalizer["NoProductsFound"]
@@ -81,7 +88,8 @@
         }
 
         <MudGrid Spacing="2" Justify="Justify.FlexStart" Class="ml-2">
-            @foreach (var product in Offer.Products) {
+            @foreach (var product in Offer.Products)
+            {
                 <MudItem>
                     <ProductCard Product="product"/>
                 </MudItem>

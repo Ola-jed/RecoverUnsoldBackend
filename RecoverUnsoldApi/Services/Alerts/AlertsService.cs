@@ -45,12 +45,12 @@ public class AlertsService : IAlertsService
 
     public async Task<IEnumerable<AlertReadDto>> GetAlerts(Guid customerId)
     {
-        return _context.Alerts
+        return await Task.Run(() => _context.Alerts
             .GroupJoin<Alert, Distributor, string, AlertReadDto>(_context.Distributors,
                 alert => alert.Trigger, distributor => distributor.Id.ToString(),
                 (alert, distributors) => new AlertReadDto(alert.Id, alert.AlertType,
                     distributors.FirstOrDefault().ToDistributorInformationDto())
-            );
+            ));
     }
 
     public async Task<bool> IsOwnedByUser(Guid alertId, Guid customerId)

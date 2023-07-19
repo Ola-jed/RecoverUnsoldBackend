@@ -1,7 +1,5 @@
 using System.Text;
 using CloudinaryDotNet;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -64,7 +62,7 @@ public static class ServiceCollectionExtensions
                 };
             });
     }
-    
+
     public static void ConfigureRabbitmq(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {

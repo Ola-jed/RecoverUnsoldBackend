@@ -19,13 +19,13 @@
                     <div style="display: flex;align-items: center">
                         <MudToggleIconButton Toggled="ThemeService.IsDarkMode" ToggledChanged="ThemeService.ToggleDarkMode"
                                              Color="@Color.Primary" ToggledColor="@Color.Primary"
-                                             ToggledIcon="@Icons.Filled.LightMode" ToggledTitle="@(StringLocalizer["LightTheme"])"
-                                             Icon="@Icons.Filled.DarkMode" Title="@( StringLocalizer["DarkTheme"])"/>
+                                             ToggledIcon="@Icons.Material.Filled.LightMode" ToggledTitle="@(StringLocalizer["LightTheme"])"
+                                             Icon="@Icons.Material.Filled.DarkMode" Title="@(StringLocalizer["DarkTheme"])"/>
                         <CultureSwitcher/>
 
                         <MudButton OnClick="AccountPopoverToggle">
                             <MudAvatar Size="Size.Medium" Style="margin-right: 0.5rem"
-                                       Image="@($"http://gravatar.com/avatar/{Md5(@context.User.Email())}")" />
+                                       Image="@($"http://gravatar.com/avatar/{Md5(@context.User.Email())}")"/>
                         </MudButton>
                         <MudPopover Open="_accountPopoverOpen" AnchorOrigin="Origin.BottomCenter"
                                     TransformOrigin="Origin.TopRight">
@@ -39,7 +39,7 @@
                             </div>
                         </MudPopover>
 
-                        @context.User.Identity.Name
+                        @context.User.Identity?.Name
                     </div>
                 </MudAppBar>
                 <MudDrawer @bind-Open="@_drawerOpen" Variant="@DrawerVariant.Mini">
@@ -50,7 +50,7 @@
                 </MudMainContent>
 
                 <MudScrollToTop>
-                    <MudFab Color="Color.Primary" Icon="@Icons.Filled.KeyboardArrowUp"/>
+                    <MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.KeyboardArrowUp"/>
                 </MudScrollToTop>
             </Authorized>
 
@@ -74,38 +74,44 @@
 
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
-    
+
     bool _drawerOpen;
     bool _accountPopoverOpen;
-    string _menuIcon = Icons.Filled.Menu;
+    string _menuIcon = Icons.Material.Filled.Menu;
 
-    void DrawerToggle() {
+    void DrawerToggle()
+    {
         _drawerOpen = !_drawerOpen;
-        _menuIcon = _drawerOpen ? Icons.Filled.MenuOpen : Icons.Filled.Menu;
+        _menuIcon = _drawerOpen ? Icons.Material.Filled.MenuOpen : Icons.Material.Filled.Menu;
     }
 
-    void AccountPopoverToggle() {
+    void AccountPopoverToggle()
+    {
         _accountPopoverOpen = !_accountPopoverOpen;
     }
-    
-    static string Md5(string input) {
+
+    static string Md5(string input)
+    {
         using var md5 = System.Security.Cryptography.MD5.Create();
         var inputBytes = Encoding.ASCII.GetBytes(input);
         var hashBytes = md5.ComputeHash(inputBytes);
         return Convert.ToHexString(hashBytes).ToLowerInvariant();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender) {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
         await ThemeService.LoadTheme();
         StateHasChanged();
     }
 
-    void OpenSettings() {
+    void OpenSettings()
+    {
         _accountPopoverOpen = false;
         NavigationManager.NavigateTo("/Settings");
     }
 
-    async Task Logout() {
+    async Task Logout()
+    {
         await AuthenticationStateProvider.Logout();
         NavigationManager.NavigateTo("/Login");
         Snackbar.Clear();
