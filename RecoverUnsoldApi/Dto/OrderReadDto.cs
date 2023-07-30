@@ -1,5 +1,4 @@
-﻿using RecoverUnsoldDomain.Entities;
-using RecoverUnsoldDomain.Entities.Enums;
+﻿using RecoverUnsoldDomain.Entities.Enums;
 
 namespace RecoverUnsoldApi.Dto;
 

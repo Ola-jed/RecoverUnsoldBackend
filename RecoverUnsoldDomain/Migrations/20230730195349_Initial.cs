@@ -272,7 +272,6 @@ namespace RecoverUnsoldDomain.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TransactionId = table.Column<string>(type: "text", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PaidBack = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
@@ -281,6 +280,29 @@ namespace RecoverUnsoldDomain.Migrations
                     table.PrimaryKey("PK_Payments", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Repayments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Done = table.Column<bool>(type: "boolean", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Note = table.Column<string>(type: "text", nullable: true),
+                    TransactionId = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Repayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Repayments_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -444,6 +466,16 @@ namespace RecoverUnsoldDomain.Migrations
                 column: "OfferId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Repayments_CreatedAt",
+                table: "Repayments",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Repayments_OrderId",
+                table: "Repayments",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_CreatedAt",
                 table: "Reviews",
                 column: "CreatedAt");
@@ -512,6 +544,9 @@ namespace RecoverUnsoldDomain.Migrations
 
             migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "Repayments");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

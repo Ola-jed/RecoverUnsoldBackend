@@ -13,7 +13,7 @@ using RecoverUnsoldDomain.Data;
 namespace RecoverUnsoldDomain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230704110535_Initial")]
+    [Migration("20230730195349_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace RecoverUnsoldDomain.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
@@ -352,9 +352,6 @@ namespace RecoverUnsoldDomain.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("PaidBack")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("TransactionId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -403,6 +400,39 @@ namespace RecoverUnsoldDomain.Migrations
                     b.HasIndex("OfferId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Repayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Repayments");
                 });
 
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Review", b =>
@@ -647,6 +677,17 @@ namespace RecoverUnsoldDomain.Migrations
                         .IsRequired();
 
                     b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Repayment", b =>
+                {
+                    b.HasOne("RecoverUnsoldDomain.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Review", b =>

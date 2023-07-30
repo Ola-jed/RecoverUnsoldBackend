@@ -5,16 +5,11 @@ using Microsoft.EntityFrameworkCore;
 namespace RecoverUnsoldDomain.Entities;
 
 [Index(nameof(TransactionId), IsUnique = true)]
-public class Payment: Entity
+public class Payment : Entity
 {
-    [Required]
-    public string TransactionId { get; set; } = null!;
-    
-    [ForeignKey(nameof(Order))]
-    public Guid OrderId { get; set; }
+    [Required] public string TransactionId { get; set; } = null!;
 
-    [Required]
-    public bool PaidBack { get; set; } = false;
+    [ForeignKey(nameof(Order))] public Guid OrderId { get; set; }
 
     public Order? Order { get; set; }
 }
