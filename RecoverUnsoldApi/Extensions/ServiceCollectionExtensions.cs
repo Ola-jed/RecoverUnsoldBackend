@@ -21,6 +21,7 @@ using RecoverUnsoldApi.Services.Orders;
 using RecoverUnsoldApi.Services.Payments;
 using RecoverUnsoldApi.Services.Products;
 using RecoverUnsoldApi.Services.Queue;
+using RecoverUnsoldApi.Services.Repayments;
 using RecoverUnsoldApi.Services.Reviews;
 using RecoverUnsoldApi.Services.UserVerification;
 using RecoverUnsoldDomain.Config;
@@ -153,5 +154,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IOpinionsService, OpinionsService>();
         serviceCollection.AddScoped<IHomeService, HomeService>();
         serviceCollection.AddScoped<IPaymentsService, PaymentsService>();
+        serviceCollection.AddScoped<IRepaymentService, RepaymentService>();
     }
 }

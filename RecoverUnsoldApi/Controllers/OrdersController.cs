@@ -186,8 +186,12 @@ public class OrdersController : ControllerBase
         _queueService.QueueMail(orderCompletedMail.BuildMailMessage());
         var customerTokens = customerEntity.FcmTokens.Select(t => t.Value).ToList();
         _queueService.QueueFirebaseMessage(
-            new OrderCompletedNotificationMessage(order.CreatedAt, relatedOffer.Price, relatedOffer.CreatedAt,
-                customerTokens).BuildFirebaseMessage()
+            new OrderCompletedNotificationMessage(
+                order.CreatedAt,
+                relatedOffer.Price,
+                relatedOffer.CreatedAt,
+                customerTokens
+            ).BuildFirebaseMessage()
         );
         return NoContent();
     }

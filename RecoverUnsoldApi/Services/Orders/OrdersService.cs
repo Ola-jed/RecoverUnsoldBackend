@@ -74,7 +74,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.CustomerId == customerId)
             .ApplyFilters(orderFilterDto)
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        
+
         return page.ToOrderReadDto();
     }
 
@@ -89,7 +89,7 @@ public class OrdersService : IOrdersService
             .Where(o => o.OfferId == offerId)
             .ApplyFilters(orderFilterDto)
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        
+
         return page.ToOrderReadDto();
     }
 
@@ -101,11 +101,12 @@ public class OrdersService : IOrdersService
             .Include(o => o.Customer)
             .Include(o => o.Opinions)
             .Include(o => o.Offer)
+            .Include(o => o.Offer)
             .Include(o => o.Payment)
             .Where(o => o.Offer != null && o.Offer.DistributorId == distributorId)
             .ApplyFilters(orderFilterDto)
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        
+
         return page.ToOrderReadDto();
     }
 

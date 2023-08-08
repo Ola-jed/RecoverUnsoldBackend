@@ -195,4 +195,21 @@ public static class Mapping
     {
         return new PaymentDto(payment.TransactionId, payment.OrderId, payment.CreatedAt);
     }
+
+    public static RepaymentReadDto ToRepaymentReadDto(this Repayment repayment)
+    {
+        return new RepaymentReadDto(repayment.Done, repayment.Note, repayment.TransactionId,
+            repayment.Order!.ToOrderReadDto(), repayment.CreatedAt);
+    }
+
+    public static Page<RepaymentReadDto> ToRepaymentReadDto(this Page<Repayment> repayments)
+    {
+        return new Page<RepaymentReadDto>(
+            repayments.Items.Select(r => r.ToRepaymentReadDto()),
+            repayments.PageNumber,
+            repayments.PageSize,
+            repayments.HasNext,
+            repayments.Total
+        );
+    }
 }
