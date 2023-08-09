@@ -31,7 +31,8 @@ public class DistributorsService : IDistributorsService
 
         var page = await distributorsSource
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        return page.ToDistributorInformationReadDto();
+
+        return page.Map(d => d.ToDistributorInformationDto());
     }
 
     public async Task<IEnumerable<DistributorLabelReadDto>> GetDistributorsLabels()

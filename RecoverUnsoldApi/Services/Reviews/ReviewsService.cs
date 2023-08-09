@@ -3,10 +3,10 @@ using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
+using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldApi.Services.Reviews;
 
@@ -24,8 +24,8 @@ public class ReviewsService : IReviewsService
         var page = await _context.Reviews
             .AsNoTracking()
             .AsyncPaginate(paginationParameter, r => r.CreatedAt, PaginationOrder.Descending);
-        
-        return page.ToReviewReadDto();
+
+        return page.Map(r => r.ToReviewReadDto());
     }
 
     public async Task Delete(Guid id)

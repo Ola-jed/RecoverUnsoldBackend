@@ -3,10 +3,10 @@ using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
+using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldApi.Services.Opinions;
 
@@ -32,8 +32,8 @@ public class OpinionsService : IOpinionsService
             .AsNoTracking()
             .Where(o => o.OrderId == orderId)
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        
-        return page.ToOpinionReadDto();
+
+        return page.Map(o => o.ToOpinionReadDto());
     }
 
     public async Task<OpinionReadDto?> Get(Guid id)

@@ -5,10 +5,10 @@ using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
+using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldApi.Services.Products;
 
@@ -40,8 +40,8 @@ public class ProductsService : IProductsService
             .Include(p => p.Images)
             .Where(p => p.OfferId == offerId)
             .AsyncPaginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending);
-        
-        return page.ToProductReadDto();
+
+        return page.Map(p => p.ToProductReadDto());
     }
 
     public async Task<Page<ProductReadDto>> GetProducts(PaginationParameter paginationParameter)
@@ -51,7 +51,7 @@ public class ProductsService : IProductsService
             .Include(p => p.Images)
             .AsyncPaginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending);
 
-        return page.ToProductReadDto();
+        return page.Map(p => p.ToProductReadDto());
     }
 
     public async Task<Page<ProductReadDto>> GetDistributorProducts(Guid distributorId,
@@ -63,8 +63,8 @@ public class ProductsService : IProductsService
             .Include(p => p.Offer)
             .Where(p => p.Offer != null && p.Offer.DistributorId == distributorId)
             .AsyncPaginate(paginationParameter, p => p.CreatedAt, PaginationOrder.Descending);
-            
-        return page.ToProductReadDto();
+
+        return page.Map(p => p.ToProductReadDto());
     }
 
     public async Task<ProductReadDto?> GetProduct(Guid id)
@@ -74,7 +74,7 @@ public class ProductsService : IProductsService
             .Include(p => p.Images)
             .Include(p => p.Offer)
             .FirstOrDefaultAsync(p => p.Id == id);
-        
+
         return product?.ToProductReadDto();
     }
 

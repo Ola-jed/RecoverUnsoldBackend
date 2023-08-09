@@ -5,10 +5,10 @@ using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
+using Location = RecoverUnsoldDomain.Entities.Location;
 using Point = NetTopologySuite.Geometries.Point;
 
 namespace RecoverUnsoldApi.Services.Locations;
@@ -35,7 +35,8 @@ public class LocationsService : ILocationsService
             .AsNoTracking()
             .Where(x => x.DistributorId == userId)
             .AsyncPaginate(paginationParameter, x => x.CreatedAt, PaginationOrder.Descending);
-        return page.ToLocationReadDto();
+
+        return page.Map(l => l.ToLocationReadDto());
     }
 
     public async Task<LocationReadDto?> Get(Guid locationId)
@@ -52,8 +53,8 @@ public class LocationsService : ILocationsService
             .AsNoTracking()
             .Where(x => x.Name.Contains(search))
             .AsyncPaginate(paginationParameter, x => x.CreatedAt, PaginationOrder.Descending);
-        
-        return page.ToLocationReadDto();
+
+        return page.Map(l => l.ToLocationReadDto());
     }
 
     public async Task<LocationReadDto> Create(Guid userId, LocationCreateDto locationCreateDto)

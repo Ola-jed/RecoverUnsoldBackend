@@ -4,11 +4,11 @@ using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Entities;
 using RecoverUnsoldApi.Extensions;
 using RecoverUnsoldApi.Services.Products;
+using RecoverUnsoldDomain.Data;
+using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldApi.Services.Offers;
 
@@ -33,7 +33,8 @@ public class OffersService : IOffersService
         return await _context.Offers.AnyAsync(x => x.Id == id);
     }
 
-    public async Task<Page<OfferReadDto>> GetOffers(PaginationParameter paginationParameter, OfferFilterDto offerFilterDto)
+    public async Task<Page<OfferReadDto>> GetOffers(PaginationParameter paginationParameter,
+        OfferFilterDto offerFilterDto)
     {
         var page = await _context.Offers
             .AsNoTracking()
@@ -43,8 +44,8 @@ public class OffersService : IOffersService
             .ApplyFilters(offerFilterDto)
             .AsSplitQuery()
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        
-        return page.ToOfferReadDto();
+
+        return page.Map(o => o.ToOfferReadDto());
     }
 
     public async Task<Page<OfferReadDto>> GetDistributorOffers(Guid distributorId,
@@ -59,8 +60,8 @@ public class OffersService : IOffersService
             .ApplyFilters(offerFilterDto)
             .AsSplitQuery()
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        
-        return page.ToOfferReadDto();
+
+        return page.Map(o => o.ToOfferReadDto());
     }
 
     public async Task<Page<OfferWithRelativeDistanceDto>> GetOffersCloseTo(LatLong latLong,
@@ -75,11 +76,11 @@ public class OffersService : IOffersService
             .Where(o => o.Location!.Coordinates.Distance(referencePoint) <= distance * 1000)
             .AsSplitQuery()
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
-        
+
         return page.Map<Offer, OfferWithRelativeDistanceDto>(o => new OfferWithRelativeDistanceDto(
-                o.ToOfferReadDto(),
-                o.Location!.Coordinates.Distance(referencePoint) * 100
-            ));
+            o.ToOfferReadDto(),
+            o.Location!.Coordinates.Distance(referencePoint) * 100
+        ));
     }
 
     public async Task<OfferReadDto?> GetOffer(Guid id)

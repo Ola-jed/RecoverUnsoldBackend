@@ -33,7 +33,7 @@ public class RepaymentsService : IRepaymentsService
         };
 
         var page = await resultingQuery.AsyncPaginate(paginationParameter, r => r.CreatedAt);
-        return page.ToRepaymentReadDto();
+        return page.Map(r => r.ToRepaymentReadDto());
     }
 
     public async Task<bool> BelongsToUser(Guid id, Guid userId)

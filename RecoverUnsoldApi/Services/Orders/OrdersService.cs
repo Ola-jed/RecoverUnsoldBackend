@@ -75,7 +75,7 @@ public class OrdersService : IOrdersService
             .ApplyFilters(orderFilterDto)
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
 
-        return page.ToOrderReadDto();
+        return page.Map(o => o.ToOrderReadDto());
     }
 
     public async Task<Page<OrderReadDto>> GetOfferOrders(Guid offerId, PaginationParameter paginationParameter,
@@ -90,7 +90,7 @@ public class OrdersService : IOrdersService
             .ApplyFilters(orderFilterDto)
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
 
-        return page.ToOrderReadDto();
+        return page.Map(o => o.ToOrderReadDto());
     }
 
     public async Task<Page<OrderReadDto>> GetDistributorOrders(Guid distributorId,
@@ -107,7 +107,7 @@ public class OrdersService : IOrdersService
             .ApplyFilters(orderFilterDto)
             .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
 
-        return page.ToOrderReadDto();
+        return page.Map(o => o.ToOrderReadDto());
     }
 
     public async Task<OrderReadDto> CreateOrder(OrderCreateDto orderCreateDto, Guid customerId, Guid offerId)
