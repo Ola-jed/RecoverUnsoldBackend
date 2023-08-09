@@ -140,6 +140,36 @@ namespace RecoverUnsoldDomain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Reason = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Processed = table.Column<bool>(type: "boolean", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReportedDistributorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_Users_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reports_Users_ReportedDistributorId",
+                        column: x => x.ReportedDistributorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -476,6 +506,21 @@ namespace RecoverUnsoldDomain.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reports_CreatedAt",
+                table: "Reports",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_CustomerId",
+                table: "Reports",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_ReportedDistributorId",
+                table: "Reports",
+                column: "ReportedDistributorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_CreatedAt",
                 table: "Reviews",
                 column: "CreatedAt");
@@ -547,6 +592,9 @@ namespace RecoverUnsoldDomain.Migrations
 
             migrationBuilder.DropTable(
                 name: "Repayments");
+
+            migrationBuilder.DropTable(
+                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

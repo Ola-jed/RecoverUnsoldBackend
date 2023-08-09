@@ -14,18 +14,18 @@ namespace RecoverUnsoldApi.Controllers;
 [Authorize(Roles = Roles.Distributor)]
 public class RepaymentsController : ControllerBase
 {
-    private readonly IRepaymentService _repaymentService;
+    private readonly IRepaymentsService _repaymentsService;
 
-    public RepaymentsController(IRepaymentService repaymentService)
+    public RepaymentsController(IRepaymentsService repaymentsService)
     {
-        _repaymentService = repaymentService;
+        _repaymentsService = repaymentsService;
     }
 
     [HttpGet]
     public async Task<Page<RepaymentReadDto>> GetRepayments([FromQuery] RepaymentFilterDto repaymentFilterDto)
     {
         var paginationParameter = new PaginationParameter(repaymentFilterDto.PerPage, repaymentFilterDto.Page);
-        return await _repaymentService.GetRepayments(this.GetUserId(), paginationParameter, repaymentFilterDto);
+        return await _repaymentsService.GetRepayments(this.GetUserId(), paginationParameter, repaymentFilterDto);
     }
 
     [HttpGet("{id:guid}")]
@@ -33,7 +33,7 @@ public class RepaymentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<RepaymentReadDto>> GetRepayment(Guid id)
     {
-        var repayment = await _repaymentService.GetForUser(id, this.GetUserId());
+        var repayment = await _repaymentsService.GetForUser(id, this.GetUserId());
         return repayment == null ? NotFound() : repayment;
     }
 }

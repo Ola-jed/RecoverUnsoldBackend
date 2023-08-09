@@ -432,6 +432,46 @@ namespace RecoverUnsoldDomain.Migrations
                     b.ToTable("Repayments");
                 });
 
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Report", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Processed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<Guid>("ReportedDistributorId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ReportedDistributorId");
+
+                    b.ToTable("Reports");
+                });
+
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
@@ -685,6 +725,25 @@ namespace RecoverUnsoldDomain.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.Report", b =>
+                {
+                    b.HasOne("RecoverUnsoldDomain.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RecoverUnsoldDomain.Entities.Distributor", "ReportedDistributor")
+                        .WithMany()
+                        .HasForeignKey("ReportedDistributorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("ReportedDistributor");
                 });
 
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Review", b =>

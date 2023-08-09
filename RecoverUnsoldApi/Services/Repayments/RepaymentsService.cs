@@ -8,11 +8,11 @@ using RecoverUnsoldDomain.Data;
 
 namespace RecoverUnsoldApi.Services.Repayments;
 
-public class RepaymentService : IRepaymentService
+public class RepaymentsService : IRepaymentsService
 {
     private readonly DataContext _context;
 
-    public RepaymentService(DataContext context)
+    public RepaymentsService(DataContext context)
     {
         _context = context;
     }

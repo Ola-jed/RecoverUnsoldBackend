@@ -9,4 +9,5 @@ public interface IDistributorsService
     Task<Page<DistributorInformationDto>> GetDistributors(PaginationParameter paginationParameter, string? name = null);
     Task<IEnumerable<DistributorLabelReadDto>> GetDistributorsLabels();
     Task<DistributorInformationDto?> GetDistributor(Guid id);
+    Task<bool> DistributorExists(Guid id);
 }

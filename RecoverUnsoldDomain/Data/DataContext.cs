@@ -78,4 +78,5 @@ public class DataContext : DbContext
     public DbSet<FcmToken> FcmTokens { get; set; } = null!;
     public DbSet<Review> Reviews { get; set; } = null!;
     public DbSet<Repayment> Repayments { get; set; } = null!;
+    public DbSet<Report> Reports { get; set; } = null!;
 }

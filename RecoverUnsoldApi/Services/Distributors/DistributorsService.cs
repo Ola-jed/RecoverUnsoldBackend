@@ -2,14 +2,14 @@ using FluentPaginator.Lib.Core;
 using FluentPaginator.Lib.Extensions;
 using FluentPaginator.Lib.Page;
 using FluentPaginator.Lib.Parameter;
-using RecoverUnsoldApi.Dto;
-using RecoverUnsoldDomain.Data;
-using RecoverUnsoldApi.Extensions;
 using Microsoft.EntityFrameworkCore;
+using RecoverUnsoldApi.Dto;
+using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
 
 namespace RecoverUnsoldApi.Services.Distributors;
 
-public class DistributorsService: IDistributorsService
+public class DistributorsService : IDistributorsService
 {
     private readonly DataContext _context;
 
@@ -18,12 +18,13 @@ public class DistributorsService: IDistributorsService
         _context = context;
     }
 
-    public async Task<Page<DistributorInformationDto>> GetDistributors(PaginationParameter paginationParameter, string? name = null)
+    public async Task<Page<DistributorInformationDto>> GetDistributors(PaginationParameter paginationParameter,
+        string? name = null)
     {
         var distributorsSource = _context
             .Distributors
             .AsNoTracking();
-            if(name != null && name.Trim() != string.Empty)
+        if (name != null && name.Trim() != string.Empty)
         {
             distributorsSource = distributorsSource.Where(d => EF.Functions.Like(d.Username, $"%{name}%"));
         }
@@ -47,5 +48,10 @@ public class DistributorsService: IDistributorsService
             .AsNoTracking()
             .FirstOrDefaultAsync(d => d.Id == id);
         return distributor?.ToDistributorInformationDto();
+    }
+
+    public async Task<bool> DistributorExists(Guid id)
+    {
+        return await _context.Distributors.AnyAsync(d => d.Id == id);
     }
 }

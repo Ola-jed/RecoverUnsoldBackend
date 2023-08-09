@@ -4,7 +4,7 @@ using RecoverUnsoldApi.Dto;
 
 namespace RecoverUnsoldApi.Services.Repayments;
 
-public interface IRepaymentService
+public interface IRepaymentsService
 {
     Task<Page<RepaymentReadDto>> GetRepayments(Guid userId, PaginationParameter paginationParameter,
         RepaymentFilterDto repaymentFilterDto);
