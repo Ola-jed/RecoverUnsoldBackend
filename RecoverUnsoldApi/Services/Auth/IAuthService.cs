@@ -6,10 +6,10 @@ namespace RecoverUnsoldApi.Services.Auth;
 
 public interface IAuthService
 {
-    public Task RegisterCustomer(CustomerRegisterDto customerRegisterDto);
-    public Task RegisterDistributor(DistributorRegisterDto distributorRegisterDto);
-    public Task<(JwtSecurityToken, UserDataDto)?> Login(LoginDto loginDto);
-    public Task<User?> ValidateCredentials(LoginDto loginDto);
-    public Task<bool> AreCredentialsValid(string email, string password);
-    public JwtSecurityToken GenerateJwt(User user);
+    Task RegisterCustomer(CustomerRegisterDto customerRegisterDto);
+    Task RegisterDistributor(DistributorRegisterDto distributorRegisterDto);
+    Task<(JwtSecurityToken, UserDataDto)?> Login(LoginDto loginDto);
+    Task<User?> ValidateCredentials(LoginDto loginDto);
+    Task<bool> AreCredentialsValid(string email, string password);
+    JwtSecurityToken GenerateJwt(User user);
 }
