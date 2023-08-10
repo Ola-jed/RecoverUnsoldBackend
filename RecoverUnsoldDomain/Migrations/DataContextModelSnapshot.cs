@@ -26,6 +26,44 @@ namespace RecoverUnsoldDomain.Migrations
 
             modelBuilder.HasSequence<int>("OrderNumbers");
 
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.AccountSuspension", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("DistributorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("DistributorId");
+
+                    b.ToTable("AccountSuspensions");
+                });
+
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Alert", b =>
                 {
                     b.Property<Guid>("Id")
@@ -605,6 +643,17 @@ namespace RecoverUnsoldDomain.Migrations
                         .IsUnique();
 
                     b.HasDiscriminator().HasValue("Distributor");
+                });
+
+            modelBuilder.Entity("RecoverUnsoldDomain.Entities.AccountSuspension", b =>
+                {
+                    b.HasOne("RecoverUnsoldDomain.Entities.Distributor", "Distributor")
+                        .WithMany()
+                        .HasForeignKey("DistributorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Distributor");
                 });
 
             modelBuilder.Entity("RecoverUnsoldDomain.Entities.Alert", b =>

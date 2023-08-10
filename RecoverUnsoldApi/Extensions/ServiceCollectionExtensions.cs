@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using RecoverUnsoldApi.Infrastructure;
+using RecoverUnsoldApi.Services.AccountSuspensions;
 using RecoverUnsoldApi.Services.Alerts;
 using RecoverUnsoldApi.Services.ApplicationUser;
 using RecoverUnsoldApi.Services.Auth;
@@ -157,5 +158,6 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddScoped<IPaymentsService, PaymentsService>();
         serviceCollection.AddScoped<IRepaymentsService, RepaymentsService>();
         serviceCollection.AddScoped<IReportsService, ReportsService>();
+        serviceCollection.AddScoped<IAccountSuspensionsService, AccountSuspensionsService>();
     }
 }

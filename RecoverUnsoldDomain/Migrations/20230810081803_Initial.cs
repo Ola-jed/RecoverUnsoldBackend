@@ -73,6 +73,30 @@ namespace RecoverUnsoldDomain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AccountSuspensions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Reason = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    DistributorId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountSuspensions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AccountSuspensions_Users_DistributorId",
+                        column: x => x.DistributorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Alerts",
                 columns: table => new
                 {
@@ -361,6 +385,16 @@ namespace RecoverUnsoldDomain.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AccountSuspensions_CreatedAt",
+                table: "AccountSuspensions",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AccountSuspensions_DistributorId",
+                table: "AccountSuspensions",
+                column: "DistributorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Alerts_CreatedAt",
                 table: "Alerts",
                 column: "CreatedAt");
@@ -569,6 +603,9 @@ namespace RecoverUnsoldDomain.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AccountSuspensions");
+
             migrationBuilder.DropTable(
                 name: "Alerts");
 

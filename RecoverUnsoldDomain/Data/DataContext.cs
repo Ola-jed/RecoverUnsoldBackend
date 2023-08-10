@@ -79,4 +79,5 @@ public class DataContext : DbContext
     public DbSet<Review> Reviews { get; set; } = null!;
     public DbSet<Repayment> Repayments { get; set; } = null!;
     public DbSet<Report> Reports { get; set; } = null!;
+    public DbSet<AccountSuspension> AccountSuspensions { get; set; } = null!;
 }
