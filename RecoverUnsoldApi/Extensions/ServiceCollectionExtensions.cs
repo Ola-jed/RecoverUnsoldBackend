@@ -70,10 +70,7 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         var cfg = configuration.GetSection("Rabbitmq");
-        cfg["HostName"] = configuration["RabbitmqHostName"] ?? "localhost";
-        cfg["UserName"] = configuration["RabbitmqUserName"] ?? "guest";
-        cfg["Port"] = configuration["RabbitmqPort"] ?? "5672";
-        cfg["Password"] = configuration["RabbitmqPassword"] ?? "guest";
+        cfg["Uri"] = configuration["RabbitmqUri"]!;
         serviceCollection.Configure<RabbitmqConfig>(cfg);
     }
 

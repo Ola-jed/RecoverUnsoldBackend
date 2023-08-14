@@ -29,11 +29,7 @@ public class FirebaseWorker : BackgroundService
         _logger.LogInformation("The firebase worker is starting");
         var connectionFactory = new ConnectionFactory
         {
-            HostName = _rabbitmqConfig.HostName,
-            Port = _rabbitmqConfig.Port,
-            Password = _rabbitmqConfig.Password,
-            UserName = _rabbitmqConfig.UserName,
-            DispatchConsumersAsync = true
+            Uri = new Uri(_rabbitmqConfig.Uri)
         };
         _connection = connectionFactory.CreateConnection();
         _channel = _connection.CreateModel();

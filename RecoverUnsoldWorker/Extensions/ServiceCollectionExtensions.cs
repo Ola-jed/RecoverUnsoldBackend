@@ -25,15 +25,12 @@ public static class ServiceCollectionExtensions
         cfg["MailPassword"] = configuration["MailPassword"];
         serviceCollection.Configure<MailConfig>(cfg);
     }
-    
+
     public static void ConfigureRabbitmq(this IServiceCollection serviceCollection,
         IConfiguration configuration)
     {
         var cfg = configuration.GetSection("Rabbitmq");
-        cfg["HostName"] = configuration["RabbitmqHostName"] ?? "localhost";
-        cfg["UserName"] = configuration["RabbitmqUserName"] ?? "guest";
-        cfg["Port"] = configuration["RabbitmqPort"] ?? "5672";
-        cfg["Password"] = configuration["Password"] ?? "guest";
+        cfg["Uri"] = configuration["RabbitmqUri"]!;
         serviceCollection.Configure<RabbitmqConfig>(cfg);
     }
 }
