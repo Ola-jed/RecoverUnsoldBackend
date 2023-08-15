@@ -1,8 +1,8 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using RecoverUnsoldDomain.Data;
 using RecoverUnsoldApi.Dto;
 using RecoverUnsoldApi.Extensions;
+using RecoverUnsoldDomain.Data;
 
 namespace RecoverUnsoldApi.Services.Home;
 
@@ -10,7 +10,7 @@ public class HomeService : IHomeService
 {
     private readonly DataContext _context;
     private readonly ILogger<HomeService> _logger;
-    
+
     public HomeService(DataContext context, ILogger<HomeService> logger)
     {
         _context = context;
@@ -34,6 +34,7 @@ public class HomeService : IHomeService
         var distributors = await _context
             .Distributors
             .AsNoTracking()
+            .Where(d => d.EmailVerifiedAt != null)
             .OrderBy(_ => EF.Functions.Random())
             .Take(5)
             .ToDistributorInformationReadDto()
@@ -88,9 +89,10 @@ public class HomeService : IHomeService
         {
             await databaseConnection.OpenAsync();
             await using var command = databaseConnection.CreateCommand();
-            command.CommandText = "select count(\"Orders\".\"Id\"),sum(O.\"Price\") from \"Orders\" inner join \"Offers\" O on O.\"Id\" = \"Orders\".\"OfferId\" where \"Orders\".\"CustomerId\" = @CustomerId";
+            command.CommandText =
+                "select count(\"Orders\".\"Id\"),sum(O.\"Price\") from \"Orders\" inner join \"Offers\" O on O.\"Id\" = \"Orders\".\"OfferId\" where \"Orders\".\"CustomerId\" = @CustomerId";
             command.CommandType = CommandType.Text;
-            
+
             var customerParameter = command.CreateParameter();
             customerParameter.ParameterName = "@CustomerId";
             customerParameter.Value = customerId;
@@ -109,7 +111,7 @@ public class HomeService : IHomeService
         }
         catch (Exception exception)
         {
-            _logger.LogCritical(exception,"Error when doing operation");
+            _logger.LogCritical(exception, "Error when doing operation");
             return null;
         }
         finally
