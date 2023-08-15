@@ -23,7 +23,8 @@ public class DistributorsService : IDistributorsService
     {
         var distributorsSource = _context
             .Distributors
-            .AsNoTracking();
+            .AsNoTracking()
+            .Where(d => d.EmailVerifiedAt != null);
         if (name != null && name.Trim() != string.Empty)
         {
             distributorsSource = distributorsSource.Where(d => EF.Functions.Like(d.Username, $"%{name}%"));
@@ -39,6 +40,7 @@ public class DistributorsService : IDistributorsService
     {
         return await _context.Distributors
             .AsNoTracking()
+            .Where(d => d.EmailVerifiedAt != null)
             .Select(d => d.ToDistributorLabelReadDto())
             .ToListAsync();
     }

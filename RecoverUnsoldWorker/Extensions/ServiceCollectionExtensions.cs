@@ -14,8 +14,7 @@ public static class ServiceCollectionExtensions
         });
     }
 
-    public static void ConfigureMail(this IServiceCollection serviceCollection,
-        IConfiguration configuration)
+    public static void ConfigureMail(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var cfg = configuration.GetSection("MailSettings");
         cfg["Host"] = configuration["MailHost"];
@@ -26,8 +25,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.Configure<MailConfig>(cfg);
     }
 
-    public static void ConfigureRabbitmq(this IServiceCollection serviceCollection,
-        IConfiguration configuration)
+    public static void ConfigureRabbitmq(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var cfg = configuration.GetSection("Rabbitmq");
         cfg["Uri"] = configuration["RabbitmqUri"]!;
