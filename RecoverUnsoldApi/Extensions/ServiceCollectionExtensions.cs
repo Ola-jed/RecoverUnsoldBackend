@@ -45,7 +45,7 @@ public static class ServiceCollectionExtensions
         };
         serviceCollection.AddDbContext<DataContext>(
             opt => opt.UseNpgsql(connectionBuilder.ConnectionString,
-                o => o.UseNetTopologySuite())
+                o => o.UseNetTopologySuite()).AddInterceptors(new SlowQueryInterceptor())
         );
     }
 
