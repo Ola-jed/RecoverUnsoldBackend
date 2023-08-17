@@ -90,7 +90,7 @@ public class HomeService : IHomeService
             await databaseConnection.OpenAsync();
             await using var command = databaseConnection.CreateCommand();
             command.CommandText =
-                "select count(\"Orders\".\"Id\"),sum(O.\"Price\") from \"Orders\" inner join \"Offers\" O on O.\"Id\" = \"Orders\".\"OfferId\" where \"Orders\".\"CustomerId\" = @CustomerId";
+                "select count(\"Orders\".\"Id\"),coalesce(sum(O.\"Price\"), 0) from \"Orders\" inner join \"Offers\" O on O.\"Id\" = \"Orders\".\"OfferId\" where \"Orders\".\"CustomerId\" = @CustomerId";
             command.CommandType = CommandType.Text;
 
             var customerParameter = command.CreateParameter();
