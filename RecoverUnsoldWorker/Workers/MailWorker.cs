@@ -33,7 +33,8 @@ public class MailWorker : BackgroundService
         _logger.LogInformation("The mail worker is starting");
         var connectionFactory = new ConnectionFactory
         {
-            Uri = new Uri(_rabbitmqConfig.Uri)
+            Uri = new Uri(_rabbitmqConfig.Uri),
+            DispatchConsumersAsync = true
         };
         _connection = connectionFactory.CreateConnection();
         _channel = _connection.CreateModel();
@@ -82,9 +83,9 @@ public class MailWorker : BackgroundService
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
+        _logger.LogInformation("The mail worker is stopping");
         await base.StopAsync(cancellationToken);
         _connection?.Close();
-        _logger.LogInformation("The mail worker is stopping");
     }
 
     private async Task SendMail(MailMessage mailMessage)
