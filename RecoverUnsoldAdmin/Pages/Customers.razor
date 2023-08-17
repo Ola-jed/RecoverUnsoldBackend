@@ -1,6 +1,6 @@
 @page "/Customers"
-@using RecoverUnsoldDomain.Entities
 @using RecoverUnsoldAdmin.Extensions
+@using RecoverUnsoldDomain.Entities
 @inherits CustomersBase
 
 <PageTitle>@StringLocalizer["Customers"]</PageTitle>
@@ -15,7 +15,7 @@
                       OnAdornmentClick="@(_ => OnSearch())" Class="mt-0"/>
     </ToolBarContent>
     <NoRecordsContent>
-        <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">@StringLocalizer["NoCustomerFound"]</MudText>
+        <NoDataComponent Message="@StringLocalizer["NoCustomerFound"]"></NoDataComponent>
     </NoRecordsContent>
     <HeaderContent>
         <MudTh>

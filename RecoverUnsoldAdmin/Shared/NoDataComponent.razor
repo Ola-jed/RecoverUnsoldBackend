@@ -1,0 +1,13 @@
+<div class="w-100 d-flex justify-center">
+    <div>
+        <lottie-player src="lottie/no_data.json" background="transparent" speed="1" style="width: 50vh" autoplay></lottie-player>
+        <p style="font-size: 1.1rem;margin-top: -25px;">@Message</p>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Message { get; set; } = default!;
+
+}

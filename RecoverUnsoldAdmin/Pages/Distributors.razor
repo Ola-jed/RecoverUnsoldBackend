@@ -1,6 +1,6 @@
 @page "/Distributors"
-@using RecoverUnsoldDomain.Entities
 @using RecoverUnsoldAdmin.Extensions
+@using RecoverUnsoldDomain.Entities
 @inherits DistributorsBase
 
 <PageTitle>@StringLocalizer["Distributors"]</PageTitle>
@@ -15,9 +15,7 @@
                       OnAdornmentClick="@(_ => OnSearch())" Class="mt-0"/>
     </ToolBarContent>
     <NoRecordsContent>
-        <MudText Typo="Typo.h5" Class="mud-text-secondary mt-16 mb-16">
-            @StringLocalizer["NoDistributorsFound"]
-        </MudText>
+        <NoDataComponent Message="@StringLocalizer["NoDistributorsFound"]"></NoDataComponent>
     </NoRecordsContent>
     <HeaderContent>
         <MudTh>
@@ -54,9 +52,12 @@
         <MudTd DataLabel="Tax Id">@context.TaxId</MudTd>
         <MudTd DataLabel="Rccm">@context.Rccm</MudTd>
         <MudTd DataLabel="Website">
-            @if (context.WebsiteUrl == null) {
+            @if (context.WebsiteUrl == null)
+            {
                 <span>-</span>
-            } else {
+            }
+            else
+            {
                 <a href="@(context.WebsiteUrl.ToUrl())" Color="Color.Default">@context.WebsiteUrl</a>
             }
         </MudTd>
@@ -70,7 +71,8 @@
         <MudTablePager RowsPerPageString="@StringLocalizer["RowsPerPage"]" InfoFormat="@StringLocalizer["PageInfo"]"/>
     </PagerContent>
     <ChildRowContent>
-        @if (ExpandedRows.Contains(context.Id)) {
+        @if (ExpandedRows.Contains(context.Id))
+        {
             <td colspan="8">
                 <MudCard Elevation="0">
                     <MudCardHeader>
@@ -79,17 +81,21 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent Class="pa-0">
-                        @if (@context.EmailVerifiedAt != null) {
+                        @if (@context.EmailVerifiedAt != null)
+                        {
                             <MudText Typo="Typo.body1" Class="ml-5">
                                 @StringLocalizer["AccountVerifiedThe", context.EmailVerifiedAt?.ToShortDateString()!]
                             </MudText>
-                        } else {
+                        }
+                        else
+                        {
                             <MudText Typo="Typo.body1" Class="ml-5">
                                 @StringLocalizer["AccountNotVerified"]
                             </MudText>
                         }
 
-                        @if (context.Locations.Count > 0) {
+                        @if (context.Locations.Count > 0)
+                        {
                             <div style="display: flex; justify-content: center">
                                 <MudText Typo="Typo.h6">Locations</MudText>
                             </div>
@@ -107,10 +113,13 @@
                                     <MudTd DataLabel="Location Name">@LocationContext.Name</MudTd>
                                     <MudTd DataLabel="Location Indication">@(LocationContext.Indication ?? "-")</MudTd>
                                     <MudTd DataLabel="Location Image">
-                                        @if (LocationContext.Image != null) {
+                                        @if (LocationContext.Image != null)
+                                        {
                                             <MudImage Src="@LocationContext.Image" Width="200" Height="100"
                                                       Elevation="25" Class="rounded-lg"/>
-                                        } else {
+                                        }
+                                        else
+                                        {
                                             <span>-</span>
                                         }
                                     </MudTd>
