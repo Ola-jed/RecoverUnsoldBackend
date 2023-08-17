@@ -21,7 +21,7 @@ public class ReportsController : ControllerBase
         _reportsService = reportsService;
     }
 
-    [HttpPost("Distributors/{id:guid}/Reports")]
+    [HttpPost("api/Distributors/{id:guid}/Reports")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> ReportDistributor(Guid id, ReportCreateDto reportCreateDto)

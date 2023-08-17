@@ -62,21 +62,20 @@ public class MailWorker : BackgroundService
                 await SendMail(mailMessage!);
                 _channel?.BasicAck(ea.DeliveryTag, false);
             }
-            catch (JsonException e)
+            catch (JsonException ex)
             {
-                _logger.LogError("Json parse exception : {Error}", e);
+                _logger.LogError(ex, "Json parse exception");
                 _channel?.BasicNack(ea.DeliveryTag, false, false);
             }
             catch (AlreadyClosedException)
             {
                 _logger.LogInformation("RabbitMQ is closed!");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogError(default, e, "{Message}", e.Message);
+                _logger.LogError(ex, "An exception was thrown");
             }
         };
-
         _channel.BasicConsume(QueueConstants.MailQueue, false, mailConsumer);
         return Task.CompletedTask;
     }
