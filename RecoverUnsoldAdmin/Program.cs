@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Localization;
 using MudBlazor.Services;
 using RecoverUnsoldAdmin.Extensions;
 using RecoverUnsoldAdmin.Services;
+using RecoverUnsoldAdmin.Services.AccountSuspensions;
 using RecoverUnsoldAdmin.Services.Customers;
 using RecoverUnsoldAdmin.Services.Distributors;
 using RecoverUnsoldAdmin.Services.Offers;
+using RecoverUnsoldAdmin.Services.Reports;
 using RecoverUnsoldAdmin.Services.Stats;
 using RecoverUnsoldAdmin.Utils;
 
@@ -28,6 +30,8 @@ builder.Services.AddScoped<IDistributorsService, DistributorsService>();
 builder.Services.AddScoped<ICustomersService, CustomersService>();
 builder.Services.AddScoped<IOffersService, OffersService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
+builder.Services.AddScoped<IAccountSuspensionsService, AccountSuspensionsService>();
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())

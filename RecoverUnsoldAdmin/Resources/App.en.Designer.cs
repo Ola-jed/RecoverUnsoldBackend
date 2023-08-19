@@ -464,5 +464,83 @@ namespace RecoverUnsoldAdmin.Resources {
                 return ResourceManager.GetString("OnlinePayment", resourceCulture);
             }
         }
+        
+        internal static string Reports {
+            get {
+                return ResourceManager.GetString("Reports", resourceCulture);
+            }
+        }
+        
+        internal static string NoReportsFound {
+            get {
+                return ResourceManager.GetString("NoReportsFound", resourceCulture);
+            }
+        }
+        
+        internal static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        internal static string ReportedDistributor {
+            get {
+                return ResourceManager.GetString("ReportedDistributor", resourceCulture);
+            }
+        }
+        
+        internal static string Reason {
+            get {
+                return ResourceManager.GetString("Reason", resourceCulture);
+            }
+        }
+        
+        internal static string Message {
+            get {
+                return ResourceManager.GetString("Message", resourceCulture);
+            }
+        }
+        
+        internal static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        internal static string Processed {
+            get {
+                return ResourceManager.GetString("Processed", resourceCulture);
+            }
+        }
+        
+        internal static string Pending {
+            get {
+                return ResourceManager.GetString("Pending", resourceCulture);
+            }
+        }
+        
+        internal static string SuspendDistributorAccount {
+            get {
+                return ResourceManager.GetString("SuspendDistributorAccount", resourceCulture);
+            }
+        }
+        
+        internal static string ReportProcessedSuccessfully {
+            get {
+                return ResourceManager.GetString("ReportProcessedSuccessfully", resourceCulture);
+            }
+        }
+        
+        internal static string MarkAsProcessed {
+            get {
+                return ResourceManager.GetString("MarkAsProcessed", resourceCulture);
+            }
+        }
+        
+        internal static string MarkAsUnprocessed {
+            get {
+                return ResourceManager.GetString("MarkAsUnprocessed", resourceCulture);
+            }
+        }
     }
 }

@@ -1,0 +1,66 @@
+@page "/Reports"
+@using RecoverUnsoldDomain.Entities
+@using RecoverUnsoldAdmin.Utils
+@inherits ReportsBase
+
+<PageTitle>@StringLocalizer["Reports"]</PageTitle>
+
+<MudTable @ref="Table" Hover="true" Striped="true"
+          Loading="Loading" Style="margin: 2rem;"
+          ServerData="@(new Func<TableState, Task<TableData<Report>>>(ServerData))">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@StringLocalizer["Reports"]</MudText>
+        <MudSpacer/>
+        <MudTextField @bind-Value="Filter.Search" Placeholder="@StringLocalizer["Search"]" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
+                      OnAdornmentClick="@(_ => OnSearch())"/>
+        <MudSelect Class="ml-2" T="string" Label="@StringLocalizer["Status"]" AnchorOrigin="Origin.BottomCenter" ValueChanged="ToggleProcessed">
+            <MudSelectItem Value="@(ProcessedLabels.NA)"/>
+            <MudSelectItem Value="@(ProcessedLabels.Processed)"/>
+            <MudSelectItem Value="@(ProcessedLabels.NonProcessed)"/>
+        </MudSelect>
+    </ToolBarContent>
+    <NoRecordsContent>
+        <NoDataComponent Message="@StringLocalizer["NoReportsFound"]"></NoDataComponent>
+    </NoRecordsContent>
+    <HeaderContent>
+        <MudTh>
+            <strong>@StringLocalizer["User"]</strong>
+        </MudTh>
+        <MudTh>
+            <strong>@StringLocalizer["ReportedDistributor"]</strong>
+        </MudTh>
+        <MudTh>
+            <strong>@StringLocalizer["Reason"]</strong>
+        </MudTh>
+        <MudTh>
+            <strong>@StringLocalizer["Message"]</strong>
+        </MudTh>
+        <MudTh>
+            <strong>@StringLocalizer["Status"]</strong>
+        </MudTh>
+        <MudTh>
+            <strong>@StringLocalizer["Actions"]</strong>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="User">@context.Customer!.Username</MudTd>
+        <MudTd DataLabel="ReportedDistributor">@context.ReportedDistributor!.Username</MudTd>
+        <MudTd DataLabel="Reason">@context.Reason</MudTd>
+        <MudTd DataLabel="Message">@(context.Description ?? "-")</MudTd>
+        <MudTd DataLabel="Status">@(context.Processed ? StringLocalizer["Processed"] : StringLocalizer["Pending"])</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Block" Color="Color.Secondary"
+                           Title="@StringLocalizer["SuspendDistributorAccount"]">
+            </MudIconButton>
+            <MudIconButton Icon="@(context.Processed ? Icons.Material.Filled.RemoveDone : Icons.Material.Filled.Done)"
+                           Color="Color.Secondary"
+                           Title="@StringLocalizer[context.Processed ? "MarkAsUnprocessed" : "MarkAsProcessed"]"
+                           OnClick="@(_ => MarkAsProcessed(context.Id, !context.Processed))">
+            </MudIconButton>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="@StringLocalizer["RowsPerPage"]" InfoFormat="@StringLocalizer["PageInfo"]"/>
+    </PagerContent>
+</MudTable>

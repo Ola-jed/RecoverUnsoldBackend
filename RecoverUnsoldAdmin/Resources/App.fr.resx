@@ -233,4 +233,43 @@
     <data name="OnlinePayment" xml:space="preserve">
         <value>Paiement en ligne</value>
     </data>
+    <data name="Reports" xml:space="preserve">
+        <value>Signalements</value>
+    </data>
+    <data name="NoReportsFound" xml:space="preserve">
+        <value>Aucun signalement trouvé</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>Utilisateur</value>
+    </data>
+    <data name="ReportedDistributor" xml:space="preserve">
+        <value>Distributeur signalé</value>
+    </data>
+    <data name="Reason" xml:space="preserve">
+        <value>Motif</value>
+    </data>
+    <data name="Message" xml:space="preserve">
+        <value>Message</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Actions</value>
+    </data>
+    <data name="Processed" xml:space="preserve">
+        <value>Traitée</value>
+    </data>
+    <data name="Pending" xml:space="preserve">
+        <value>En attente</value>
+    </data>
+    <data name="SuspendDistributorAccount" xml:space="preserve">
+        <value>Suspendre le compte du distributeur</value>
+    </data>
+    <data name="ReportProcessedSuccessfully" xml:space="preserve">
+        <value>Signalement traité avec succès</value>
+    </data>
+    <data name="MarkAsProcessed" xml:space="preserve">
+        <value>Marquer comme traitée</value>
+    </data>
+    <data name="MarkAsUnprocessed" xml:space="preserve">
+        <value>Marquer comme non traitée</value>
+    </data>
 </root>

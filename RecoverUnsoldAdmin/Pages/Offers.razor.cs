@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 using RecoverUnsoldAdmin.Models;
+using RecoverUnsoldAdmin.Services.AccountSuspensions;
 using RecoverUnsoldAdmin.Services.Offers;
 using RecoverUnsoldAdmin.Utils;
 using RecoverUnsoldDomain.Entities;
@@ -19,15 +20,21 @@ public class OffersBase : ComponentBase
     public IOffersService OffersService { get; set; } = default!;
 
     [Inject]
+    public IAccountSuspensionsService AccountSuspensionsService { get; set; } = default!;
+
+
+    [Inject]
     protected IStringLocalizer<App> StringLocalizer { get; set; } = default!;
 
     protected async Task OnSearch()
     {
+        ShowFilter = false;
         await Table!.ReloadServerData();
     }
 
     protected async Task ResetFilters()
     {
+        ShowFilter = false;
         Filter = new OffersFilter();
         await Table!.ReloadServerData();
     }
@@ -45,9 +52,9 @@ public class OffersBase : ComponentBase
     {
         Filter.Active = value switch
         {
-            ActiveLabels.Active  => true,
+            ActiveLabels.Active => true,
             ActiveLabels.Expired => false,
-            _                    => null
+            _ => null
         };
     }
 }

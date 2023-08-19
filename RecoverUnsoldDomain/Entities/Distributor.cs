@@ -24,4 +24,5 @@ public class Distributor : User
     public string? WebsiteUrl { get; set; }
 
     public ICollection<Location> Locations { get; set; } = new HashSet<Location>();
+    public ICollection<Report> Reports { get; set; } = new HashSet<Report>();
 }

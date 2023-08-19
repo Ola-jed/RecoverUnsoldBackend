@@ -23,12 +23,12 @@ public class OffersService : IOffersService
     {
         var context = await _dbContextFactory.CreateDbContextAsync();
         var paginationParameter = new PaginationParameter(offersFilter.PerPage, offersFilter.Page);
-        return context
+        return await context
             .Offers
             .AsNoTracking()
             .Include(o => o.Distributor)
             .ApplyFilters(offersFilter)
-            .Paginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
+            .AsyncPaginate(paginationParameter, o => o.CreatedAt, PaginationOrder.Descending);
     }
 
     public async Task<Offer?> GetOffer(Guid id)

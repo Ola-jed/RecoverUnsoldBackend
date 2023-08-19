@@ -1,10 +1,10 @@
 using FluentPaginator.Lib.Page;
-using FluentPaginator.Lib.Parameter;
+using RecoverUnsoldAdmin.Models;
 using RecoverUnsoldDomain.Entities;
 
 namespace RecoverUnsoldAdmin.Services.Repayments;
 
 public interface IRepaymentsService
 {
-    Task<Page<Repayment>> ListRepayments(PaginationParameter paginationParameter, bool? done = null);
+    Task<Page<Repayment>> ListRepayments(RepaymentsFilter repaymentsFilter);
 }

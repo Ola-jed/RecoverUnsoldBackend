@@ -225,4 +225,43 @@
     <data name="No" xml:space="preserve">
         <value>No</value>
     </data>
+    <data name="Reports" xml:space="preserve">
+        <value>Reports</value>
+    </data>
+    <data name="NoReportsFound" xml:space="preserve">
+        <value>No reports found</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>User</value>
+    </data>
+    <data name="ReportedDistributor" xml:space="preserve">
+        <value>Reported distributor</value>
+    </data>
+    <data name="Reason" xml:space="preserve">
+        <value>Reason</value>
+    </data>
+    <data name="Message" xml:space="preserve">
+        <value>Message</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Actions</value>
+    </data>
+    <data name="Processed" xml:space="preserve">
+        <value>Processed</value>
+    </data>
+    <data name="Pending" xml:space="preserve">
+        <value>Pending</value>
+    </data>
+    <data name="SuspendDistributorAccount" xml:space="preserve">
+        <value>Suspend the distributor's account</value>
+    </data>
+    <data name="ReportProcessedSuccessfully" xml:space="preserve">
+        <value>Report processed successfully</value>
+    </data>
+    <data name="MarkAsProcessed" xml:space="preserve">
+        <value>Mark as processed</value>
+    </data>
+    <data name="MarkAsUnprocessed" xml:space="preserve">
+        <value>Mark as non processed</value>
+    </data>
 </root>
