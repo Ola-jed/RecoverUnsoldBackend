@@ -25,4 +25,5 @@ public class Distributor : User
 
     public ICollection<Location> Locations { get; set; } = new HashSet<Location>();
     public ICollection<Report> Reports { get; set; } = new HashSet<Report>();
+    public ICollection<AccountSuspension> AccountSuspensions { get; set; } = new HashSet<AccountSuspension>();
 }

@@ -272,4 +272,28 @@
     <data name="MarkAsUnprocessed" xml:space="preserve">
         <value>Marquer comme non traitée</value>
     </data>
+    <data name="SuspendDistributor" xml:space="preserve">
+        <value>Suspendre</value>
+    </data>
+    <data name="Date" xml:space="preserve">
+        <value>Début de la suspension</value>
+    </data>
+    <data name="DistributorAccountSuspendedSuccessfully" xml:space="preserve">
+        <value>Compte du distributeur suspendu avec succès</value>
+    </data>
+    <data name="ReceivedReports" xml:space="preserve">
+        <value>Signalements reçus par le distributeur</value>
+    </data>
+    <data name="AccountSuspensionRevokedSuccessfully" xml:space="preserve">
+        <value>Suspension de compte révoquée avec succès</value>
+    </data>
+    <data name="Active" xml:space="preserve">
+        <value>Active</value>
+    </data>
+    <data name="AccountSuspensions" xml:space="preserve">
+        <value>Suspensions de compte</value>
+    </data>
+    <data name="Cancelled" xml:space="preserve">
+        <value>Annulée</value>
+    </data>
 </root>

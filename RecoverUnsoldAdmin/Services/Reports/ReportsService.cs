@@ -21,10 +21,12 @@ public class ReportsService : IReportsService
     {
         var context = await _dbContextFactory.CreateDbContextAsync();
         var query = context.Reports
-            .AsNoTracking()
             .Include(r => r.Customer)
             .Include(r => r.ReportedDistributor)
-            .AsQueryable();
+            .ThenInclude(d => d!.Reports)
+            .Include(r => r.ReportedDistributor)
+            .ThenInclude(d => d!.AccountSuspensions)
+            .AsSplitQuery();
 
         if (reportsFilter.Processed != null)
         {

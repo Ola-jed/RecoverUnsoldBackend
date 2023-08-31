@@ -542,5 +542,53 @@ namespace RecoverUnsoldAdmin.Resources {
                 return ResourceManager.GetString("MarkAsUnprocessed", resourceCulture);
             }
         }
+        
+        internal static string SuspendDistributor {
+            get {
+                return ResourceManager.GetString("SuspendDistributor", resourceCulture);
+            }
+        }
+        
+        internal static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        internal static string DistributorAccountSuspendedSuccessfully {
+            get {
+                return ResourceManager.GetString("DistributorAccountSuspendedSuccessfully", resourceCulture);
+            }
+        }
+        
+        internal static string ReceivedReports {
+            get {
+                return ResourceManager.GetString("ReceivedReports", resourceCulture);
+            }
+        }
+        
+        internal static string AccountSuspensionRevokedSuccessfully {
+            get {
+                return ResourceManager.GetString("AccountSuspensionRevokedSuccessfully", resourceCulture);
+            }
+        }
+        
+        internal static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        internal static string AccountSuspensions {
+            get {
+                return ResourceManager.GetString("AccountSuspensions", resourceCulture);
+            }
+        }
+        
+        internal static string Cancelled {
+            get {
+                return ResourceManager.GetString("Cancelled", resourceCulture);
+            }
+        }
     }
 }

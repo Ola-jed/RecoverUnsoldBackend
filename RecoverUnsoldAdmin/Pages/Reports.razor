@@ -51,6 +51,7 @@
         <MudTd DataLabel="Status">@(context.Processed ? StringLocalizer["Processed"] : StringLocalizer["Pending"])</MudTd>
         <MudTd>
             <MudIconButton Icon="@Icons.Material.Filled.Block" Color="Color.Secondary"
+                           OnClick="@(_ => OpenAccountSuspensionDialog(context.ReportedDistributorId))"
                            Title="@StringLocalizer["SuspendDistributorAccount"]">
             </MudIconButton>
             <MudIconButton Icon="@(context.Processed ? Icons.Material.Filled.RemoveDone : Icons.Material.Filled.Done)"
@@ -58,9 +59,82 @@
                            Title="@StringLocalizer[context.Processed ? "MarkAsUnprocessed" : "MarkAsProcessed"]"
                            OnClick="@(_ => MarkAsProcessed(context.Id, !context.Processed))">
             </MudIconButton>
+
+            @if (context.ReportedDistributor!.Reports.Count > 1 || context.ReportedDistributor.AccountSuspensions.Any())
+            {
+                <MudIconButton OnClick="@(() => Expand(context.Id))"
+                               Icon="@(ExpandedRows.Contains(context.Id) ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"/>
+            }
         </MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager RowsPerPageString="@StringLocalizer["RowsPerPage"]" InfoFormat="@StringLocalizer["PageInfo"]"/>
     </PagerContent>
+    <ChildRowContent>
+        @if (ExpandedRows.Contains(context.Id))
+        {
+            <td colspan="6">
+                @if (context.ReportedDistributor!.Reports.Any(r => r.Id != context.Id))
+                {
+                    <MudCard Elevation="0">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body1">@StringLocalizer["ReceivedReports"]</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent Class="pa-0">
+                            <MudList>
+                                @foreach (var report in context.ReportedDistributor!.Reports.Where(r => r.Id != context.Id))
+                                {
+                                    <MudListItem>
+                                        <p>@StringLocalizer["Reason"] : @(report.Reason)</p>
+                                        @if (report.Description != null)
+                                        {
+                                            <p>@StringLocalizer["Description"] : @(report.Description)</p>
+                                        }
+
+                                        <p>@(report.Processed ? StringLocalizer["Processed"] : StringLocalizer["Pending"])</p>
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        </MudCardContent>
+                    </MudCard>
+                }
+
+                @if (context.ReportedDistributor!.AccountSuspensions.Any())
+                {
+                    <MudCard Elevation="0">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body1">@StringLocalizer["AccountSuspensions"]</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent Class="pa-0">
+                            <MudList>
+                                @foreach (var accountSuspension in context.ReportedDistributor!.AccountSuspensions)
+                                {
+                                    <MudListItem>
+                                        <p>@StringLocalizer["Date"] : @(accountSuspension.Date.ToShortDateString())</p>
+                                        @if (accountSuspension.EndDate != null)
+                                        {
+                                            <p>@StringLocalizer["EndDate"] : @(accountSuspension.EndDate.Value.ToShortDateString())</p>
+                                        }
+
+                                        <p>@(accountSuspension.Active ? StringLocalizer["Active"] : StringLocalizer["Cancelled"])</p>
+
+                                        @if (accountSuspension.Active)
+                                        {
+                                            <MudButton Variant="Variant.Text" OnClick="@(_ => RevokeAccountSuspension(accountSuspension.Id))">
+                                                @StringLocalizer["Cancel"]
+                                            </MudButton>
+                                        }
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        </MudCardContent>
+                    </MudCard>
+                }
+            </td>
+        }
+    </ChildRowContent>
 </MudTable>

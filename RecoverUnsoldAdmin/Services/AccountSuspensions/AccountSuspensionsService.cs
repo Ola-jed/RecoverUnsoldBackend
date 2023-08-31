@@ -20,7 +20,7 @@ public class AccountSuspensionsService : IAccountSuspensionsService
         context.AccountSuspensions.Add(new AccountSuspension
         {
             Reason = accountSuspensionModel.Reason,
-            Date = accountSuspensionModel.Date,
+            Date = accountSuspensionModel.Date!.Value,
             EndDate = accountSuspensionModel.EndDate,
             Active = true,
             DistributorId = distributorId

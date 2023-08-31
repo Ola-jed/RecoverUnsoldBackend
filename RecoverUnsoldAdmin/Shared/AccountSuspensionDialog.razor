@@ -1,0 +1,72 @@
+@using RecoverUnsoldAdmin.Models
+@using RecoverUnsoldAdmin.Services.AccountSuspensions
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="Form" @bind-IsValid="Valid ">
+            <MudTextField T="string" Label="@StringLocalizer["Reason"]"
+                          Lines="3"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          @bind-Value="AccountSuspensionModel.Reason"/>
+
+            <MudDatePicker Label="@StringLocalizer["Date"]" @bind-Date="AccountSuspensionModel.Date"
+                           MinDate="DateTime.Now"
+                           DisableToolbar="true"
+                           Class="ml-2"/>
+
+            <MudDatePicker Label="@StringLocalizer["EndDate"]" @bind-Date="AccountSuspensionModel.EndDate"
+                           MinDate="AccountSuspensionModel.Date"
+                           DisableToolbar="true"
+                           Clearable="true" Class="ml-2"/>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error"
+                   Disabled="@(!Valid || Loading)" OnClick="Submit">
+            @if (Loading)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Default" Indeterminate="true"/>
+            }
+            else
+            {
+                @StringLocalizer["SuspendDistributor"]
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public Guid DistributorId { get; set; }
+
+    protected AccountSuspensionModel AccountSuspensionModel = new();
+
+    [Inject]
+    protected IAccountSuspensionsService AccountSuspensionsService { get; set; } = default!;
+
+    [Inject]
+    protected IStringLocalizer<App> StringLocalizer { get; set; } = default!;
+
+    protected MudForm? Form { get; set; }
+    protected bool Loading { get; set; }
+    protected bool Valid { get; set; }
+
+    async Task Submit()
+    {
+        Loading = true;
+        await AccountSuspensionsService.SuspendAccount(DistributorId, AccountSuspensionModel);
+        Loading = false;
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+}

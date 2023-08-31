@@ -64,6 +64,7 @@
         <MudTd DataLabel="Creation date">@context.CreatedAt.ToShortDateString()</MudTd>
         <MudTd>
             <MudIconButton OnClick="@(() => ToggleDistributor(context.Id))"
+                           Disabled="@(!context.Locations.Any())"
                            Icon="@(ExpandedRows.Contains(context.Id) ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"/>
         </MudTd>
     </RowTemplate>
@@ -74,14 +75,14 @@
         @if (ExpandedRows.Contains(context.Id))
         {
             <td colspan="8">
-                <MudCard Elevation="0">
+                <MudCard Elevation="2">
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Typo="Typo.body1">@StringLocalizer["DetailsForDistributor", context.Username]</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudCardContent Class="pa-0">
-                        @if (@context.EmailVerifiedAt != null)
+                        @if (context.EmailVerifiedAt != null)
                         {
                             <MudText Typo="Typo.body1" Class="ml-5">
                                 @StringLocalizer["AccountVerifiedThe", context.EmailVerifiedAt?.ToShortDateString()!]
