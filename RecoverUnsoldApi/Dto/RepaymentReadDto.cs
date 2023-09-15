@@ -1,3 +1,4 @@
 namespace RecoverUnsoldApi.Dto;
 
-public record RepaymentReadDto(bool Done, string? Note, string? TransactionId, OrderReadDto Order, DateTime CreatedAt);
+public record RepaymentReadDto(Guid Id, bool Done, string? Note, string? TransactionId, OrderReadDto Order,
+    DateTime CreatedAt);

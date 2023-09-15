@@ -119,7 +119,7 @@ public static class Mapping
 
     public static RepaymentReadDto ToRepaymentReadDto(this Repayment repayment)
     {
-        return new RepaymentReadDto(repayment.Done, repayment.Note, repayment.TransactionId,
+        return new RepaymentReadDto(repayment.Id, repayment.Done, repayment.Note, repayment.TransactionId,
             repayment.Order!.ToOrderReadDto(), repayment.CreatedAt);
     }
 }
