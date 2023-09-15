@@ -11,8 +11,8 @@
           ServerData="@(new Func<TableState, Task<TableData<Offer>>>(ServerData))">
     <ToolBarContent>
         <MudText Typo="Typo.h6" Class="mr-2">@StringLocalizer["Offers"]</MudText>
-        <MudToggleIconButton @bind-Toggled="ShowFilter" Icon="@Icons.Material.Filled.FilterAltOff" Title="Show filters"
-                             ToggledIcon="@Icons.Material.Filled.FilterAlt" ToggledTitle="Hide filters" Class="ml-4"/>
+        <MudToggleIconButton @bind-Toggled="ShowFilter" Icon="@Icons.Material.Filled.FilterAlt" Title="Show filters"
+                             ToggledIcon="@Icons.Material.Filled.FilterAltOff" ToggledTitle="Hide filters" Class="ml-4"/>
         <MudPopover Open="@ShowFilter" AnchorOrigin="Origin.BottomLeft">
             <MudPaper Class="px-2">
                 <div class="filter-line">

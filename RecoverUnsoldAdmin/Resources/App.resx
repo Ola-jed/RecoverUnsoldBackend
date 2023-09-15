@@ -288,4 +288,31 @@
     <data name="Cancelled" xml:space="preserve">
         <value>Cancelled</value>
     </data>
+    <data name="Repayments" xml:space="preserve">
+        <value>Repayments</value>
+    </data>
+    <data name="Note" xml:space="preserve">
+        <value>Note</value>
+    </data>
+    <data name="TransactionId" xml:space="preserve">
+        <value>Transaction id</value>
+    </data>
+    <data name="Amount" xml:space="preserve">
+        <value>Amount</value>
+    </data>
+    <data name="NoRepaymentsFound" xml:space="preserve">
+        <value>No repayments found</value>
+    </data>
+    <data name="Done" xml:space="preserve">
+        <value>Done</value>
+    </data>
+    <data name="OrderDate" xml:space="preserve">
+        <value>Order date</value>
+    </data>
+    <data name="ProcessRepayment" xml:space="preserve">
+        <value>Process the repayment</value>
+    </data>
+    <data name="RepaymentProcessedSuccessfully" xml:space="preserve">
+        <value>Repayment processed successfully</value>
+    </data>
 </root>

@@ -1,0 +1,67 @@
+@using RecoverUnsoldAdmin.Models
+@using RecoverUnsoldAdmin.Services.Repayments
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="Form" @bind-IsValid="Valid ">
+            <MudTextField T="string" Label="@StringLocalizer["TransactionId"]"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          @bind-Value="RepaymentValidationModel.TransactionId"/>
+
+            <MudTextField T="string" Label="@StringLocalizer["Note"]"
+                          Lines="3"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          @bind-Value="RepaymentValidationModel.Note"/>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error"
+                   Disabled="@(!Valid || Loading)" OnClick="Submit">
+            @if (Loading)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Color="Color.Default" Indeterminate="true"/>
+            }
+            else
+            {
+                @StringLocalizer["ProcessRepayment"]
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public Guid RepaymentId { get; set; }
+
+    protected RepaymentValidationModel RepaymentValidationModel = new();
+
+    [Inject]
+    protected IRepaymentsService RepaymentsService { get; set; } = default!;
+
+    [Inject]
+    protected IStringLocalizer<App> StringLocalizer { get; set; } = default!;
+
+    protected MudForm? Form { get; set; }
+    protected bool Loading { get; set; }
+    protected bool Valid { get; set; }
+
+    async Task Submit()
+    {
+        Loading = true;
+        await RepaymentsService.MarkAsDone(RepaymentId, RepaymentValidationModel);
+        Loading = false;
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+}

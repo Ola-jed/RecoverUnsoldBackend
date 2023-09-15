@@ -9,6 +9,7 @@ using RecoverUnsoldAdmin.Services.AccountSuspensions;
 using RecoverUnsoldAdmin.Services.Customers;
 using RecoverUnsoldAdmin.Services.Distributors;
 using RecoverUnsoldAdmin.Services.Offers;
+using RecoverUnsoldAdmin.Services.Repayments;
 using RecoverUnsoldAdmin.Services.Reports;
 using RecoverUnsoldAdmin.Services.Stats;
 using RecoverUnsoldAdmin.Utils;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IOffersService, OffersService>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddScoped<IReportsService, ReportsService>();
 builder.Services.AddScoped<IAccountSuspensionsService, AccountSuspensionsService>();
+builder.Services.AddScoped<IRepaymentsService, RepaymentsService>();
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())

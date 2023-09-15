@@ -6,5 +6,6 @@ namespace RecoverUnsoldAdmin.Services.Repayments;
 
 public interface IRepaymentsService
 {
-    Task<Page<Repayment>> ListRepayments(RepaymentsFilter repaymentsFilter);
+    Task<Page<Repayment>> GetRepayments(RepaymentsFilter repaymentsFilter);
+    Task MarkAsDone(Guid id, RepaymentValidationModel repaymentValidationModel);
 }

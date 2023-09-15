@@ -590,5 +590,59 @@ namespace RecoverUnsoldAdmin.Resources {
                 return ResourceManager.GetString("Cancelled", resourceCulture);
             }
         }
+        
+        internal static string Repayments {
+            get {
+                return ResourceManager.GetString("Repayments", resourceCulture);
+            }
+        }
+        
+        internal static string Note {
+            get {
+                return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        internal static string TransactionId {
+            get {
+                return ResourceManager.GetString("TransactionId", resourceCulture);
+            }
+        }
+        
+        internal static string Amount {
+            get {
+                return ResourceManager.GetString("Amount", resourceCulture);
+            }
+        }
+        
+        internal static string NoRepaymentsFound {
+            get {
+                return ResourceManager.GetString("NoRepaymentsFound", resourceCulture);
+            }
+        }
+        
+        internal static string Done {
+            get {
+                return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        internal static string OrderDate {
+            get {
+                return ResourceManager.GetString("OrderDate", resourceCulture);
+            }
+        }
+        
+        internal static string ProcessRepayment {
+            get {
+                return ResourceManager.GetString("ProcessRepayment", resourceCulture);
+            }
+        }
+        
+        internal static string RepaymentProcessedSuccessfully {
+            get {
+                return ResourceManager.GetString("RepaymentProcessedSuccessfully", resourceCulture);
+            }
+        }
     }
 }

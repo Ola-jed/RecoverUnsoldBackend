@@ -17,7 +17,7 @@ public class RepaymentsService : IRepaymentsService
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<Page<Repayment>> ListRepayments(RepaymentsFilter repaymentsFilter)
+    public async Task<Page<Repayment>> GetRepayments(RepaymentsFilter repaymentsFilter)
     {
         var context = await _dbContextFactory.CreateDbContextAsync();
         var query = context.Repayments
@@ -40,5 +40,17 @@ public class RepaymentsService : IRepaymentsService
         var paginationParameter = new PaginationParameter(repaymentsFilter.PerPage, repaymentsFilter.Page);
         return await query.AsSplitQuery()
             .AsyncPaginate(paginationParameter, r => r.CreatedAt);
+    }
+
+    public async Task MarkAsDone(Guid id, RepaymentValidationModel repaymentValidationModel)
+    {
+        var context = await _dbContextFactory.CreateDbContextAsync();
+        await context.Repayments
+            .Where(r => r.Id == id)
+            .ExecuteUpdateAsync(r =>
+                r.SetProperty(x => x.Done, true)
+                    .SetProperty(x => x.Note, repaymentValidationModel.Note)
+                    .SetProperty(x => x.TransactionId, repaymentValidationModel.TransactionId)
+            );
     }
 }

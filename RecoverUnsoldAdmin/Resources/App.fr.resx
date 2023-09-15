@@ -296,4 +296,31 @@
     <data name="Cancelled" xml:space="preserve">
         <value>Annulée</value>
     </data>
+    <data name="Repayments" xml:space="preserve">
+        <value>Reversements</value>
+    </data>
+    <data name="TransactionId" xml:space="preserve">
+        <value>Id de transaction</value>
+    </data>
+    <data name="Amount" xml:space="preserve">
+        <value>Montant</value>
+    </data>
+    <data name="NoRepaymentsFound" xml:space="preserve">
+        <value>Aucun reversement trouvé</value>
+    </data>
+    <data name="Done" xml:space="preserve">
+        <value>Effectuée</value>
+    </data>
+    <data name="OrderDate" xml:space="preserve">
+        <value>Date de la commande</value>
+    </data>
+    <data name="ProcessRepayment" xml:space="preserve">
+        <value>Traiter le reversement</value>
+    </data>
+    <data name="Note" xml:space="preserve">
+        <value>Note</value>
+    </data>
+    <data name="RepaymentProcessedSuccessfully" xml:space="preserve">
+        <value>Reversement traité avec succès</value>
+    </data>
 </root>
