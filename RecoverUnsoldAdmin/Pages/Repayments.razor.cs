@@ -67,7 +67,7 @@ public class RepaymentsBase : ComponentBase
         {
             { x => x.RepaymentId, id }
         };
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, CloseOnEscapeKey = true };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraLarge, CloseOnEscapeKey = true };
         var dialog = await DialogService.ShowAsync<RepaymentDialog>(
             StringLocalizer["ProcessRepayment"],
             parameters,
@@ -77,7 +77,8 @@ public class RepaymentsBase : ComponentBase
 
         if (!result.Canceled)
         {
-            Snackbar.Add(StringLocalizer["DistributorAccountSuspendedSuccessfully"], Severity.Success);
+            Snackbar.Add(StringLocalizer["RepaymentProcessedSuccessfully"], Severity.Success);
+            await Table!.ReloadServerData();
         }
     }
 }
