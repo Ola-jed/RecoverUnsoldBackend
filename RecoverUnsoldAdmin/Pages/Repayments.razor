@@ -45,7 +45,7 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Amount">@context.Order!.Offer!.Price</MudTd>
-        <MudTd DataLabel="Distributor">@context.Order!.Offer!.Distributor</MudTd>
+        <MudTd DataLabel="Distributor">@context.Order!.Offer!.Distributor!.Username</MudTd>
         <MudTd DataLabel="Date">@context.Order!.CreatedAt.ToShortDateString()</MudTd>
         <MudTd DataLabel="TransactionId">@(context.TransactionId ?? "-")</MudTd>
         <MudTd DataLabel="Status">@StringLocalizer[context.Done ? "Done" : "Pending"]</MudTd>

@@ -28,7 +28,7 @@ public class RepaymentsService : IRepaymentsService
         var resultingQuery = repaymentFilterDto.Done switch
         {
             true => query.Where(r => r.Done),
-            false => query.Where(r => r.Done),
+            false => query.Where(r => !r.Done),
             _ => query
         };
 
