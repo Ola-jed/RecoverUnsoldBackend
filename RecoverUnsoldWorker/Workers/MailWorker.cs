@@ -4,6 +4,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using PuppeteerSharp;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
@@ -90,7 +91,7 @@ public class MailWorker : BackgroundService
 
     private async Task SendMail(MailMessage mailMessage)
     {
-        var email = BuildMimeMessage(mailMessage);
+        var email = await BuildMimeMessage(mailMessage);
         using var smtp = new SmtpClient();
         await smtp.ConnectAsync(_mailConfig.Host, _mailConfig.Port, SecureSocketOptions.StartTls);
         await smtp.AuthenticateAsync(_mailConfig.MailUser, _mailConfig.MailPassword);
@@ -98,7 +99,7 @@ public class MailWorker : BackgroundService
         await smtp.DisconnectAsync(true);
     }
 
-    private MimeMessage BuildMimeMessage(MailMessage mailMessage)
+    private async Task<MimeMessage> BuildMimeMessage(MailMessage mailMessage)
     {
         var email = new MimeMessage();
         email.Subject = mailMessage.Subject;
@@ -113,9 +114,13 @@ public class MailWorker : BackgroundService
 
         if (mailMessage.PdfAttachment != null)
         {
-            var renderer = new ChromePdfRenderer();
-            var pdf = renderer.RenderHtmlAsPdf(mailMessage.PdfAttachment.HtmlContent);
-            builder.Attachments.Add(mailMessage.PdfAttachment.FileName, pdf.BinaryData);
+            using var browserFetcher = new BrowserFetcher();
+            await browserFetcher.DownloadAsync();
+            await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
+            await using var page = await browser.NewPageAsync();
+            await page.SetContentAsync(mailMessage.PdfAttachment.HtmlContent);
+            var pdfData = await page.PdfDataAsync();
+            builder.Attachments.Add(mailMessage.PdfAttachment.FileName, pdfData);
         }
 
         email.Body = builder.ToMessageBody();
