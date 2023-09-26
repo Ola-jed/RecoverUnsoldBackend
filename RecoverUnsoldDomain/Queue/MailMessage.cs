@@ -11,7 +11,7 @@ public sealed class MailMessage
 
     public sealed class MailPdfAttachment
     {
-        public required string FileName { get; set; }
-        public required string HtmlContent { get; set; }
+        public string FileName { get; set; } = null!;
+        public string HtmlContent { get; set; } = null!;
     }
 }
