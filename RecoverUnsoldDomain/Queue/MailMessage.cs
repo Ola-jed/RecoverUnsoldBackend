@@ -2,10 +2,10 @@ namespace RecoverUnsoldDomain.Queue;
 
 public sealed class MailMessage
 {
-    public required string Subject { get; set; }
-    public required string Destination { get; set; }
-    public required string HtmlBody { get; set; }
-    public required string TextBody { get; set; }
+    public string Subject { get; set; } = null!;
+    public string Destination { get; set; } = null!;
+    public string HtmlBody { get; set; } = null!;
+    public string TextBody { get; set; } = null!;
 
     public MailPdfAttachment? PdfAttachment { get; set; }
 
