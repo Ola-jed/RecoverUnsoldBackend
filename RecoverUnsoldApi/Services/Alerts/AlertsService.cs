@@ -49,7 +49,7 @@ public class AlertsService : IAlertsService
             .GroupJoin<Alert, Distributor, string, AlertReadDto>(_context.Distributors,
                 alert => alert.Trigger, distributor => distributor.Id.ToString(),
                 (alert, distributors) => new AlertReadDto(alert.Id, alert.AlertType,
-                    distributors.FirstOrDefault().ToDistributorInformationDto())
+                    distributors.Any() ? distributors.FirstOrDefault()!.ToDistributorInformationDto() : null)
             ));
     }
 
