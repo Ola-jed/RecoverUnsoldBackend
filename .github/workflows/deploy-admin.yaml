@@ -39,7 +39,7 @@ jobs:
       - name: Copy to Server via SCP
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: /home/runner/work/RecoverUnsoldBackend/RecoverUnsoldAdmin/bin/Release/net7.0/publish/
+          local: /home/runner/work/RecoverUnsoldBackend/RecoverUnsoldBackend/RecoverUnsoldAdmin/bin/Release/net7.0/publish/
           concurrency: 10
           remote: ${{ secrets.REMOTE_TARGET_ADMIN }}
           host: ${{ secrets.REMOTE_HOST }}
