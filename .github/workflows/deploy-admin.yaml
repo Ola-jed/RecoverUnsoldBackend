@@ -28,6 +28,15 @@ jobs:
       - name: Dotnet publish
         run: dotnet publish RecoverUnsoldAdmin/RecoverUnsoldAdmin.csproj -c Release --output ./AdminRelease
 
+      - name: Fetch secrets and update appsettings.json
+        run: |
+          echo "$JSON" > ./AdminRelease/appsettings.temp.json
+          jq -s '.[0] * .[1]' ./AdminRelease/appsettings.json ./AdminRelease/appsettings.temp.json > ./AdminRelease/appsettings.updated.json
+          mv ./AdminRelease/appsettings.updated.json ./AdminRelease/appsettings.json
+        env:
+          JSON: ${{ secrets.JSON_SECRET }}
+        shell: bash
+
       - name: Stop admin Service
         uses: garygrossgarten/github-action-ssh@v0.6.3
         with:

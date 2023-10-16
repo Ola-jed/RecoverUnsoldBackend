@@ -28,6 +28,15 @@ jobs:
       - name: Dotnet publish       
         run: dotnet publish RecoverUnsoldWorker/RecoverUnsoldWorker.csproj -c Release --output ./WorkerRelease
 
+      - name: Fetch secrets and update appsettings.json
+        run: |
+          echo "$JSON" > ./WorkerRelease/appsettings.temp.json
+          jq -s '.[0] * .[1]' ./WorkerRelease/appsettings.json ./WorkerRelease/appsettings.temp.json > ./WorkerRelease/appsettings.updated.json
+          mv ./WorkerRelease/appsettings.updated.json ./WorkerRelease/appsettings.json
+        env:
+          JSON: ${{ secrets.JSON_SECRET }}
+        shell: bash
+
       - name: Stop worker Service
         uses: garygrossgarten/github-action-ssh@v0.6.3
         with:
