@@ -25,8 +25,8 @@ jobs:
       - name: Dotnet run tests
         run: dotnet test --no-build --verbosity normal
 
-      - name: Dotnet publish
-        run: dotnet publish -c Release
+      - name: Dotnet publish       
+        run: dotnet publish RecoverUnsoldWorker/RecoverUnsoldWorker.csproj -c Release --output ./WorkerRelease
 
       - name: Stop worker Service
         uses: garygrossgarten/github-action-ssh@v0.6.3
@@ -39,7 +39,7 @@ jobs:
       - name: Copy to Server via SCP
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: /home/runner/work/RecoverUnsoldBackend/RecoverUnsoldBackend/RecoverUnsoldWorker/bin/Release/net7.0/publish/
+          local: ./WorkerRelease
           concurrency: 10
           remote: ${{ secrets.REMOTE_TARGET_WORKER }}
           host: ${{ secrets.REMOTE_HOST }}

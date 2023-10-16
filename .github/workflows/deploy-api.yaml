@@ -26,7 +26,7 @@ jobs:
         run: dotnet test --no-build --verbosity normal
 
       - name: Dotnet publish
-        run: dotnet publish -c Release
+        run: dotnet publish RecoverUnsoldApi/RecoverUnsoldApi.csproj -c Release --output ./ApiRelease
 
       - name: Stop api Service
         uses: garygrossgarten/github-action-ssh@v0.6.3
@@ -39,7 +39,7 @@ jobs:
       - name: Copy to Server via SCP
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: /home/runner/work/RecoverUnsoldBackend/RecoverUnsoldBackend/RecoverUnsoldApi/bin/Release/net7.0/publish/
+          local: ./ApiRelease
           concurrency: 10
           remote: ${{ secrets.REMOTE_TARGET_API }}
           host: ${{ secrets.REMOTE_HOST }}
