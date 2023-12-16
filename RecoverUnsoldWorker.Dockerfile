@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY ["RecoverUnsoldWorker/RecoverUnsoldWorker.csproj", "RecoverUnsoldWorker/"]
@@ -7,7 +7,7 @@ COPY . .
 WORKDIR "/src/RecoverUnsoldWorker"
 RUN dotnet publish "RecoverUnsoldWorker.csproj" -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/runtime:7.0
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build /app/publish .
 
