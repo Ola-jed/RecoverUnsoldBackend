@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>76326FC9-E17B-4DC0-AA6B-AFE0847997C3</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Blazored.LocalStorage" Version="4.3.0"/>
-        <PackageReference Include="Blazored.SessionStorage" Version="2.3.0"/>
-        <PackageReference Include="BlazorGoogleMaps" Version="3.1.1"/>
-        <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.9"/>
-        <PackageReference Include="MudBlazor" Version="6.7.0"/>
-        <PackageReference Include="FluentPaginator.Lib" Version="5.0.0"/>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0"/>
+        <PackageReference Include="Blazored.SessionStorage" Version="2.4.0"/>
+        <PackageReference Include="BlazorGoogleMaps" Version="4.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0"/>
+        <PackageReference Include="MudBlazor" Version="6.11.1"/>
+        <PackageReference Include="FluentPaginator.Lib" Version="6.0.0"/>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
     </ItemGroup>
 
